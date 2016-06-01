@@ -1,0 +1,64 @@
+{
+  "name": "anti-fraud-component",
+  "version": "0.8.0",
+  "description": "Anti-Fraud React component",
+  "main": "js/entry.js",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "classnames": "^2.2.0",
+    "clipboard": "^1.5.10",
+    "css-loader": "^0.22.0",
+    "es6-promise": "^3.0.2",
+    "express": "^4.13.4",
+    "file-loader": "^0.8.4",
+    "flux": "^2.1.1",
+    "font-awesome": "^4.4.0",
+    "html-webpack-plugin": "^2.9.0",
+    "imports-loader": "^0.6.5",
+    "jquery": "^2.1.4",
+    "js-cookie": "^2.0.4",
+    "json-loader": "^0.5.4",
+    "jsonwebtoken": "^5.4.1",
+    "jspath": "^0.3.2",
+    "jsx-loader": "^0.13.2",
+    "keymirror": "^0.1.1",
+    "less": "^2.5.3",
+    "less-loader": "^2.2.1",
+    "material-ui": "^0.14.4",
+    "moment": "^2.11.0",
+    "moment-timezone": "^0.5.2",
+    "object-assign": "^4.0.1",
+    "react": "^0.14.2",
+    "react-bootstrap": "^0.28.2",
+    "react-dom": "^0.14.2",
+    "react-fa": "^4.0.0",
+    "react-highcharts": "^5.0.4",
+    "react-modal": "^0.6.1",
+    "react-onclickoutside": "^4.1.1",
+    "react-router": "^2.0.0",
+    "react-tap-event-plugin": "^0.2.2",
+    "store2": "^2.3.2",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.13",
+    "yargs": "^3.32.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^1.1.1"
+  },
+  "scripts": {
+    "test": "rm -rf build/*;webpack -d --conf=development;tar czvf mofaweb.tgz -C ./build/ .",
+    "build": "rm -rf build/*;webpack -p;tar czvf mofaweb.tgz -C ./build/ .",
+    "build-dev": "rm -rf build/*;webpack -p --conf=development;tar czvf mofaweb.tgz -C ./build/ .",
+    "debug": "rm -rf build/*;webpack --color --watch --progress -d --conf=development",
+    "develop": "rm -rf build/*;webpack --color --watch --progress --conf=development"
+  },
+  "author": "peng.jing",
+  "license": "UNLICENSED",
+  "private": true,
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
