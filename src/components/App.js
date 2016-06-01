@@ -7,7 +7,7 @@ var browserHistory = require('react-router').browserHistory;
 var App = React.createClass({
     render: function () {
         return (
-            <div> 杰,这是一个最基础的React页面,你先看看这个框架,每个目录我留了一个js,包括store,actions,constant,compoents,你先自己看看,有问题及时问... </div>
+            <div> <img data-timestamp="1464785291561" id="graph_full" src="http://120.26.233.223/zabbix/chart2.php?graphid=547&amp;period=60&amp;stime=20170601204509&amp;updateProfile=1&amp;profileIdx=web.screens&amp;profileIdx2=547&amp;width=1298&amp;sid=f146a9a946ee6825&amp;screenid=&amp;curtime=1464785291561" style={{position: "relative","zIndex": 3}} /></div>
         )
 
     }
