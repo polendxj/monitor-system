@@ -5,17 +5,25 @@ var browserHistory = require('react-router').browserHistory;
 
 
 var App = React.createClass({
+    getInitialState: function () {
+        return ({
+            menuCollapsed: false
+        })
+    },
+    _collapsedMenu: function () {
+        this.setState({menuCollapsed: !this.state.menuCollapsed});
+    },
     render: function () {
         return (
             <div>
-                <div id="cl-wrapper">
+                <div id="cl-wrapper" className={this.state.menuCollapsed?"sb-collapsed":""}>
 
                     <div className="cl-sidebar">
                         <div className="cl-toggle"><i className="fa fa-bars"></i></div>
                         <div className="cl-navblock">
                             <div className="menu-space">
                                 <div className="content">
-                                    <Logo />
+                                    <Logo _collapsedMenu={this._collapsedMenu} menuCollapsed={this.state.menuCollapsed}/>
                                     <Menus />
                                 </div>
                             </div>
@@ -33,18 +41,18 @@ var App = React.createClass({
     }
 });
 
-var Logo=React.createClass({
+var Logo = React.createClass({
     render: function () {
-        return(
+        return (
             <div className="sidebar-logo">
-                <div className="logo">
+                <div className="logo" onClick={this.props._collapsedMenu}>
 
                 </div>
                 <div className="title"
-                     style={{width:"138px",height:"40px",backgroundColor:"#45A2E1",float:"right"}}>
+                     style={{width:"138px",height:"40px",backgroundColor:"#45A2E1",float:"right",display:this.props.menuCollapsed?"none":"block"}}>
                     <div style={{height:"60%",fontSize:"20px",color:"white"}}>中国电信</div>
-                    <div
-                        style={{height:"40%",fontSize:"12px",color:"white"}}>服务监控平台<span style={{fontStyle:"italic",color:"#D3D3D3"}}>&nbsp;Alpha 0.1</span>
+                    <div style={{height:"40%",fontSize:"12px",color:"white"}}>&nbsp;服务监控平台<span
+                        style={{fontStyle:"italic",color:"#D3D3D3"}}>&nbsp;Alpha 0.1</span>
                     </div>
                 </div>
             </div>
@@ -52,9 +60,9 @@ var Logo=React.createClass({
     }
 });
 
-var Menus=React.createClass({
+var Menus = React.createClass({
     render: function () {
-        return(
+        return (
             <ul className="cl-vnavigation">
                 <li className="active"><a href="index.html"><i className="fa fa-home"></i><span>Dashboard</span></a>
                 </li>
@@ -171,14 +179,15 @@ var Menus=React.createClass({
     }
 });
 
-var HeadNav=React.createClass({
+var HeadNav = React.createClass({
     render: function () {
         return (
             <div id="head-nav" className="navbar navbar-default" style={{height:"89px"}}>
                 <div style={{height:"41px",borderBottom:"thin #F0F0F0 solid"}}>
                     <div className="container-fluid">
                         <div className="navbar-collapse">
-                            <div style={{width:"60%",height:"40px",position:"absolute",marginTop:"3px",marginLeft:"-10px"}}>
+                            <div
+                                style={{width:"60%",height:"40px",position:"absolute",marginTop:"3px",marginLeft:"-10px"}}>
                                 <div className="input-group">
                                     <input type="text" className="form-control" placeholder="请输入主机IP或主机名..."/>
                                                     <span className="input-group-btn">
@@ -221,9 +230,9 @@ var HeadNav=React.createClass({
     }
 });
 
-var MenuTool=React.createClass({
+var MenuTool = React.createClass({
     render: function () {
-        return(
+        return (
             <div style={{height:"47px"}}>
 
             </div>
@@ -231,7 +240,7 @@ var MenuTool=React.createClass({
     }
 });
 
-var MainContent=React.createClass({
+var MainContent = React.createClass({
     render: function () {
         return (
             <div className="cl-mcont">
