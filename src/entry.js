@@ -19,6 +19,7 @@ maxent.init(config.TID);
 require('bootstrap');
 require("!style!css!less!bootstrap/less/bootstrap.less");
 require("!style!css!less!font-awesome/less/font-awesome.less");
+require('./css/skin-blue.less');
 
 injectTapEventPlugin();
 new Clipboard("[data-clipboard-text]");
