@@ -2,22 +2,33 @@
  * Created by Captain on 2016/6/2.
  */
 var React = require("react");
+require('jquery');
 
 var SubMenu = React.createClass({
+    getInitialState: function () {
+        return ({
+            flag: false
+        })
+    },
+    _clickSubMenu: function () {
+
+    },
     render: function () {
-        if(this.props.subMenus.length==1){
+        var that = this;
+        if (this.props.subMenus.length == 1) {
             return (
-                <li key={menu.name}><a href="#"><i className={menu.icon}></i><span>{menu.name}</span></a>
-                    <ul className="sub-menu" style={{display:this.props.menuToggle&&this.props.idxFlag?"block":"none"}}>
-                        <li style={{paddingLeft: "27px"}}><a href="#">{menu.secondLayer[0].name}</a></li>
-                    </ul>
-                </li>
+                <ul className="sub-menu">
+                    <li onClick={this._clickSubMenu} className="secondLayer"
+                        style={{paddingLeft: "13px"}}><a href="#">{menu.secondLayer[0].name}</a></li>
+                </ul>
             )
-        }else{
+        } else {
             return (
-                <ul className="sub-menu" style={{display:this.props.status?"block":"none"}}>
+                <ul className="sub-menu">
                     {this.props.subMenus.map(function (subMenu) {
-                        return <li key={subMenu.name} style={{paddingLeft: "27px"}}><a href="#">{subMenu.name}</a></li>;
+                        return <li onClick={that._clickSubMenu}
+                                   className="secondLayer" key={subMenu.name} style={{paddingLeft: "13px"}}><a
+                            href="#">{subMenu.name}</a></li>;
                     })}
                 </ul>
             )
