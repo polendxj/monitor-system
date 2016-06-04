@@ -7,7 +7,7 @@ require('jquery');
 
 var menus = [
     {
-        'name': 'Dashboard',
+        'name': '监控主面板',
         'icon': 'fa fa-home',
         'url': '',
         'status': false,
