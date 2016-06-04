@@ -35794,8 +35794,8 @@
 	    render: function () {
 	        return (
 	            React.createElement("div", {className: "col-sm-12 col-md-12 col-lg-1", 
-	                 style: {height:"30px",marginTop:"9px",fontSize:"18px",padding:"2px 0 0 6px",borderRight:"thin lightgray dotted"}}, 
-	                "VCenter"
+	                 style: {height:"30px",marginTop:"9px",fontSize:"18px",padding:"2px 0 0 6px"}}, 
+	                React.createElement("div", {style: {display:"inline-block",borderRight:"thin lightgray dotted",paddingRight:"20px"}}, "VCenter")
 	            )
 	        )
 
@@ -35818,9 +35818,11 @@
 	var Operator=React.createClass({displayName: "Operator",
 	    render: function () {
 	        return (
-	            React.createElement("div", {className: "col-sm-4 col-md-3 col-lg-2", style: {height:"30px",borderLeft:"this lightgray dotted",marginTop:"9px"}}, 
+	            React.createElement("div", {className: "col-sm-4 col-md-3 col-lg-2", style: {height:"30px",marginTop:"9px"}}, 
 	                React.createElement(ToolBar.Button, null), 
-	                React.createElement(ToolBar.Button, null)
+	                React.createElement(ToolBar.Button, null), 
+	                React.createElement("div", {style: {width:"3px",height:"100%",borderLeft:"thin lightgray dotted",float:"right"}})
+
 	            )
 	        )
 	    }
