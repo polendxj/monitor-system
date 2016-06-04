@@ -43172,12 +43172,13 @@
 	var VCenterCss = {
 	    height:"50px",
 	    padding:"0px",
+	    marginBottom:"0px",
 	    backgroundColor:"White",
 	    marginBottom:"6px",
 	    borderRadius:"3px 0px 0px 3px",
 	    boxShadow:"1px 1px 5px gray"
 	};
-	var VCenterChildrenCss = {height:"30px",lineHeight:"30px",left:"20px",top:"10px",padding:"0px",borderRight:"thin solid #F0F0F0"};
+	var VCenterChildrenCss = {height:"30px",lineHeight:"30px",top:"10px",padding:"0 0 0 40px",borderRight:"thin solid #F0F0F0"};
 	var VCenter = React.createClass({displayName: "VCenter",
 
 	    render: function () {
@@ -43186,23 +43187,17 @@
 	                <div className="icon"><i className="fa fa-circle"></i></div>
 	            </div>*/
 	            React.createElement("div", {className: "header", style: VCenterCss}, 
-	                React.createElement("div", {className: "col-md-1", style: VCenterChildrenCss}, 
+	                React.createElement("div", {className: "col-md-3", style: VCenterChildrenCss}, 
 	                    React.createElement("i", {className: "fa fa-circle", style: {fontSize:"18px",color:"lightGreen"}}), React.createElement("span", {style: {paddingLeft:"10px",fontSize:"14px"}}, "VCenter1")
 	                ), 
-	                React.createElement("div", {className: "col-md-2", style: VCenterChildrenCss}
-
+	                React.createElement("div", {className: "col-md-2", style: VCenterChildrenCss}, 
+	                    "version : 1.1.1.1"
 	                ), 
-	                React.createElement("div", {className: "col-md-2", style: VCenterChildrenCss}
-
+	                React.createElement("div", {className: "col-md-3", style: VCenterChildrenCss}, 
+	                    React.createElement("a", {href: ""}, "HyperVisor (20)")
 	                ), 
-	                React.createElement("div", {className: "col-md-2", style: VCenterChildrenCss}
-
-	                ), 
-	                React.createElement("div", {className: "col-md-2", style: VCenterChildrenCss}
-
-	                ), 
-	                React.createElement("div", {className: "col-md-2", style: VCenterChildrenCss}
-
+	                React.createElement("div", {className: "col-md-3", style: VCenterChildrenCss}, 
+	                    React.createElement("a", {href: ""}, "vms (120)")
 	                ), 
 	                React.createElement("div", {className: "col-md-1", style: {height:"40px",top:"5px",padding:"0px"}}
 
