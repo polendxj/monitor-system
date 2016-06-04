@@ -15,12 +15,12 @@ var VCenterData=[{
 var VCenterCss = {
     height:"50px",
     padding:"0px",
-    marginBottom:"0px",
     backgroundColor:"White",
-    marginBottom:"3px",
-    borderRadius:"3px 0px 0px 3px"
+    marginBottom:"6px",
+    borderRadius:"3px 0px 0px 3px",
+    boxShadow:"1px 1px 5px gray"
 };
-var VCenterChildrenCss = {height:"30px",lineHeight:"30px",left:"20px",top:"10px",padding:"0px",borderRight:"1px solid gray"};
+var VCenterChildrenCss = {height:"30px",lineHeight:"30px",left:"20px",top:"10px",padding:"0px",borderRight:"thin solid #F0F0F0"};
 var VCenter = React.createClass({
 
     render: function () {
@@ -41,7 +41,7 @@ var VCenter = React.createClass({
                 <div className="col-md-2" style={VCenterChildrenCss}>
 
                 </div>
-                <div className="col-md-1" style={VCenterChildrenCss}>
+                <div className="col-md-2" style={VCenterChildrenCss}>
 
                 </div>
                 <div className="col-md-2" style={VCenterChildrenCss}>
