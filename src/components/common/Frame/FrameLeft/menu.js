@@ -3,6 +3,8 @@
  */
 var React = require("react");
 var SubMenu = require('./subMenu');
+var AppStore=require('../../../../stores/AppStore');
+var AppAction=require('../../../../actions/AppAction');
 require('jquery');
 
 var menus = [
@@ -81,9 +83,20 @@ var Menus = React.createClass({
         })
     },
     _toggleMenu: function (idx) {
+        switch (idx){
+            case 1:
+                AppAction.changeToolBar(2);
+                break;
+            case 2:
+                AppAction.changeToolBar(4);
+                break;
+            case 3:
+                AppAction.changeToolBar(6);
+                break;
+        }
+
         $(".firstLayer").not($(".firstLayer").eq(idx)).children("ul").slideUp(300,"swing");
         $(".firstLayer").eq(idx).children("ul").slideToggle(300,"swing");
-
         var m = this.state.menus;
         m = m.map(function (menu, index) {
             if (idx != index) {

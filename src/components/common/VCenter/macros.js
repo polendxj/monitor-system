@@ -22,9 +22,6 @@ var Macro = React.createClass({
                 <Col sm={3}>
                     <FormControl placeholder="value"/>
                 </Col>
-                <Col sm={1}>
-                    <button type="button" className="btn btn-default" style={{border:"0px"}}><a>delete</a></button>
-                </Col>
             </FormGroup>
         )
     }
