@@ -26,6 +26,7 @@ var icons = [
     {id: 3, icon: "fa fa-line-chart"}
 ];
 
+
 var SelectTool = React.createClass({
     render: function () {
         return (
@@ -117,10 +118,48 @@ var Button = React.createClass({
         this.setState({isNormal: false});
     },
     _click: function (type) {
-        if(type==3){
-            AppAction.changeToolBar(3);
-        }else if(type==0){
-            this.setState({lgShow:true})
+        var curTool = "";
+        if (type == 3 || type == 5 || type == 7) {
+            if (AppStore.getPreToolBarID() == 2) {
+                curTool = {
+                    id: 3,
+                    bar: [
+                        <DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
+                        <Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
+                        <Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>,
+                        <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
+                    ]
+                };
+                AppAction.changeToolBar(3, curTool);
+            } else if (AppStore.getPreToolBarID() == 4) {
+                curTool = {
+                    id: 5,
+                    bar: [
+                        <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                        <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                        <DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>,
+                        <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
+
+                    ]
+                };
+                AppAction.changeToolBar(5, curTool);
+            } else if (AppStore.getPreToolBarID() == 6) {
+                curTool = {
+                    id: 7,
+                    bar: [
+                        <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                        <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                        <DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>,
+                        <DropdownList key={"bar3"} t prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
+
+                    ]
+                };
+                AppAction.changeToolBar(7, curTool);
+            }
+
+
+        } else if (type == 0) {
+            this.setState({lgShow: true})
         }
     },
     _leave: function () {
@@ -128,14 +167,15 @@ var Button = React.createClass({
 
     },
     _lgClose: function () {
-        this.setState({ lgShow: false })
+        this.setState({lgShow: false})
     },
     render: function () {
         var style = this.state.isNormal ? this.state.normal : this.state.hover;
         return (
             <OverlayTrigger placement="top"
                             overlay={<Tooltip><strong><i className={icons[this.props.icon].icon}> {this.props.tip}</i></strong></Tooltip>}>
-                <button onMouseOver={this._hover} onMouseLeave={this._leave} onClick={this._click.bind(this,this.props.icon)} type="button"
+                <button onMouseOver={this._hover} onMouseLeave={this._leave}
+                        onClick={this._click.bind(this,this.props.icon)} type="button"
                         className="btn btn-info btn-flat"
                         style={style}><span
                     style={{fontSize:"12px",marginTop:"-2px"}}>{this.props.label}</span>

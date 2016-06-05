@@ -7,6 +7,8 @@ var Route = require('react-router').Route;
 var browserHistory = require('react-router').browserHistory;
 var IndexRoute = require('react-router').IndexRoute;
 var App=require('./components/App');
+var Dashboard=require('./components/Dashboard');
+var List=require('./components/common/Frame/FrameRight/MainContent/mainContent');
 
 require('../static/maxent.min.js');
 
@@ -27,6 +29,9 @@ new Clipboard("[data-clipboard-text]");
 ReactDOM.render((
     <Router history={browserHistory}>
         <Route path="/" component={App}>
+            <IndexRoute component={Dashboard} />
+            <Route path="dashboard" component={Dashboard} />
+            <Route path="list" component={List} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));

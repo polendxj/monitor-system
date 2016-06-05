@@ -28,14 +28,14 @@ var App = React.createClass({
                             <div className="menu-space">
                                 <div className="content">
                                     <Logo _collapsedMenu={this._collapsedMenu} menuCollapsed={this.state.menuCollapsed}/>
-                                    <Menus/>
+                                    <Menus />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="container-fluid" id="pcont">
                         <HeadNav />
-                        <MainContent />
+                        {this.props.children}
                     </div>
                 </div>
             </div>

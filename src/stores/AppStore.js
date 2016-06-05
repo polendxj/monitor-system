@@ -3,92 +3,24 @@ var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 var AntiFraudDispatcher = require('../dispatcher/AntiFraudDispatcher');
 var MonitorConstants = require('../constants/MonitorConstants');
-var ToolBar = require('../components/common/ToolBar/ToolBar');
 var store = require('store2');
 var jQuery = require('jquery');
 
-var allToolBar = [
-    {
-        id: 0,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>
-        ]
-    },
-    {
-        id: 1,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor名称"}/>
-        ]
-    },
-    {
-        id: 2,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-            <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>
-        ]
-    },
-    {
-        id: 3,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-            <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>,
-            <ToolBar.DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-        ]
-    },
-    {
-        id: 4,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-            <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>
-        ]
-    },
-    {
-        id: 5,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-            <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>,
-            <ToolBar.DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
 
-        ]
-    },
-    {
-        id: 6,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-            <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>
-
-        ]
-    },
-    {
-        id: 7,
-        bar: [
-            <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-            <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-            <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>,
-            <ToolBar.DropdownLis key={"bar3"}t prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-
-        ]
-    }
-];
 var curToolBar = [];
+var preToolBarID = -1;
 
 var AppStore = assign({}, EventEmitter.prototype, {
-    changeToolBar: function (id, object) {
-        curToolBar = allToolBar.filter(function (value, key) {
-            if (value.id == id) {
-                return value;
-            }
-        });
+    changeToolBar: function (id, tools) {
+        curToolBar =tools;
+        preToolBarID=id;
         this.emitChange(this.events.change_toolbar);
     },
     getCurrentToolBar: function () {
-        return curToolBar[0].bar;
+        return curToolBar.bar;
+    },
+    getPreToolBarID: function () {
+        return preToolBarID;
     },
     emitChange: function (eventType) {
         this.emit(eventType);
@@ -96,7 +28,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
     addChangeListener: function (event, callback) {
         this.on(event, callback);
     },
-
     removeChangeListener: function (event, callback) {
         this.removeListener(event, callback);
     },
