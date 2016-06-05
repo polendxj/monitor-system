@@ -88,6 +88,9 @@ var Menus = React.createClass({
     _toggleMenu: function (idx) {
         var curTool = "";
         switch (idx) {
+            case 0:
+                browserHistory.push("/dashboard");
+                break;
             case 1:
                 curTool = {
                     id: 2,

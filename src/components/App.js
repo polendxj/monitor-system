@@ -18,6 +18,18 @@ var App = React.createClass({
         this.setState({menuCollapsed: !this.state.menuCollapsed});
     },
     render: function () {
+        var panel="";
+        if(this.props.children.props.location.pathname=="/" || this.props.children.props.location.pathname=="/dashboard"){
+            panel=<div className="container-fluid" id="pcont">
+                {this.props.children}
+            </div>
+        }else{
+            panel=<div className="container-fluid" id="pcont">
+                <HeadNav />
+                {this.props.children}
+            </div>
+        }
+
         return (
             <div>
                 <div id="cl-wrapper" className={this.state.menuCollapsed?"sb-collapsed":""}>
@@ -33,10 +45,7 @@ var App = React.createClass({
                             </div>
                         </div>
                     </div>
-                    <div className="container-fluid" id="pcont">
-                        <HeadNav />
-                        {this.props.children}
-                    </div>
+                    {panel}
                 </div>
             </div>
         )
