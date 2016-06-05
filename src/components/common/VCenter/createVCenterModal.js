@@ -59,6 +59,27 @@ var CreateVCenterModal = React.createClass({
                 </Modal.Header>
                 <Modal.Body>
                     <Form horizontal>
+                        <FormGroup controlId="formHostName">
+                            <Col componentClass={ControlLabel} sm={2}>
+                                主机名
+                            </Col>
+                            <Col sm={4}>
+                                <FormControl  />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formVisibleName">
+                            <Col componentClass={ControlLabel} sm={2}>
+                                Visible name
+                            </Col>
+                            <Col sm={4}>
+                                <FormControl />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formControlsSelectMultiple">
+                            <Col componentClass={ControlLabel} sm={3}>
+                                Groups In groups
+                            </Col>
+                        </FormGroup>
                         <FormGroup controlId="formControlsSelectMultiple">
                             <Col sm={2}>
                             </Col>
@@ -77,8 +98,35 @@ var CreateVCenterModal = React.createClass({
                                 </FormControl>
                             </Col>
                         </FormGroup>
-
-
+                        <FormGroup controlId="formNewGroup">
+                            <Col componentClass={ControlLabel} sm={2}>
+                                新建group
+                            </Col>
+                            <Col sm={4}>
+                                <FormControl />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formIPAddress">
+                            <Col componentClass={ControlLabel} sm={2} >
+                                IP地址
+                            </Col>
+                            <Col sm={4}>
+                                <FormControl />
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formIPAddress">
+                            <Col sm={2}>
+                            </Col>
+                            <Col componentClass={ControlLabel} sm={3} style={{textAlign:"left"}}>
+                                MACRO
+                            </Col>
+                            <Col componentClass={ControlLabel} sm={3} style={{paddingLeft:"26px",textAlign:"left"}}>
+                                ֵ
+                            </Col>
+                        </FormGroup>
+                        <Macro />
+                        <Macro />
+                        <Macro />
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
