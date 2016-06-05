@@ -6,6 +6,7 @@ var VCenter = require('../../../VCenter/VCenter');
 
 var MainContent = React.createClass({
     render: function () {
+
         return (
             <div className="cl-mcont" style={{padding:"10px 0px"}}>
                 <div style={{padding:"0px 0px 0px 6px"}}>
