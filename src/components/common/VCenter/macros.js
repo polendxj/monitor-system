@@ -14,13 +14,13 @@ var Macro = React.createClass({
                 <Col sm={2}>
                 </Col>
                 <Col sm={3}>
-                    <FormControl placeholder="{$MACRO}"/>
+                    <FormControl controlId={this.props.macroControlId} placeholder="{$MACRO}"/>
                 </Col>
                 <Col componentClass={ControlLabel} style={{width: "12px",float: "left"}}>
                     {"⇒"}
                 </Col>
                 <Col sm={3}>
-                    <FormControl placeholder="value"/>
+                    <FormControl controlId={this.props.valueControlId} placeholder="value"/>
                 </Col>
             </FormGroup>
         )

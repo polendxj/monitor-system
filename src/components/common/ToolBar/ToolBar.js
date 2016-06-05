@@ -127,8 +127,16 @@ var Button = React.createClass({
         this.setState({isNormal: true});
 
     },
-    _lgClose: function () {
-        this.setState({ lgShow: false })
+    _lgClose: function (param) {
+        if(param=="save"){
+            this.setState({ lgShow: false });
+            alert("保存成功!");
+        }else{
+            var r=confirm("您的VCenter信息未保存，确定不保存吗？");
+            if(r){
+                this.setState({ lgShow: false })
+            }
+        }
     },
     render: function () {
         var style = this.state.isNormal ? this.state.normal : this.state.hover;

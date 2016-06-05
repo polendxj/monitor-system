@@ -27,6 +27,7 @@ new Clipboard("[data-clipboard-text]");
 ReactDOM.render((
     <Router history={browserHistory}>
         <Route path="/" component={App}>
+
         </Route>
     </Router>
 ), document.getElementById("wrap"));

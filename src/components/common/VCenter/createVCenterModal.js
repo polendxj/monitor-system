@@ -23,17 +23,25 @@ var CreateVCenterModal = React.createClass({
     },
     _moveListItem: function (direction) {
         if(direction=="left"){
-            console.log($("#select2 option:selected").val());
-            $("#select2 option:selected").each(function () {
+            $(".leftSelect option:selected").each(function () {
+                var index = rightList.indexOf($(this).val());
                 leftList.push($(this).val());
+                leftList.sort();
+                rightList.splice(index,1);
             });
             this.setState({leftList:leftList});
         }else{
-            $("#select1 option:selected").each(function () {
+            $(".rightSelect option:selected").each(function () {
+                var index = leftList.indexOf($(this).val());
                 rightList.push($(this).val());
+                rightList.sort();
+                leftList.splice(index,1);
             });
             this.setState({rightList:rightList});
         }
+    },
+    _onHide: function (param) {
+        this.props.onHide(param);
     },
     render: function () {
         var leftOptions=[];
@@ -41,14 +49,14 @@ var CreateVCenterModal = React.createClass({
         if(this.state.leftList.length>0){
             leftOptions=this.state.leftList.map(function (leftItem) {
                 return (
-                    <option value={leftItem}>{leftItem}</option>
+                    <option key={leftItem} value={leftItem}>{leftItem}</option>
                 )
             })
         }
         if(this.state.rightList.length>0){
             rightOptions=this.state.rightList.map(function (rightItem) {
                 return (
-                    <option value={rightItem}>{rightItem}</option>
+                    <option key={rightItem} value={rightItem}>{rightItem}</option>
                 )
             })
         }
@@ -64,7 +72,7 @@ var CreateVCenterModal = React.createClass({
                                 主机名
                             </Col>
                             <Col sm={4}>
-                                <FormControl  />
+                                <FormControl controlId="hostName" />
                             </Col>
                         </FormGroup>
                         <FormGroup controlId="formVisibleName">
@@ -72,7 +80,7 @@ var CreateVCenterModal = React.createClass({
                                 Visible name
                             </Col>
                             <Col sm={4}>
-                                <FormControl />
+                                <FormControl controlId="visibleName"/>
                             </Col>
                         </FormGroup>
                         <FormGroup controlId="formControlsSelectMultiple">
@@ -84,7 +92,7 @@ var CreateVCenterModal = React.createClass({
                             <Col sm={2}>
                             </Col>
                             <Col sm={3}>
-                                <FormControl controlId="select1" id="select1" componentClass="select" multiple size="8" >
+                                <FormControl controlId="select1" className="rightSelect" componentClass="select" multiple size="8" >
                                     {leftOptions}
                                 </FormControl>
                             </Col>
@@ -93,7 +101,7 @@ var CreateVCenterModal = React.createClass({
                                 <button type="button" className="btn btn-default btn-sm" onClick={this._moveListItem.bind(this,"left")}><i className="fa fa-caret-left"></i></button>
                             </Col>
                             <Col sm={3}>
-                                <FormControl controlId="select2"  id="select2" componentClass="select" multiple size="8">
+                                <FormControl controlId="select2"  className="leftSelect" componentClass="select" multiple size="8">
                                     {rightOptions}
                                 </FormControl>
                             </Col>
@@ -103,7 +111,7 @@ var CreateVCenterModal = React.createClass({
                                 新建group
                             </Col>
                             <Col sm={4}>
-                                <FormControl />
+                                <FormControl controlId="newGroup"/>
                             </Col>
                         </FormGroup>
                         <FormGroup controlId="formIPAddress">
@@ -111,7 +119,7 @@ var CreateVCenterModal = React.createClass({
                                 IP地址
                             </Col>
                             <Col sm={4}>
-                                <FormControl />
+                                <FormControl controlId="ipAddress"/>
                             </Col>
                         </FormGroup>
                         <FormGroup controlId="formIPAddress">
@@ -121,16 +129,17 @@ var CreateVCenterModal = React.createClass({
                                 MACRO
                             </Col>
                             <Col componentClass={ControlLabel} sm={3} style={{paddingLeft:"26px",textAlign:"left"}}>
-                                ֵ
+                                值
                             </Col>
                         </FormGroup>
-                        <Macro />
-                        <Macro />
-                        <Macro />
+                        <Macro macroControlId="macro1" valueControlId="macroValue1"/>
+                        <Macro macroControlId="macro2" valueControlId="macroValue2"/>
+                        <Macro macroControlId="macro3" valueControlId="macroValue2"/>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.onHide}>Close</Button>
+                    <Button onClick={this._onHide.bind(this,"save")}>保存</Button>
+                    <Button onClick={this._onHide.bind(this,"close")}>关闭</Button>
                 </Modal.Footer>
             </Modal>
         )
