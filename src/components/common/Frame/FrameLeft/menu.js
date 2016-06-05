@@ -86,48 +86,11 @@ var Menus = React.createClass({
         })
     },
     _toggleMenu: function (idx) {
-        var curTool = "";
         switch (idx) {
             case 0:
-                browserHistory.push("/dashboard");
-                break;
-            case 1:
-                curTool = {
-                    id: 2,
-                    bar: [
-                        <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-                        <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-                        <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>
-                    ]
-                };
-                AppAction.changeToolBar(2, curTool);
-                browserHistory.push("/list");
-                break;
-            case 2:
-                curTool = {
-                    id: 4,
-                    bar: [
-                        <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                        <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                        <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>
-                    ]
-                };
-                AppAction.changeToolBar(4, curTool);
-                break;
-            case 3:
-                curTool = {
-                    id: 6,
-                    bar: [
-                        <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                        <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                        <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>
-
-                    ]
-                };
-                AppAction.changeToolBar(6, curTool);
+                browserHistory.push("dashboard");
                 break;
         }
-
         $(".firstLayer").not($(".firstLayer").eq(idx)).children("ul").slideUp(300, "swing");
         $(".firstLayer").eq(idx).children("ul").slideToggle(300, "swing");
         var m = this.state.menus;
@@ -160,7 +123,7 @@ var Menus = React.createClass({
                                 <li className={menu.status?"parent open firstLayer active":"parent firstLayer"}
                                     key={menu.name}><a onClick={that._toggleMenu.bind(that,idx)} href="#"><i
                                     className={menu.icon}></i><span>{menu.name}</span></a>
-                                    <SubMenu status={menu.status} subMenus={menu.secondLayer}></SubMenu>
+                                    <SubMenu status={menu.status} subMenus={menu.secondLayer} parent={idx}></SubMenu>
                                 </li>
                             )
                         }
