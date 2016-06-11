@@ -8,127 +8,102 @@ var AppAction = require('../../../../actions/AppAction');
 var ToolBar = require('../../../../components/common/ToolBar/ToolBar');
 var browserHistory = require('react-router').browserHistory;
 
-require('jquery');
+var MenuStore = require('../../../../stores/MenuStore');
+var MenuAction = require('../../../../actions/MenuAction');
 
-var menus = [
-    {
-        'name': '监控主面板',
-        'icon': 'fa fa-home',
-        'url': '',
-        'status': false,
-        'secondLayer': []
-    },
-    {
-        'name': '虚拟化监控',
-        'icon': 'fa fa-desktop',
-        'url': '',
-        'status': false,
-        'secondLayer': [
-            {
-                'name': 'VCenter',
-                'icon': '',
-                'url': ''
-            },
-            {
-                'name': 'HyperVisor',
-                'icon': '',
-                'url': ''
-            },
-            {
-                'name': 'VMS',
-                'icon': '',
-                'url': ''
-            }
-        ]
-    },
-    {
-        'name': '应用服务监控',
-        'icon': 'fa fa-smile-o',
-        'url': '',
-        'status': false,
-        'secondLayer': [
-            {
-                'name': 'Apache',
-                'icon': '',
-                'url': ''
-            },
-            {
-                'name': 'Nginx',
-                'icon': '',
-                'url': ''
-            }
-        ]
-    },
-    {
-        'name': '数据库监控',
-        'icon': 'fa fa-list-alt',
-        'url': '',
-        'status': false,
-        'secondLayer': [
-            {
-                'name': 'MySql',
-                'icon': '',
-                'url': ''
-            },
-            {
-                'name': 'Oracle',
-                'icon': '',
-                'url': ''
-            }
-        ]
-    }
-];
+require('jquery');
 
 var Menus = React.createClass({
     getInitialState: function () {
         return ({
-            menus: menus
+            subMenus: []
         })
     },
-    _toggleMenu: function (idx) {
-        switch (idx) {
-            case 0:
-                browserHistory.push("dashboard");
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
+    },
+    _changeFirstMenu: function () {
+        this.setState({subMenus: MenuStore.getSubMenus()})
+    },
+    _clickSubMenu: function (idx) {
+        var curTool = "";
+        switch(this.state.subMenus.parentIdx){
+            case 1:
+                switch (idx) {
+                    case 0:
+                        curTool = {
+                            id: 2,
+                            bar: [
+                                <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
+                                <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
+                                <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>
+                            ]
+                        };
+                        AppAction.changeToolBar(2, curTool);
+                        break;
+                    case 1:
+                        curTool = {
+                            id: 4,
+                            bar: [
+                                <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                                <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                                <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>
+                            ]
+                        };
+                        AppAction.changeToolBar(4, curTool);
+                        break;
+                    case 2:
+                        curTool = {
+                            id: 6,
+                            bar: [
+                                <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                                <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                                <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>
+
+                            ]
+                        };
+                        AppAction.changeToolBar(6, curTool);
+                        break;
+                }
                 break;
         }
-        $(".firstLayer").not($(".firstLayer").eq(idx)).children("ul").slideUp(300, "swing");
-        $(".firstLayer").eq(idx).children("ul").slideToggle(300, "swing");
-        var m = this.state.menus;
-        m = m.map(function (menu, index) {
-            if (idx != index) {
-                menu.status = false;
-            } else {
-                menu.status = !menu.status;
-            }
-            return menu;
-        });
-        this.setState({menus: m});
+
+        browserHistory.push("/list");
 
     },
     render: function () {
-        var that = this;
+        var panel1 = "";
+        var panel2 = "";
+        var that=this;
+        console.log(this.state.subMenus);
+        if (typeof(this.state.subMenus.subMenus)!="undefined"&&this.state.subMenus.subMenus.length>0) {
+            panel1 = <li style={{display:"block",width:"210px"}}><a href="#"><span>全部类型</span></a>
+                <ul className="sub-menu" style={{display:"block"}}>
+                    {this.state.subMenus.subMenus.map(function (subMenu,idx) {
+                        return <li key={subMenu.name} onClick={that._clickSubMenu.bind(that,idx)}
+                                   className="secondLayer" style={{paddingLeft: "13px"}}><a
+                            href="#">{subMenu.name}</a></li>;
+                    })}
+                </ul>
+            </li>;
+            panel2 = <li style={{display:"block",width:"210px"}}><a href="#"><span>故障管理</span></a>
+                <ul className="sub-menu" style={{display:"block"}}>
+                    <li className="secondLayer" style={{paddingLeft: "13px"}}><a
+                        href="#">故障历史</a>
+                    </li>
+                    <li className="secondLayer" style={{paddingLeft: "13px"}}><a
+                        href="#">故障修复状态</a>
+                    </li>
+                </ul>
+            </li>
+        }
         return (
             <ul className="cl-vnavigation">
-                {
-                    menus.map(function (menu, idx) {
-                        if (menu.secondLayer.length == 0) {
-                            return (
-                                <li className={menu.status?"firstLayer active":"firstLayer"} key={menu.name}><a
-                                    onClick={that._toggleMenu.bind(that,idx)} href="#"><i
-                                    className={menu.icon}></i><span>{menu.name}</span></a>
-                                </li>
-                            )
-                        } else {
-                            return (
-                                <li className={menu.status?"parent open firstLayer active":"parent firstLayer"}
-                                    key={menu.name}><a onClick={that._toggleMenu.bind(that,idx)} href="#"><i
-                                    className={menu.icon}></i><span>{menu.name}</span></a>
-                                    <SubMenu status={menu.status} subMenus={menu.secondLayer} parent={idx}></SubMenu>
-                                </li>
-                            )
-                        }
-                    })
-                }
+                {panel1}
+                {panel2}
             </ul>
         )
     }

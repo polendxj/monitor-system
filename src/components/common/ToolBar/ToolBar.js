@@ -11,6 +11,7 @@ var MenuItem = require("react-bootstrap/lib/MenuItem");
 var Checkbox = require("react-bootstrap/lib/Checkbox");
 var Tooltip = require("react-bootstrap/lib/Tooltip");
 var OverlayTrigger = require("react-bootstrap/lib/OverlayTrigger");
+var browserHistory = require('react-router').browserHistory;
 
 var AppStore = require('../../../stores/AppStore');
 var AppAction = require('../../../actions/AppAction');
@@ -120,6 +121,9 @@ var Button = React.createClass({
     _click: function (type) {
         var curTool = "";
         if (type == 3 || type == 5 || type == 7) {
+            if(type == 3){
+                browserHistory.push("/allCharts");
+            }
             if (AppStore.getPreToolBarID() == 2) {
                 curTool = {
                     id: 3,
