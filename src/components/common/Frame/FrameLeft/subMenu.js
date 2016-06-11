@@ -82,24 +82,15 @@ var SubMenu = React.createClass({
     },
     render: function () {
         var that = this;
-        if (this.props.subMenus.length == 1) {
             return (
-                <ul className="sub-menu">
-                    <li onClick={this._clickSubMenu} className="secondLayer"
-                        style={{paddingLeft: "13px"}}><a href="#">{menu.secondLayer[0].name}</a></li>
-                </ul>
-            )
-        } else {
-            return (
-                <ul className="sub-menu">
+                <ul className="sub-menu" style={{display:"block"}}>
                     {this.props.subMenus.map(function (subMenu,idx) {
-                        return <li onClick={that._clickSubMenu.bind(that,idx)}
-                                   className="secondLayer" key={subMenu.name} style={{paddingLeft: "13px"}}><a
+                        return <li key={subMenu.name} onClick={that._clickSubMenu.bind(that,idx)}
+                                   className="secondLayer" style={{paddingLeft: "13px"}}><a
                             href="#">{subMenu.name}</a></li>;
                     })}
                 </ul>
             )
-        }
     }
 });
 

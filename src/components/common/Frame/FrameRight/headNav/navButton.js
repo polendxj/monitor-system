@@ -6,7 +6,7 @@ var React = require("react");
 var NavButton = React.createClass({
     render: function () {
         return (
-            <ul className="nav navbar-nav navbar-right not-nav">
+            <ul className="nav navbar-nav navbar-right not-nav" style={{float:"right"}}>
                 <li className="button" style={{padding:"10px 0"}}>
                     <a className="toggle-menu menu-right push-body" style={{padding:"0"}}
                        className="speech-button">

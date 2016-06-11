@@ -9,6 +9,7 @@ var IndexRoute = require('react-router').IndexRoute;
 var App=require('./components/App');
 var Dashboard=require('./components/Dashboard');
 var List=require('./components/common/Frame/FrameRight/MainContent/mainContent');
+var AllCharts = require("./components/common/highcharts/AllCharts");
 
 require('../static/maxent.min.js');
 
@@ -32,6 +33,7 @@ ReactDOM.render((
             <IndexRoute component={Dashboard} />
             <Route path="dashboard" component={Dashboard} />
             <Route path="list" component={List} />
+            <Route path="allCharts" component={AllCharts} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));
