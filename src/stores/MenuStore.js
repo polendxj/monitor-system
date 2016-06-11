@@ -13,6 +13,8 @@ var jQuery = require('jquery');
 var firstMenus = [];
 var subMenus = {
     parentIdx:"",
+    topMenuName:"",
+    firstMenuName:"",
     subMenus:""
 };
 
@@ -24,6 +26,8 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     changeFirstMenus: function (idx,tools) {
         subMenus.parentIdx = idx;
         subMenus.subMenus =tools.secondLayer;
+        subMenus.topMenuName = firstMenus.name;
+        subMenus.firstMenuName = tools.name;
         this.emitChange(this.events.change_firstMenus);
     },
     getSubMenus: function () {

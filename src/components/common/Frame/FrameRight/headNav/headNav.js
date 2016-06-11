@@ -7,18 +7,18 @@ var MenuTool = require('./menuTool');
 
 var MenuAction = require('../../../../../actions/MenuAction');
 
-var menus = [
+menus = [
     {
         'name': '平台概况',
         'icon': 'fa fa-home',
         'url': '',
-        'status': false,
+        'status': true,
         'firstLayer': [
             {
                 'name': '项目概况',
                 'icon': 'fa fa-desktop',
                 'url': '',
-                'status': false,
+                'status': true,
                 'secondLayer': []
             }
         ]
@@ -33,21 +33,24 @@ var menus = [
                 'name': '虚拟化监控',
                 'icon': 'fa fa-desktop',
                 'url': '',
-                'status': false,
+                'status': true,
                 'secondLayer': [
                     {
                         'name': 'VCenter',
                         'icon': '',
+                        'status': true,
                         'url': ''
                     },
                     {
                         'name': 'HyperVisor',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     },
                     {
                         'name': 'VMS',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     }
                 ]
@@ -61,11 +64,13 @@ var menus = [
                     {
                         'name': 'Apache',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     },
                     {
                         'name': 'Nginx',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     }
                 ]
@@ -79,11 +84,13 @@ var menus = [
                     {
                         'name': 'MySql',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     },
                     {
                         'name': 'Oracle',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     }
                 ]
@@ -112,11 +119,13 @@ var menus = [
                     {
                         'name': 'MySql日志',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     },
                     {
                         'name': 'Oracle日志',
                         'icon': '',
+                        'status': false,
                         'url': ''
                     }
                 ]
@@ -132,70 +141,41 @@ var menus = [
     }
 ];
 var HeadNav = React.createClass({
+    getInitialState: function () {
+      return({
+          selectedMenu: 0
+      })
+    },
+    transIdx: function (idx) {
+        this.setState({selectedMenu:idx});
+    },
     render: function () {
         return (
-            /*<div id="head-nav" className="navbar navbar-default" style={{height:"130px"}}>
-                <div style={{height:"41px",borderBottom:"thin #F0F0F0 solid",backgroundColor:"#45A2E1"}}>
-                    <div className="container-fluid">
-                        <div className="navbar-collapse">
-                            <TopMenu menu={menus[0]}/>
-                            <TopMenu menu={menus[1]}/>
-                            <TopMenu menu={menus[2]}/>
-                            <NavButton />
-                        </div>
-                    </div>
-                </div>
-
-            </div>*/
             <ul className="nav navbar-nav horizontal">
-                <TopMenu menu={menus[0]}/>
-                <TopMenu menu={menus[1]}/>
-                <TopMenu menu={menus[2]}/>
+                <TopMenu menu={menus[0]} idx={0} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
+                <TopMenu menu={menus[1]} idx={1} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
+                <TopMenu menu={menus[2]} idx={2} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
             </ul>
         )
     }
 });
 var TopMenu = React.createClass({
-    getInitialState: function () {
-        return ({
-            normal: {
-                float: "left",
-                height: "49px",
-                backgroundColor: "#45A2E1",
-                marginTop: "-9px",
-                color: "white"
-            },
-            hover: {
-                float: "left",
-                height: "49px",
-                backgroundColor: "white",
-                marginTop: "-9px",
-                color: "#45A2E1"
-            },
-            isNormal: true
-        })
-    },
-    _hover: function () {
-        this.setState({isNormal: false});
-    },
-    _leave: function () {
-        this.setState({isNormal: true});
-    },
-    _click: function () {
+    _click: function (idx) {
+        //this.setState({selectedIndex: this.props.idx});
+        this.props.transIdx(idx);
         MenuAction.changeMenus(this.props.menu);
     },
+    componentDidMount: function () {
+        setTimeout(function () {
+            MenuAction.changeMenus(menus[0]);
+        },1);
+    },
     render: function () {
-        var style = this.state.isNormal ? this.state.normal : this.state.hover;
+        var styleFlag = this.props.selectedMenu==this.props.idx;
         return (
-            /*<button onMouseOver={this._hover} onMouseLeave={this._leave}
-                    onClick={this._click} type="button"
-                    className="btn btn-info btn-flat"
-                    style={style}><span
-                style={{fontSize:"14px",lineHeight:"41px"}}>{this.props.menu.name}</span>
-            </button>*/
-            <li className="topMenu" onMouseOver={this._hover} onMouseLeave={this._leave}
-                onClick={this._click} type="button"
-                ><a href="javascript:void(0)">{this.props.menu.name}</a></li>
+            <li className="topMenu"
+                onClick={this._click.bind(this,this.props.idx)} type="button"
+               style={{backgroundColor:styleFlag?"white":"#45A2E1"}} ><a href="javascript:void(0)" style={{padding:"15px 15px",color:styleFlag?"#ffa72f":"white"}}>{this.props.menu.name}</a></li>
         )
     }
 });
