@@ -36299,7 +36299,6 @@
 	var DropdownList = React.createClass({displayName: "DropdownList",
 	    getInitialState: function () {
 	        return ({
-	            items: [{id: 1, text: "all"}, {id: 23, text: "zabbix server"}, {id: 34, text: "10.6.0.177"}],
 	            selected: -1
 	        })
 	    },
@@ -36309,14 +36308,14 @@
 	    render: function () {
 	        var list = [];
 	        var index = -1;
-	        this.state.items.forEach(function (value, key) {
+	        this.props.items.forEach(function (value, key) {
 	            if (this.state.selected == value.id) {
 	                index = key;
 	            }
 	            list.push(React.createElement(MenuItem, {key: value.id, onSelect: this._changeItem, 
 	                                eventKey: value.id}, value.text))
 	        }.bind(this));
-	        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.state.items[index].text);
+	        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text);
 	        return (
 	            React.createElement(DropdownButton, {title: title, 
 	                            style: {height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}, 
@@ -36330,14 +36329,49 @@
 	});
 
 	var Text = React.createClass({displayName: "Text",
+	    getInitialState: function () {
+	        return ({
+	            tipItems: [],
+	            tipHover: -1,
+	            selectedItem: ""
+	        })
+	    },
+	    updateTipItems: function (e) {
+	        this.setState({tipItems: ["10.9.0.170", "hypervisor"],selectedItem:e.target.value});
+	    },
+	    tipHover: function (index) {
+	        this.setState({tipHover: index});
+	    },
+	    itemSelected: function (value) {
+	        this.setState({selectedItem: value, tipItems: []});
+	    },
+	    formBlur: function () {
+	        setTimeout(function () {
+	            this.setState({tipItems: []});
+	        }.bind(this),100);
+	    },
 	    render: function () {
+	        var tips = [];
+	        if (this.state.tipItems.length > 0) {
+	            this.state.tipItems.forEach(function (val, key) {
+	                tips.push(React.createElement("div", {className: "tipItems", onClick: this.itemSelected.bind(this,val), 
+	                               onMouseOver: this.tipHover.bind(this,key), key: this.props.tip+key, 
+	                               style: {cursor:"pointer",textAlign:"left",borderBottom:"thin #F0F0F0 solid",backgroundColor:this.state.tipHover==key?"#F0F0F0":""}}, val))
+	            }.bind(this));
+	        }
 	        return (
 	            React.createElement(OverlayTrigger, {placement: "top", 
 	                            overlay: React.createElement(Tooltip, {id: this.props.tip}, React.createElement("strong", null, this.props.tip))}, 
-	                React.createElement(Form, {inline: true, style: {height:"47px",display:"inline-block"}}, 
+	                React.createElement(Form, {inline: true, style: {height:"47px",display:"inline-block",position:"relative"}}, 
 	                    React.createElement(FormGroup, {controlId: "formControlsText", style: {marginTop:"-4px"}}, 
-	                        React.createElement(FormControl, {type: "text", placeholder: this.props.placeholder, 
-	                                     style: {height:"47px",border:"0 red solid",fontSize:"13px"}})
+	                        React.createElement(FormControl, {autoComplete: "off", type: "text", placeholder: this.props.placeholder, 
+	                                     style: {height:"47px",border:"0 red solid",fontSize:"13px"}, 
+	                                     value: this.state.selectedItem, onBlur: this.formBlur, onChange: this.updateTipItems})
+	                    ), 
+
+	                    React.createElement("div", {
+	                        style: {display:this.state.tipItems.length > 0?"block":"none",width:"100%",boxShadow:"1px 1px 5px lightgray",backgroundColor:"white",padding:"10px",position:"absolute"}}, 
+	                        tips
 	                    )
 	                )
 	            )
@@ -36373,7 +36407,7 @@
 	    _click: function (type) {
 	        var curTool = "";
 	        if (type == 3 || type == 5 || type == 7) {
-	            if(type == 3){
+	            if (type == 3) {
 	                browserHistory.push("/allCharts");
 	            }
 	            if (AppStore.getPreToolBarID() == 2) {
@@ -57039,9 +57073,8 @@
 	var DropdownButton = __webpack_require__(370);
 	var MenuItem = __webpack_require__(466);
 	var Button = __webpack_require__(455);
-	var Tabs = __webpack_require__(587);
-	var Tab = __webpack_require__(582);
-	var Table = __webpack_require__(586);
+	var ObjectList=__webpack_require__(659);
+
 
 	var MainContent = React.createClass({displayName: "MainContent",
 	    render: function () {
@@ -57064,11 +57097,17 @@
 	});
 
 	var Form = React.createClass({displayName: "Form",
+	    getInitialState: function () {
+	      return({
+	          groupItems:[{id:1,text:"zabbix server"}],
+	          serviceItems:[{id:1,text:"vcenter"},{id:2,text:"hypervisor"}]
+	      })
+	    },
 	    render: function () {
 	        return (
 	            React.createElement("div", {className: "col-sm-12 col-md-7 col-lg-7", style: {height:"47px",textAlign:"right"}}, 
-	                React.createElement(ToolBar.DropdownList, {key: "bar0", prefixText: "组 : ", defaultText: "请选择组"}), 
-	                React.createElement(ToolBar.DropdownList, {key: "bar2", prefixText: "服务 : ", defaultText: "请选择应用服务"}), 
+	                React.createElement(ToolBar.DropdownList, {items: this.state.groupItems, key: "bar0", prefixText: "组 : ", defaultText: "请选择组"}), 
+	                React.createElement(ToolBar.DropdownList, {items: this.state.serviceItems, key: "bar2", prefixText: "服务 : ", defaultText: "请选择应用服务"}), 
 	                React.createElement(ToolBar.Text, {key: "bar1", placeholder: "请输入主机IP或名称", tip: "主机IP或名称"})
 	            )
 	        )
@@ -57076,11 +57115,16 @@
 	});
 
 	var Timestamp = React.createClass({displayName: "Timestamp",
+	    getInitialState: function () {
+	        return({
+	            timeItems:[{id:1,text:"今日"},{id:2,text:"昨日"},{id:3,text:"7日内"},{id:4,text:"自定义"}]
+	        })
+	    },
 	    render: function () {
 	        return (
 	            React.createElement("div", {className: "col-sm-12 col-md-5 col-lg-5", style: {height:"47px",paddingLeft:"5px",marginTop:"-7px"}}, 
 	                React.createElement(ButtonGroup, null, 
-	                    React.createElement(ToolBar.DropdownList, {noCaret: true, key: "bar0", prefixText: "时间段 : ", 
+	                    React.createElement(ToolBar.DropdownList, {items: this.state.timeItems, noCaret: true, key: "bar0", prefixText: "时间段 : ", 
 	                                          defaultText: "时间段 : 今日 (2016-5-21 21:00 至 2016-5-21 22:30)"})
 	                )
 	            )
@@ -57089,88 +57133,12 @@
 	});
 
 	var Content = React.createClass({displayName: "Content",
-	    getInitialState: function () {
-	        return {
-	            key: 1
-	        };
-	    },
-	    handleSelect:function(key) {
-	        this.setState({key:key});
-	    },
-	    componentDidMount: function () {
-	        $(".tab-content").css("padding", 0);
-	        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
-	        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
-	        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
-	        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
-	        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
-	    },
 	    render: function () {
 	        return (
 	            React.createElement("div", {style: {padding:"0 10px 0 10px"}}, 
-	                React.createElement(Tabs, {activeKey: this.state.key, onSelect: this.handleSelect, id: "controlled-tab-example", 
-	                      style: {padding:"0"}}, 
-	                    React.createElement(Tab, {eventKey: 1, title: "常规状态", style: {padding:"0"}}, 
-	                        React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
-	                            React.createElement("thead", null, 
-	                            React.createElement("tr", null, 
-	                                React.createElement("th", null, "监控项目"), 
-	                                React.createElement("th", null, "摘要"), 
-	                                React.createElement("th", null, "监控类型"), 
-	                                React.createElement("th", null, "监控频率"), 
-	                                React.createElement("th", null, "可用率"), 
-	                                React.createElement("th", null, "平均响应时间"), 
-	                                React.createElement("th", null, "操作")
-	                            )
-	                            ), 
-	                            React.createElement("tbody", null, 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "Maxent Fraud Library"), 
-	                                React.createElement("td", null, "http://www.maxent-inc.com"), 
-	                                React.createElement("td", null, "http"), 
-	                                React.createElement("td", null, "15分钟"), 
-	                                React.createElement("td", null, "100%"), 
-	                                React.createElement("td", null, "47.32 ms"), 
-	                                React.createElement("td", null)
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "Maxent Fraud Library"), 
-	                                React.createElement("td", null, "http://www.maxent-inc.com"), 
-	                                React.createElement("td", null, "http"), 
-	                                React.createElement("td", null, "15分钟"), 
-	                                React.createElement("td", null, "100%"), 
-	                                React.createElement("td", null, "47.32 ms"), 
-	                                React.createElement("td", null)
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "Maxent Fraud Library"), 
-	                                React.createElement("td", null, "http://www.maxent-inc.com"), 
-	                                React.createElement("td", null, "http"), 
-	                                React.createElement("td", null, "15分钟"), 
-	                                React.createElement("td", null, "100%"), 
-	                                React.createElement("td", null, "47.32 ms"), 
-	                                React.createElement("td", null)
-	                            ), 
-	                            React.createElement("tr", null, 
-	                                React.createElement("td", null, "Maxent Fraud Library"), 
-	                                React.createElement("td", null, "http://www.maxent-inc.com"), 
-	                                React.createElement("td", null, "http"), 
-	                                React.createElement("td", null, "15分钟"), 
-	                                React.createElement("td", null, "100%"), 
-	                                React.createElement("td", null, "47.32 ms"), 
-	                                React.createElement("td", null)
-	                            )
-	                            )
-	                        )
-	                    ), 
-	                    React.createElement(Tab, {eventKey: 2, title: "网卡流量"}, "网卡流量"), 
-	                    React.createElement(Tab, {eventKey: 3, title: "CPU"}, "CPU"), 
-	                    React.createElement(Tab, {eventKey: 4, title: "内存"}, "内存"), 
-	                    React.createElement(Tab, {eventKey: 6, title: "负载"}, "负载"), 
-	                    React.createElement(Tab, {eventKey: 7, title: "磁盘利用率"}, "磁盘利用率"), 
-	                    React.createElement(Tab, {eventKey: 8, title: "磁盘I/O"}, "磁盘I/O"), 
-	                    React.createElement(Tab, {eventKey: 9, title: "系统进程数"}, "系统进程数")
-	                )
+	                React.createElement(ObjectList.VCenterList, null), 
+	                React.createElement(ObjectList.HypervisorList, null), 
+	                React.createElement(ObjectList.VMSList, null)
 	            )
 	        )
 	    }
@@ -61357,6 +61325,480 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "favicon.ico";
+
+/***/ },
+/* 659 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by jingpeng on 16/6/11.
+	 */
+	var React = __webpack_require__(84);
+	var Tabs = __webpack_require__(587);
+	var Tab = __webpack_require__(582);
+	var ProgressBar = __webpack_require__(576);
+	var Table = __webpack_require__(586);
+
+	var VCenterList = React.createClass({displayName: "VCenterList",
+	    getInitialState: function () {
+	        return {
+	            key: 1
+	        };
+	    },
+	    handleSelect:function(key) {
+	        this.setState({key:key});
+	    },
+	    componentDidMount: function () {
+	        $(".tab-content").css("padding", 0);
+	        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+	        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+	        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+	        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+	        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+	    },
+	    render: function () {
+	        return (
+	            React.createElement(Tabs, {activeKey: this.state.key, onSelect: this.handleSelect, id: "controlled-tab-example", 
+	                  style: {padding:"0"}}, 
+	                React.createElement(Tab, {eventKey: 1, title: "常规状态", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", null, "版本"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "Hypervisor数量 (单位:个)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "VMS数量 (单位:个)"), 
+	                            React.createElement("th", null, "操作")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", null, "1.0.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "47")), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "24")), 
+	                            React.createElement("td", null)
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.171"), 
+	                            React.createElement("td", null, "1.0.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "20")), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "36")), 
+	                            React.createElement("td", null)
+	                        )
+	                        )
+	                    )
+	                )
+	            )
+	        )
+	    }
+	});
+
+	var HypervisorList = React.createClass({displayName: "HypervisorList",
+	    getInitialState: function () {
+	        return {
+	            key: 1
+	        };
+	    },
+	    handleSelect:function(key) {
+	        this.setState({key:key});
+	    },
+	    componentDidMount: function () {
+	        $(".tab-content").css("padding", 0);
+	        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+	        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+	        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+	        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+	        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+	    },
+	    render: function () {
+	        return (
+	            React.createElement(Tabs, {activeKey: this.state.key, onSelect: this.handleSelect, id: "controlled-tab-example", 
+	                  style: {padding:"0"}}, 
+	                React.createElement(Tab, {eventKey: 1, title: "常规状态", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", null, "vmware版本"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "运行时间 (单位: 小时)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "VM数量 (单位:个)"), 
+	                            React.createElement("th", null, "硬件类型"), 
+	                            React.createElement("th", null, "集群名称"), 
+	                            React.createElement("th", null, "操作")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", null, "1.0.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "10"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "24")), 
+	                            React.createElement("td", null, "集成虚拟机"), 
+	                            React.createElement("td", null, "Cloud Servers"), 
+	                            React.createElement("td", null)
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", null, "1.0.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "10"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "24")), 
+	                            React.createElement("td", null, "集成虚拟机"), 
+	                            React.createElement("td", null, "Cloud Servers"), 
+	                            React.createElement("td", null)
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 2, title: "CPU", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", null, "型号"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "线程数 (单位:个)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "频率 (单位:赫兹)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "核心数 (单位:个)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "负载")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", null, "酷睿i7"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "5.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "4"), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "warning", now: 80, label: ("" + 80 + "%")})
+	                            ), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 40, label: ("" + 40 + "%")})
+	                            )
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", null, "酷睿i7"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "5.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "4"), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "danger", now: 92, label: ("" + 92 + "%")})
+	                            ), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "warning", now: 70, label: ("" + 70 + "%")})
+	                            )
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 3, title: "内存", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "平均使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "最大使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "最小使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "当前使用率")
+
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                "34.4%"
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                "92%"
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                "10%"
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 40, label: ("" + 40 + "%")})
+	                            )
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 4, title: "磁盘", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "总空间 (单位: G)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "使用空间 (单位: G)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "写入(平均字节速率/最大字节速率/每秒次数)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "读取(平均字节速率/最大字节速率/每秒次数)")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 50, label: ("" + 50 + "%")})
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次")
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 50, label: ("" + 50 + "%")})
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次")
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 5, title: "网络流量", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "流入字节速率 (单位: byte/秒)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "流出字节速率 (单位: byte/秒)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "位速率 (单位: byte/秒)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "总流量 (单位: byte/秒)")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "2048")
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "2048")
+	                        )
+	                        )
+	                    )
+	                )
+	            )
+	        )
+	    }
+	});
+
+	var VMSList = React.createClass({displayName: "VMSList",
+	    getInitialState: function () {
+	        return {
+	            key: 1
+	        };
+	    },
+	    handleSelect:function(key) {
+	        this.setState({key:key});
+	    },
+	    componentDidMount: function () {
+	        $(".tab-content").css("padding", 0);
+	        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+	        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+	        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+	        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+	        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+	    },
+	    render: function () {
+	        return (
+	            React.createElement(Tabs, {activeKey: this.state.key, onSelect: this.handleSelect, id: "controlled-tab-example", 
+	                  style: {padding:"0"}}, 
+	                React.createElement(Tab, {eventKey: 1, title: "常规状态", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", null, "vmware版本"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "运行时间 (单位: 小时)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "VM数量 (单位:个)"), 
+	                            React.createElement("th", null, "硬件类型"), 
+	                            React.createElement("th", null, "集群名称"), 
+	                            React.createElement("th", null, "操作")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "vm:10.9.0.96"), 
+	                            React.createElement("td", null, "1.0.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "10"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "24")), 
+	                            React.createElement("td", null, "集成虚拟机"), 
+	                            React.createElement("td", null, "Cloud Servers"), 
+	                            React.createElement("td", null)
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "vm:10.9.0.96"), 
+	                            React.createElement("td", null, "1.0.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "10"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, React.createElement("a", {href: "#"}, "24")), 
+	                            React.createElement("td", null, "集成虚拟机"), 
+	                            React.createElement("td", null, "Cloud Servers"), 
+	                            React.createElement("td", null)
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 2, title: "CPU", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", null, "型号"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "线程数 (单位:个)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "频率 (单位:赫兹)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "核心数 (单位:个)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "负载")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", null, "酷睿i7"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "5.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "4"), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "warning", now: 80, label: ("" + 80 + "%")})
+	                            ), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 40, label: ("" + 40 + "%")})
+	                            )
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", null, "酷睿i7"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "5.0"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "4"), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "danger", now: 92, label: ("" + 92 + "%")})
+	                            ), 
+	                            React.createElement("td", null, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "warning", now: 70, label: ("" + 70 + "%")})
+	                            )
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 3, title: "内存", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "平均使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "最大使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "最小使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "当前使用率")
+
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "Hypervisor:10.9.0.96"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                "34.4%"
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                "92%"
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                "10%"
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 40, label: ("" + 40 + "%")})
+	                            )
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 4, title: "磁盘", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "总空间 (单位: G)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "使用空间 (单位: G)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "使用率"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "写入(平均字节速率/最大字节速率/每秒次数)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "读取(平均字节速率/最大字节速率/每秒次数)")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 50, label: ("" + 50 + "%")})
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次")
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "100"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, 
+	                                React.createElement(ProgressBar, {active: true, bsStyle: "info", now: 50, label: ("" + 50 + "%")})
+	                            ), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "50(byte/秒) / 100(byte/秒) / 120次")
+	                        )
+	                        )
+	                    )
+	                ), 
+	                React.createElement(Tab, {eventKey: 5, title: "网络流量", style: {padding:"0"}}, 
+	                    React.createElement(Table, {responsive: true, style: {margin:"0"}}, 
+	                        React.createElement("thead", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("th", null, "监控项目"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "流入字节速率 (单位: byte/秒)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "流出字节速率 (单位: byte/秒)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "位速率 (单位: byte/秒)"), 
+	                            React.createElement("th", {style: {textAlign:"center"}}, "总流量 (单位: byte/秒)")
+	                        )
+	                        ), 
+	                        React.createElement("tbody", null, 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "2048")
+	                        ), 
+	                        React.createElement("tr", null, 
+	                            React.createElement("td", null, "VCenter:10.9.0.170"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "1024"), 
+	                            React.createElement("td", {style: {textAlign:"center"}}, "2048")
+	                        )
+	                        )
+	                    )
+	                )
+	            )
+	        )
+	    }
+	});
+
+	module.exports = {
+	    VCenterList:VCenterList,
+	    HypervisorList:HypervisorList,
+	    VMSList:VMSList
+	};
 
 /***/ }
 /******/ ]);

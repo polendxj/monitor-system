@@ -47,7 +47,6 @@ var SelectTool = React.createClass({
 var DropdownList = React.createClass({
     getInitialState: function () {
         return ({
-            items: [{id: 1, text: "all"}, {id: 23, text: "zabbix server"}, {id: 34, text: "10.6.0.177"}],
             selected: -1
         })
     },
@@ -57,14 +56,14 @@ var DropdownList = React.createClass({
     render: function () {
         var list = [];
         var index = -1;
-        this.state.items.forEach(function (value, key) {
+        this.props.items.forEach(function (value, key) {
             if (this.state.selected == value.id) {
                 index = key;
             }
             list.push(<MenuItem key={value.id} onSelect={this._changeItem}
                                 eventKey={value.id}>{value.text}</MenuItem>)
         }.bind(this));
-        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.state.items[index].text);
+        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text);
         return (
             <DropdownButton title={title}
                             style={{height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}}
@@ -78,15 +77,50 @@ var DropdownList = React.createClass({
 });
 
 var Text = React.createClass({
+    getInitialState: function () {
+        return ({
+            tipItems: [],
+            tipHover: -1,
+            selectedItem: ""
+        })
+    },
+    updateTipItems: function (e) {
+        this.setState({tipItems: ["10.9.0.170", "hypervisor"],selectedItem:e.target.value});
+    },
+    tipHover: function (index) {
+        this.setState({tipHover: index});
+    },
+    itemSelected: function (value) {
+        this.setState({selectedItem: value, tipItems: []});
+    },
+    formBlur: function () {
+        setTimeout(function () {
+            this.setState({tipItems: []});
+        }.bind(this),100);
+    },
     render: function () {
+        var tips = [];
+        if (this.state.tipItems.length > 0) {
+            this.state.tipItems.forEach(function (val, key) {
+                tips.push(<div className="tipItems" onClick={this.itemSelected.bind(this,val)}
+                               onMouseOver={this.tipHover.bind(this,key)} key={this.props.tip+key}
+                               style={{cursor:"pointer",textAlign:"left",borderBottom:"thin #F0F0F0 solid",backgroundColor:this.state.tipHover==key?"#F0F0F0":""}}>{val}</div>)
+            }.bind(this));
+        }
         return (
             <OverlayTrigger placement="top"
                             overlay={<Tooltip id={this.props.tip}><strong>{this.props.tip}</strong></Tooltip>}>
-                <Form inline style={{height:"47px",display:"inline-block"}}>
+                <Form inline style={{height:"47px",display:"inline-block",position:"relative"}}>
                     <FormGroup controlId="formControlsText" style={{marginTop:"-4px"}}>
-                        <FormControl type="text" placeholder={this.props.placeholder}
-                                     style={{height:"47px",border:"0 red solid",fontSize:"13px"}}/>
+                        <FormControl autoComplete={"off"} type="text" placeholder={this.props.placeholder}
+                                     style={{height:"47px",border:"0 red solid",fontSize:"13px"}}
+                                     value={this.state.selectedItem} onBlur={this.formBlur} onChange={this.updateTipItems}/>
                     </FormGroup>
+
+                    <div
+                        style={{display:this.state.tipItems.length > 0?"block":"none",width:"100%",boxShadow:"1px 1px 5px lightgray",backgroundColor:"white",padding:"10px",position:"absolute"}}>
+                        {tips}
+                    </div>
                 </Form>
             </OverlayTrigger>
 
@@ -121,7 +155,7 @@ var Button = React.createClass({
     _click: function (type) {
         var curTool = "";
         if (type == 3 || type == 5 || type == 7) {
-            if(type == 3){
+            if (type == 3) {
                 browserHistory.push("/allCharts");
             }
             if (AppStore.getPreToolBarID() == 2) {
