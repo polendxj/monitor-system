@@ -17,40 +17,61 @@ var SubMenu = React.createClass({
         var curTool = "";
         switch(this.props.parent){
             case 1:
+                curTool = {
+                    id: 2,
+                    bar: [
+                        <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
+                        <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
+                        <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>
+                    ]
+                };
                 switch (idx) {
                     case 0:
-                        curTool = {
-                            id: 2,
-                            bar: [
-                                <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-                                <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-                                <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>
-                            ]
-                        };
-                        AppAction.changeToolBar(2, curTool);
+                        ReSend(2,curTool,"VCenter");
                         break;
                     case 1:
-                        curTool = {
-                            id: 4,
-                            bar: [
-                                <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                                <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                                <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>
-                            ]
-                        };
-                        AppAction.changeToolBar(4, curTool);
+                        ReSend(4, curTool,"Hypervisor");
                         break;
                     case 2:
-                        curTool = {
-                            id: 6,
-                            bar: [
-                                <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                                <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                                <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>
+                        ReSend(6, curTool,"VMS");
+                        break;
+                }
+                break;
+            case 2:
+                curTool = {
+                    id: 4,
+                    bar: [
+                        <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                        <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                        <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>
+                    ]
+                };
+                switch (idx) {
+                    case 0:
+                        ReSend(2, curTool,"Apache");
+                        break;
+                    case 1:
+                        ReSend(4, curTool,"Nginx");
+                        break;
+                        break;
+                }
+                break;
+            case 3:
+                curTool = {
+                    id: 6,
+                    bar: [
+                        <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                        <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                        <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>
 
-                            ]
-                        };
-                        AppAction.changeToolBar(6, curTool);
+                    ]
+                };
+                switch (idx) {
+                    case 0:
+                        ReSend(2, curTool,"Mysql");
+                        break;
+                    case 1:
+                        ReSend(4, curTool,"Oracle");
                         break;
                 }
                 break;
@@ -81,5 +102,12 @@ var SubMenu = React.createClass({
         }
     }
 });
+
+var ReSend= function (id,tools,title){
+    AppAction.changeToolBar(id, tools,title);
+    setTimeout(function () {
+        AppAction.changeToolBar(id, tools,title);
+    },1);
+};
 
 module.exports = SubMenu;

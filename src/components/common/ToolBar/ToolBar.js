@@ -68,7 +68,7 @@ var DropdownList = React.createClass({
             <DropdownButton title={title}
                             style={{height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}}
                             id={"default"}
-                            noCaret={false}>
+                            noCaret={this.props.noCaret?true:false}>
                 {list}
             </DropdownButton>
         )
@@ -80,7 +80,7 @@ var Text = React.createClass({
     render: function () {
         return (
             <OverlayTrigger placement="top"
-                            overlay={<Tooltip><strong>{this.props.tip}</strong></Tooltip>}>
+                            overlay={<Tooltip id={this.props.tip}><strong>{this.props.tip}</strong></Tooltip>}>
                 <Form inline style={{height:"47px",display:"inline-block"}}>
                     <FormGroup controlId="formControlsText" style={{marginTop:"-4px"}}>
                         <FormControl type="text" placeholder={this.props.placeholder}
@@ -130,7 +130,7 @@ var Button = React.createClass({
                         <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
                     ]
                 };
-                AppAction.changeToolBar(3, curTool);
+                AppAction.changeToolBar(3, curTool, AppStore.getToolBarTitle());
             } else if (AppStore.getPreToolBarID() == 4) {
                 curTool = {
                     id: 5,
@@ -142,7 +142,7 @@ var Button = React.createClass({
 
                     ]
                 };
-                AppAction.changeToolBar(5, curTool);
+                AppAction.changeToolBar(5, curTool, AppStore.getToolBarTitle());
             } else if (AppStore.getPreToolBarID() == 6) {
                 curTool = {
                     id: 7,
@@ -154,7 +154,7 @@ var Button = React.createClass({
 
                     ]
                 };
-                AppAction.changeToolBar(7, curTool);
+                AppAction.changeToolBar(7, curTool, AppStore.getToolBarTitle());
             }
 
 
@@ -167,13 +167,13 @@ var Button = React.createClass({
 
     },
     _lgClose: function (param) {
-        if(param=="save"){
-            this.setState({ lgShow: false });
+        if (param == "save") {
+            this.setState({lgShow: false});
             alert("保存成功!");
-        }else{
-            var r=confirm("您的VCenter信息未保存，确定不保存吗？");
-            if(r){
-                this.setState({ lgShow: false })
+        } else {
+            var r = confirm("您的VCenter信息未保存，确定不保存吗？");
+            if (r) {
+                this.setState({lgShow: false})
             }
         }
     },

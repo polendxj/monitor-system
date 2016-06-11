@@ -29,7 +29,6 @@ var App = React.createClass({
                 {this.props.children}
             </div>
         }
-
         return (
             <div>
                 <div id="cl-wrapper" className={this.state.menuCollapsed?"sb-collapsed":""}>

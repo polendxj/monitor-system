@@ -9,11 +9,13 @@ var jQuery = require('jquery');
 
 var curToolBar = [];
 var preToolBarID = -1;
+var toolBarTitle="";
 
 var AppStore = assign({}, EventEmitter.prototype, {
-    changeToolBar: function (id, tools) {
+    changeToolBar: function (id, tools,title) {
         curToolBar =tools;
         preToolBarID=id;
+        toolBarTitle=title;
         this.emitChange(this.events.change_toolbar);
     },
     getCurrentToolBar: function () {
@@ -21,6 +23,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
     },
     getPreToolBarID: function () {
         return preToolBarID;
+    },
+    getToolBarTitle: function () {
+        return toolBarTitle;
     },
     emitChange: function (eventType) {
         this.emit(eventType);
@@ -124,7 +129,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeToolBar:
-            AppStore.changeToolBar(action.id, action.object);
+            AppStore.changeToolBar(action.id, action.object,action.title);
             break;
         default:
             break;
