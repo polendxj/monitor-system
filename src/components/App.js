@@ -12,91 +12,59 @@ var NavButton = require('./common/Frame/FrameRight/headNav/navButton');
 
 
 var App = React.createClass({
-    getInitialState: function () {
-        return ({
-            menuCollapsed: false
-        })
-    },
-    _collapsedMenu: function () {
-        this.setState({menuCollapsed: !this.state.menuCollapsed});
-    },
-    render: function () {
-/*        var panel = "";
-        if (this.props.children.props.location.pathname == "/" || this.props.children.props.location.pathname == "/dashboard") {
-            panel = <div className="container-fluid" id="pcont">
-                <HeadNav />
-                {this.props.children}
-            </div>
-        } else {
-            panel = <div className="container-fluid" id="pcont">
-                <HeadNav />
-                {this.props.children}
-            </div>
-        }
-        return (
-            <div>
+        getInitialState: function () {
+            return ({
+                menuCollapsed: false
+            })
+        },
+        _collapsedMenu: function () {
+            this.setState({menuCollapsed: !this.state.menuCollapsed});
+        },
+        render: function () {
+            return (
                 <div id="cl-wrapper" className={this.state.menuCollapsed?"sb-collapsed":""}>
-
-                    <div className="cl-sidebar">
-                        <div className="cl-toggle"><i className="fa fa-bars"></i></div>
-                        <div className="cl-navblock">
-                            <div className="menu-space">
-                                <div className="content">
+                    <div className="container-fluid" id="pcont">
+                        {/*Top Bar*/}
+                        <div id="head-nav" className="topbar navbar navbar-default" style={{height:"99px"}}>
+                            <div className="container-fluid">
+                                <div className="navbar-collapse collapse">
                                     <Logo _collapsedMenu={this._collapsedMenu}
                                           menuCollapsed={this.state.menuCollapsed}/>
-                                    <Menus />
+                                    <HeadNav />
+                                    <NavButton />
                                 </div>
+                                <FirstMenuLayer />
                             </div>
                         </div>
-                    </div>
-                    {panel}
-                </div>
-            </div>
-        )*/
-        return (
-            <div id="cl-wrapper" className={this.state.menuCollapsed?"sb-collapsed":""}>
-                <div className="container-fluid" id="pcont">
-                    {/*Top Bar*/}
-                    <div id="head-nav" className="topbar navbar navbar-default" style={{height:"99px"}}>
-                        <div className="container-fluid">
-                            <div className="navbar-collapse collapse">
-                                <Logo _collapsedMenu={this._collapsedMenu}
-                                      menuCollapsed={this.state.menuCollapsed}/>
-                                <HeadNav />
-                                <NavButton />
-                            </div>
-                            <FirstMenuLayer />
-                        </div>
-                    </div>
-                    {/*Bottom Bar*/}
-                    <div className="cl-mcont aside" style={{padding:"74px 5px 0 5px"}}>
-                        <div className="cl-sidebar">
-                            <div className="cl-toggle"><i className="fa fa-bars"></i></div>
-                            <div className="cl-navblock">
-                                <div className="menu-space">
-                                    <div className="content">
-                                        <Menus />
+                        {/*Bottom Bar*/}
+                        <div className="cl-mcont aside"
+                             style={{padding:"74px 5px 0 5px",display:"inline-table",height:"1200px"}}>
+                            <div className="cl-sidebar">
+                                <div className="cl-toggle"><i className="fa fa-bars"></i></div>
+                                <div className="cl-navblock">
+                                    <div className="menu-space">
+                                        <div className="content">
+                                            <Menus />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="content">
-                            <h3 className="text-center">
-                                <div className="cl-mcont text-left" style={{fontFamily: "Arial"}}>
-gfhfghf
+                            <div className="content">
+                                <div className="cl-mcont text-left" style={{fontFamily: "Arial",padding:"0 2px 0 7px"}}>
+                                    {this.props.children}
                                 </div>
-                            </h3>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
 
-        )
-    }
-})
-;
+            )
+        }
+    })
+    ;
 
 
 module.exports = App;

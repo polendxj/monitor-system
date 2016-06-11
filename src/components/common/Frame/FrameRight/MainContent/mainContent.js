@@ -4,6 +4,7 @@
 var React = require("react");
 var Jquery = require("jquery");
 var ToolBar = require("../../../ToolBar/ToolBar");
+var MenuTool = require("../headNav/menuTool");
 var ButtonGroup = require("react-bootstrap/lib/ButtonGroup");
 var DropdownButton = require("react-bootstrap/lib/DropdownButton");
 var MenuItem = require("react-bootstrap/lib/MenuItem");
@@ -16,7 +17,10 @@ var MainContent = React.createClass({
     render: function () {
 
         return (
-            <div className="cl-mcont" style={{backgroundColor:"white",padding:"15px 0 30px 0"}}>
+            <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
+                <div style={{height:"47px"}}>
+                    <MenuTool />
+                </div>
                 <div style={{height:"47px"}}>
                     <Timestamp />
                     <Form />

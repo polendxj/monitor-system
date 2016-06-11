@@ -54,7 +54,7 @@ var Title = React.createClass({
     render: function () {
         return (
             <div className="col-sm-7 col-md-7 col-lg-7"
-                 style={{height:"30px",marginTop:"8px",fontSize:"12px",padding:"2px 0 0 6px"}}>
+                 style={{height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}>
                 <div style={{display:"inline-block",paddingRight:"20px"}}>
                     <Breadcrumb>
                         <Breadcrumb.Item href="#">
