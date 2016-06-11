@@ -39,7 +39,7 @@ var App = React.createClass({
                         {/*Bottom Bar*/}
                         <div className="cl-mcont aside"
                              style={{padding:"74px 5px 0 5px",display:"inline-table",height:"1200px"}}>
-                            <div className="cl-sidebar">
+                            <div className="cl-sidebar" style={{backgroundColor:"white"}}>
                                 <div className="cl-toggle"><i className="fa fa-bars"></i></div>
                                 <div className="cl-navblock">
                                     <div className="menu-space">
