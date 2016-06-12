@@ -6,6 +6,7 @@ var ToolBar = require("../../../ToolBar/ToolBar");
 var AppStore = require('../../../../../stores/AppStore');
 var AppAction = require('../../../../../actions/AppAction');
 var Breadcrumb = require('react-bootstrap/lib/Breadcrumb');
+var MenuStore=require('../../../../../stores/MenuStore');
 
 
 var MenuTool = React.createClass({
@@ -39,34 +40,59 @@ var MenuTool = React.createClass({
 var Title = React.createClass({
     getInitialState: function () {
         return ({
-            title: ""
+            title: "",
+            breadcrumbData : ""
         })
     },
     componentDidMount: function () {
         AppStore.addChangeListener(AppStore.events.change_toolbar, this._changeToolBarTitle);
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     componentWillUnmount: function () {
         AppStore.removeChangeListener(AppStore.events.change_toolbar, this._changeToolBarTitle);
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     _changeToolBarTitle: function () {
         this.setState({title: AppStore.getToolBarTitle()});
     },
+    _changeBreadcrumbData: function () {
+        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+    },
     render: function () {
+        var breadcrumb="";
+        if(this.state.breadcrumbData.fourthID==""){
+            breadcrumb=<Breadcrumb>
+                <Breadcrumb.Item href="#">
+                    {this.state.breadcrumbData.firstMenuName}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item href="http://getbootstrap.com/components/#breadcrumbs">
+                    {this.state.breadcrumbData.secondMenuName}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>
+                    {this.state.breadcrumbData.thirdMenuName}
+                </Breadcrumb.Item>
+            </Breadcrumb>
+        }else{
+            breadcrumb=<Breadcrumb>
+                <Breadcrumb.Item href="#">
+                    {this.state.breadcrumbData.firstMenuName}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item href="http://getbootstrap.com/components/#breadcrumbs">
+                    {this.state.breadcrumbData.secondMenuName}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item >
+                    {this.state.breadcrumbData.thirdMenuName}
+                </Breadcrumb.Item>
+                <Breadcrumb.Item active>
+                    {this.state.breadcrumbData.fourthMenuName}
+                </Breadcrumb.Item>
+            </Breadcrumb>
+        }
         return (
             <div className="col-sm-7 col-md-7 col-lg-7"
                  style={{height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}>
                 <div style={{display:"inline-block",paddingRight:"20px"}}>
-                    <Breadcrumb>
-                        <Breadcrumb.Item href="#">
-                            Home
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item href="http://getbootstrap.com/components/#breadcrumbs">
-                            Library
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item active>
-                            Data
-                        </Breadcrumb.Item>
-                    </Breadcrumb>
+                    {breadcrumb}
                 </div>
             </div>
         )

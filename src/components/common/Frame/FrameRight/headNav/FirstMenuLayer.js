@@ -31,11 +31,17 @@ var FirstMenuLayer = React.createClass({
         setTimeout(function () {
             console.log(this.state.firstMenus[0]);
             MenuAction.changeFirstMenus(0,this.state.firstMenus[0]);
-        }.bind(this),100);
+        }.bind(this),1);
+        setTimeout(function () {
+            MenuAction.changeBreadcrumb("second",this.state.firstMenus[0]);
+        }.bind(this),1);
     },
     _click: function (idx) {
         this.setState({selectedIndex:idx});
         MenuAction.changeFirstMenus(idx,this.state.firstMenus[idx]);
+        setTimeout(function () {
+            MenuAction.changeBreadcrumb("second",this.state.firstMenus[idx]);
+        }.bind(this),1);
     },
     render: function () {
         var that = this;

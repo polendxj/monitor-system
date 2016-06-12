@@ -11,6 +11,9 @@ var MenuItem = require("react-bootstrap/lib/MenuItem");
 var Button = require("react-bootstrap/lib/Button");
 var ObjectList=require("../../../ObjectList/ObjectList");
 
+var MenuAction = require('../../../../../actions/MenuAction');
+var MenuStore=require('../../../../../stores/MenuStore');
+
 
 
 var MainContent = React.createClass({
@@ -76,12 +79,37 @@ var Timestamp = React.createClass({
 });
 
 var Content = React.createClass({
+    getInitialState: function () {
+        return ({
+            breadcrumbData : ""
+        })
+    },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    _changeBreadcrumbData: function () {
+        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+    },
     render: function () {
-        return (
-            <div style={{padding:"0 10px 0 10px"}}>
+        var div = "";
+        if(this.state.breadcrumbData.fourthID==''){
+            div = <div>
                 <ObjectList.VCenterList />
                 <ObjectList.HypervisorList />
                 <ObjectList.VMSList />
+            </div>;
+        }
+        if(this.state.breadcrumbData.fourthID==3){
+            div = <div>
+                {"hhh"}
+            </div>;
+        }
+        return (
+            <div style={{padding:"0 10px 0 10px"}}>
+                {div}
             </div>
         )
     }

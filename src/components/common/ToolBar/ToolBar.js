@@ -18,6 +18,9 @@ var browserHistory = require('react-router').browserHistory;
 var AppStore = require('../../../stores/AppStore');
 var AppAction = require('../../../actions/AppAction');
 
+var MenuAction = require('../../../actions/MenuAction');
+var MenuStore=require('../../../stores/MenuStore');
+
 var CreateVCenterModal = require("../VCenter/createVCenterModal");
 
 
@@ -164,55 +167,60 @@ var Button = React.createClass({
     _hover: function () {
         this.setState({isNormal: false});
     },
-    _click: function (type,text) {
+    _click: function (type) {
         // TODO 保存点击的按钮
         AppAction.saveOperator(type,text);
-        //var curTool = "";
-        //if (type == 3 || type == 5 || type == 7) {
-        //    if (type == 3) {
-        //        browserHistory.push("/allCharts");
-        //    }
-        //    if (AppStore.getPreToolBarID() == 2) {
-        //        curTool = {
-        //            id: 3,
-        //            bar: [
-        //                <DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-        //                <Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-        //                <Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>,
-        //                <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-        //            ]
-        //        };
-        //        AppAction.changeToolBar(3, curTool, AppStore.getToolBarTitle());
-        //    } else if (AppStore.getPreToolBarID() == 4) {
-        //        curTool = {
-        //            id: 5,
-        //            bar: [
-        //                <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-        //                <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-        //                <DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>,
-        //                <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-        //
-        //            ]
-        //        };
-        //        AppAction.changeToolBar(5, curTool, AppStore.getToolBarTitle());
-        //    } else if (AppStore.getPreToolBarID() == 6) {
-        //        curTool = {
-        //            id: 7,
-        //            bar: [
-        //                <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-        //                <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-        //                <DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>,
-        //                <DropdownList key={"bar3"} t prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-        //
-        //            ]
-        //        };
-        //        AppAction.changeToolBar(7, curTool, AppStore.getToolBarTitle());
-        //    }
-        //
-        //
-        //} else if (type == 0) {
-        //    this.setState({lgShow: true})
-        //}
+        var curTool = "";
+        if (type == 3 || type == 5 || type == 7) {
+            if (type == 3) {
+                /*browserHistory.push("/allCharts");*/
+                var chart={
+                    id:3,
+                    name:"图表"
+                }
+                MenuAction.changeBreadcrumb("fourth",chart);
+            }
+            if (AppStore.getPreToolBarID() == 2) {
+                curTool = {
+                    id: 3,
+                    bar: [
+                        <DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
+                        <Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
+                        <Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>,
+                        <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
+                    ]
+                };
+                AppAction.changeToolBar(3, curTool, AppStore.getToolBarTitle());
+            } else if (AppStore.getPreToolBarID() == 4) {
+                curTool = {
+                    id: 5,
+                    bar: [
+                        <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                        <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                        <DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>,
+                        <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
+
+                    ]
+                };
+                AppAction.changeToolBar(5, curTool, AppStore.getToolBarTitle());
+            } else if (AppStore.getPreToolBarID() == 6) {
+                curTool = {
+                    id: 7,
+                    bar: [
+                        <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
+                        <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
+                        <DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>,
+                        <DropdownList key={"bar3"} t prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
+
+                    ]
+                };
+                AppAction.changeToolBar(7, curTool, AppStore.getToolBarTitle());
+            }
+
+
+        } else if (type == 0) {
+            this.setState({lgShow: true})
+        }
     },
     _leave: function () {
         this.setState({isNormal: true});

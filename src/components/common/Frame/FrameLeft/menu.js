@@ -19,6 +19,7 @@ var Menus = React.createClass({
             subMenus: [
 
             ],
+            breadcrumbData:"",
             hoverParentIndex: -1,
             selectedParentIndex: -1,
             hoverIndex: -1,
@@ -27,12 +28,22 @@ var Menus = React.createClass({
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     _changeFirstMenu: function () {
-        this.setState({subMenus: MenuStore.getSubMenus()})
+        this.setState({subMenus: MenuStore.getSubMenus()});
+        if(this.state.subMenus.subMenus.length>0){
+            setTimeout(function () {
+                MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[0]);
+            }.bind(this),10);
+        }
+    },
+    _changeBreadcrumbData: function () {
+        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
     },
     _hover: function (idx, hoverParentIdx) {
         this.setState({hoverIndex: idx});
@@ -45,8 +56,7 @@ var Menus = React.createClass({
         var curTool = "";
         this.setState({selectedIndex: idx});
         this.setState({selectedParentIndex: selectedParentIdx});
-        console.log(this.state.subMenus);
-        console.log(this.state.subMenus.subMenus[idx].name);
+        MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[idx]);
         switch (this.state.subMenus.parentIdx) {
             case 1:
                 switch (idx) {
@@ -95,43 +105,62 @@ var Menus = React.createClass({
     render: function () {
         var panel1 = "";
         var panel2 = "";
+        var panel3 = "";
         var that = this;
-        if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
-            panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                              style={{padding:"7px 25px",color:"black"}}><span style={{fontWeight:"bold"}}>全部类型</span></a>
-                <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                    {this.state.subMenus.subMenus.map(function (subMenu, idx) {
-                        return <li key={subMenu.name} onMouseOver={that._hover.bind(that,idx,0)}
-                                   onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,idx,0)}
-                                   className="secondLayer"
-                                   style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==idx&&that.state.hoverParentIndex==0)||(that.state.selectedIndex==idx&&that.state.selectedParentIndex==0))? "#e6e6e6":"white"}}>
-                            <a
-                                href="#" style={{padding:"7px 25px",color:"black"}}>{subMenu.name}</a></li>;
-                    })}
-                </ul>
-            </li>;
-            panel2 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                              style={{padding:"7px 25px",color:"black"}}><span style={{fontWeight:"bold"}}>故障管理</span></a>
+        if(this.state.breadcrumbData.fourthID!=""){
+            panel3 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                              style={{padding:"7px 25px",color:"black"}}><span style={{fontWeight:"bold"}}>自定义视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
                     <li className="secondLayer"
                         style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==0&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==0&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
                         onMouseOver={that._hover.bind(that,0,1)}
-                        onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,0,1)}><a
-                        href="#" style={{padding:"7px 25px",color:"black"}}>故障历史</a>
-                    </li>
-                    <li className="secondLayer"
-                        style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==1&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==1&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
-                        onMouseOver={that._hover.bind(that,1,1)}
-                        onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,1,1)}><a
-                        href="#" style={{padding:"7px 25px",color:"black"}}>故障修复状态</a>
+                        onMouseLeave={that._leave}><a
+                        href="#" style={{padding:"7px 25px",color:"black"}}>创建自定义视图</a>
                     </li>
                 </ul>
             </li>
+        }else {
+            if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
+                panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                                  style={{padding:"7px 25px",color:"black"}}><span
+                    style={{fontWeight:"bold"}}>全部类型</span></a>
+                    <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
+                        {this.state.subMenus.subMenus.map(function (subMenu, idx) {
+                            return <li key={subMenu.name} onMouseOver={that._hover.bind(that,idx,0)}
+                                       onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,idx,0)}
+                                       className="secondLayer"
+                                       style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==idx&&that.state.hoverParentIndex==0)||(that.state.selectedIndex==idx&&that.state.selectedParentIndex==0))? "#e6e6e6":"white"}}>
+                                <a
+                                    href="#" style={{padding:"7px 25px",color:"black"}}>{subMenu.name}<span
+                                    style={{color:"#45A2E1"}}>&nbsp;&nbsp;({subMenu.count})</span></a></li>;
+                        })}
+                    </ul>
+                </li>;
+                panel2 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                                  style={{padding:"7px 25px",color:"black"}}><span
+                    style={{fontWeight:"bold"}}>故障管理</span></a>
+                    <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
+                        <li className="secondLayer"
+                            style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==0&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==0&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
+                            onMouseOver={that._hover.bind(that,0,1)}
+                            onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,0,1)}><a
+                            href="#" style={{padding:"7px 25px",color:"black"}}>故障历史</a>
+                        </li>
+                        <li className="secondLayer"
+                            style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==1&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==1&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
+                            onMouseOver={that._hover.bind(that,1,1)}
+                            onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,1,1)}><a
+                            href="#" style={{padding:"7px 25px",color:"black"}}>故障修复状态</a>
+                        </li>
+                    </ul>
+                </li>
+            }
         }
         return (
             <ul className="cl-vnavigation">
                 {panel1}
                 {panel2}
+                {panel3}
             </ul>
         )
     }
