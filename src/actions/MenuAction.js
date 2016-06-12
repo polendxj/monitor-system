@@ -18,6 +18,13 @@ var MenuAction = {
             idx:idx,
             subMenus: object
         });
+    },
+    changeBreadcrumb: function (level,object) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.ChangeBreadcrumb,
+            level:level,
+            breadcrumbData: object
+        });
     }
 };
 

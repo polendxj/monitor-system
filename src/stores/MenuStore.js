@@ -11,30 +11,61 @@ var jQuery = require('jquery');
 
 
 var firstMenus = [];
+var breadcrumbData = {
+    firstID: '',
+    secondID: '',
+    thirdID: '',
+    fourthID: '',
+    firstMenuName: "",
+    secondMenuName: "",
+    thirdMenuName: "",
+    fourthMenuName:''
+};
 var subMenus = {
-    parentIdx:"",
-    topMenuName:"",
-    firstMenuName:"",
-    subMenus:""
+    parentIdx: "",
+    subMenus: ""
 };
 
 var MenuStore = assign({}, EventEmitter.prototype, {
     changeMenus: function (tools) {
-        firstMenus =tools;
+        firstMenus = tools;
         this.emitChange(this.events.change_menus);
     },
-    changeFirstMenus: function (idx,tools) {
+    changeFirstMenus: function (idx, tools) {
         subMenus.parentIdx = idx;
-        subMenus.subMenus =tools.secondLayer;
-        subMenus.topMenuName = firstMenus.name;
-        subMenus.firstMenuName = tools.name;
+        subMenus.subMenus = tools.secondLayer;
+/*        breadcrumbData.firstMenuName = firstMenus.name;
+        breadcrumbData.secondMenuName = tools.name;
+        breadcrumbData.firstID = firstMenus.id;
+        breadcrumbData.secondID = tools.id;*/
         this.emitChange(this.events.change_firstMenus);
+    },
+    changeBreadcrumb: function (level, data) {
+        if (level == 'first') {
+            breadcrumbData.firstID = data.id;
+            breadcrumbData.firstMenuName = data.name;
+        } else if (level == 'second') {
+            breadcrumbData.secondID = data.id;
+            breadcrumbData.secondMenuName = data.name;
+        } else if (level == 'third'){
+            breadcrumbData.thirdID = data.id;
+            breadcrumbData.thirdMenuName = data.name;
+            breadcrumbData.fourthID = '';
+            breadcrumbData.fourthMenuName = '';
+        }else{
+            breadcrumbData.fourthID = data.id;
+            breadcrumbData.fourthMenuName = data.name;
+        }
+        this.emitChange(this.events.change_breadcrumb);
     },
     getSubMenus: function () {
         return subMenus;
     },
     getFirstMenus: function () {
         return firstMenus.firstLayer;
+    },
+    getBreadcrumbData: function () {
+        return breadcrumbData;
     },
     emitChange: function (eventType) {
         this.emit(eventType);
@@ -47,7 +78,8 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     },
     events: {
         change_menus: "change_menus",
-        change_firstMenus:"change_firstMenus"
+        change_firstMenus: "change_firstMenus",
+        change_breadcrumb:"change_breadcrumb"
     }
 
 });
@@ -58,7 +90,10 @@ AntiFraudDispatcher.register(function (action) {
             MenuStore.changeMenus(action.firstMenus);
             break;
         case MonitorConstants.ChangeFirstMenus:
-            MenuStore.changeFirstMenus(action.idx,action.subMenus);
+            MenuStore.changeFirstMenus(action.idx, action.subMenus);
+            break;
+        case MonitorConstants.ChangeBreadcrumb:
+            MenuStore.changeBreadcrumb(action.level,action.breadcrumbData);
             break;
         default:
             break;

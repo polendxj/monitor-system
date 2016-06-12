@@ -16,6 +16,9 @@ var browserHistory = require('react-router').browserHistory;
 var AppStore = require('../../../stores/AppStore');
 var AppAction = require('../../../actions/AppAction');
 
+var MenuAction = require('../../../actions/MenuAction');
+var MenuStore=require('../../../stores/MenuStore');
+
 var CreateVCenterModal = require("../VCenter/createVCenterModal");
 
 require('jquery');
@@ -156,7 +159,12 @@ var Button = React.createClass({
         var curTool = "";
         if (type == 3 || type == 5 || type == 7) {
             if (type == 3) {
-                browserHistory.push("/allCharts");
+                /*browserHistory.push("/allCharts");*/
+                var chart={
+                    id:3,
+                    name:"图表"
+                }
+                MenuAction.changeBreadcrumb("fourth",chart);
             }
             if (AppStore.getPreToolBarID() == 2) {
                 curTool = {

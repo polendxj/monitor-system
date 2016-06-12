@@ -32,7 +32,12 @@ var Menus = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
     },
     _changeFirstMenu: function () {
-        this.setState({subMenus: MenuStore.getSubMenus()})
+        this.setState({subMenus: MenuStore.getSubMenus()});
+        if(this.state.subMenus.subMenus.length>0){
+            setTimeout(function () {
+                MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[0]);
+            }.bind(this),10);
+        }
     },
     _hover: function (idx, hoverParentIdx) {
         this.setState({hoverIndex: idx});
@@ -45,8 +50,7 @@ var Menus = React.createClass({
         var curTool = "";
         this.setState({selectedIndex: idx});
         this.setState({selectedParentIndex: selectedParentIdx});
-        console.log(this.state.subMenus);
-        console.log(this.state.subMenus.subMenus[idx].name);
+        MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[idx]);
         switch (this.state.subMenus.parentIdx) {
             case 1:
                 switch (idx) {
@@ -106,7 +110,7 @@ var Menus = React.createClass({
                                    className="secondLayer"
                                    style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==idx&&that.state.hoverParentIndex==0)||(that.state.selectedIndex==idx&&that.state.selectedParentIndex==0))? "#e6e6e6":"white"}}>
                             <a
-                                href="#" style={{padding:"7px 25px",color:"black"}}>{subMenu.name}</a></li>;
+                                href="#" style={{padding:"7px 25px",color:"black"}}>{subMenu.name}<span style={{color:"#45A2E1"}}>&nbsp;&nbsp;({subMenu.count})</span></a></li>;
                     })}
                 </ul>
             </li>;

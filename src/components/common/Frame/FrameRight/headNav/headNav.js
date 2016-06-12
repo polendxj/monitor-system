@@ -6,136 +6,163 @@ var NavButton = require('./navButton');
 var MenuTool = require('./menuTool');
 
 var MenuAction = require('../../../../../actions/MenuAction');
+var MenuStore=require('../../../../../stores/MenuStore');
 
 menus = [
     {
-        'name': '平台概况',
-        'icon': 'fa fa-home',
-        'url': '',
-        'status': true,
-        'firstLayer': [
+        id:1,
+        name: '平台概况',
+        icon: 'fa fa-home',
+        url: '',
+        status: true,
+        firstLayer: [
             {
-                'name': '项目概况',
-                'icon': 'fa fa-desktop',
-                'url': '',
-                'status': true,
-                'secondLayer': []
+                id:11,
+                name: '项目概况',
+                icon: 'fa fa-desktop',
+                url: '',
+                status: true,
+                secondLayer: []
             }
         ]
     },
     {
-        'name': '系统监控',
-        'icon': 'fa fa-home',
-        'url': '',
-        'status': false,
-        'firstLayer': [
+        id:2,
+        name: '系统监控',
+        icon: 'fa fa-home',
+        url: '',
+        status: false,
+        firstLayer: [
             {
-                'name': '虚拟化监控',
-                'icon': 'fa fa-desktop',
-                'url': '',
-                'status': true,
-                'secondLayer': [
+                id:21,
+                name: '虚拟化监控',
+                icon: 'fa fa-desktop',
+                url: '',
+                status: true,
+                secondLayer: [
                     {
-                        'name': 'VCenter',
-                        'icon': '',
-                        'status': true,
+                        id:211,
+                        name: 'VCenter',
+                        icon: '',
+                        count:2,
+                        status: true,
                         'url': ''
                     },
                     {
-                        'name': 'HyperVisor',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:212,
+                        name: 'HyperVisor',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
                     },
                     {
-                        'name': 'VMS',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:213,
+                        name: 'VMS',
+                        icon: '',
+                        count:104,
+                        status: false,
+                        url: ''
                     }
                 ]
             },
             {
-                'name': '应用服务监控',
-                'icon': 'fa fa-smile-o',
-                'url': '',
-                'status': false,
-                'secondLayer': [
+                id:22,
+                name: '应用服务监控',
+                icon: 'fa fa-smile-o',
+                url: '',
+                status: false,
+                secondLayer: [
                     {
-                        'name': 'Apache',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:221,
+                        name: 'Apache',
+                        icon: '',
+                        count:15,
+                        status: false,
+                        url: ''
                     },
                     {
-                        'name': 'Nginx',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:222,
+                        name: 'Nginx',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
                     }
                 ]
             },
             {
-                'name': '存储监控',
-                'icon': 'fa fa-list-alt',
-                'url': '',
-                'status': false,
-                'secondLayer': [
+                id:23,
+                name: '存储监控',
+                icon: 'fa fa-list-alt',
+                url: '',
+                status: false,
+                secondLayer: [
                     {
-                        'name': 'MySql',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:231,
+                        name: 'MySql',
+                        icon: '',
+                        count:12,
+                        status: false,
+                        url: ''
                     },
                     {
-                        'name': 'Oracle',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:232,
+                        name: 'Oracle',
+                        icon: '',
+                        count:48,
+                        status: false,
+                        url: ''
                     }
                 ]
             }
         ]
     },
     {
-        'name': '日志管理',
-        'icon': 'fa fa-home',
-        'url': '',
-        'status': false,
-        'firstLayer': [
+        id:3,
+        name: '日志管理',
+        icon: 'fa fa-home',
+        url: '',
+        status: false,
+        firstLayer: [
             {
-                'name': '网站日志',
-                'icon': 'fa fa-desktop',
-                'url': '',
-                'status': false,
-                'secondLayer': []
+                id:31,
+                name: '网站日志',
+                icon: 'fa fa-desktop',
+                url: '',
+                status: false,
+                secondLayer: []
             },
             {
-                'name': '数据库日志',
-                'icon': 'fa fa-smile-o',
-                'url': '',
-                'status': false,
-                'secondLayer': [
+                id:32,
+                name: '数据库日志',
+                icon: 'fa fa-smile-o',
+                url: '',
+                status: false,
+                secondLayer: [
                     {
-                        'name': 'MySql日志',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:321,
+                        name: 'MySql日志',
+                        icon: '',
+                        status: false,
+                        url: ''
                     },
                     {
-                        'name': 'Oracle日志',
-                        'icon': '',
-                        'status': false,
-                        'url': ''
+                        id:322,
+                        name: 'Oracle日志',
+                        icon: '',
+                        status: false,
+                        url: ''
                     }
                 ]
             },
             {
-                'name': '服务日志',
-                'icon': 'fa fa-list-alt',
-                'url': '',
-                'status': false,
-                'secondLayer': []
+                id:33,
+                name: '服务日志',
+                icon: 'fa fa-list-alt',
+                url: '',
+                status: false,
+                secondLayer: []
             }
         ]
     }
@@ -164,10 +191,16 @@ var TopMenu = React.createClass({
         //this.setState({selectedIndex: this.props.idx});
         this.props.transIdx(idx);
         MenuAction.changeMenus(this.props.menu);
+        setTimeout(function () {
+            MenuAction.changeBreadcrumb("first",this.props.menu);
+        }.bind(this),1);
     },
     componentDidMount: function () {
         setTimeout(function () {
             MenuAction.changeMenus(menus[0]);
+        },1);
+        setTimeout(function () {
+            MenuAction.changeBreadcrumb("first",menus[0]);
         },1);
     },
     render: function () {
