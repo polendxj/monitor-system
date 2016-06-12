@@ -14,7 +14,7 @@ var Checkbox = require("react-bootstrap/lib/Checkbox");
 var Tooltip = require("react-bootstrap/lib/Tooltip");
 var OverlayTrigger = require("react-bootstrap/lib/OverlayTrigger");
 var browserHistory = require('react-router').browserHistory;
-
+var ReactButton=require("react-bootstrap/lib/Button")
 var AppStore = require('../../../stores/AppStore');
 var AppAction = require('../../../actions/AppAction');
 
@@ -167,7 +167,7 @@ var Button = React.createClass({
     _hover: function () {
         this.setState({isNormal: false});
     },
-    _click: function (type) {
+    _click: function (type,text) {
         // TODO 保存点击的按钮
         AppAction.saveOperator(type,text);
         var curTool = "";
@@ -267,12 +267,11 @@ var MyDatePicker = React.createClass({
     render: function () {
         return (
             <div style={{position:"relative"}}>
-                <div style={{position:"relative",width:"30px",float:"left",marginLeft:"10px",marginTop:"6px"}}>From </div>
                 <div style={{position:"relative",width:"150px",left:"84px",marginLeft:"10px",float:"left"}}><DateTimeField /> </div>
                 <div style={{position:"relative",width:"30px",float:"left",marginLeft:"10px",marginTop:"6px"}}>To</div>
                 <div style={{position:"relative",width:"150px",left:"84px",float:"left",marginLeft:"-7px"}}><DateTimeField /></div>
-                <div style={{position:"relative",left:"84px",float:"left",marginLeft:"-7px"}}><DateTimeField /></div>
-                <div style={{position:"relative",left:"84px",float:"left",marginLeft:"-7px"}}><DateTimeField /></div>
+                <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link" style={{border:"0 red solid"}}>取消</ReactButton></div>
+                <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link" style={{border:"0 red solid"}}>保存</ReactButton></div>
             </div>
         )
     }
