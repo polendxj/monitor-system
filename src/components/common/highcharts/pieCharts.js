@@ -11,7 +11,7 @@ var ReactHighcharts = require('react-highcharts/dist/bundle/highcharts');
 var PieCharts = React.createClass({
     render: function () {
         return (
-            <ReactHighcharts className="col-sm-12 col-md-3" config={this.props.data} ref="chart"></ReactHighcharts>
+            <ReactHighcharts className="col-sm-12 col-md-3 col-lg-3" config={this.props.data} ref="chart" style={{paddingLeft:"5px"}}></ReactHighcharts>
         )
     }
 });

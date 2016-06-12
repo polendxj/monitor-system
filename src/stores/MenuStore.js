@@ -25,6 +25,7 @@ var subMenus = {
     parentIdx: "",
     subMenus: ""
 };
+var viewData="";
 
 var MenuStore = assign({}, EventEmitter.prototype, {
     changeMenus: function (tools) {
@@ -58,6 +59,13 @@ var MenuStore = assign({}, EventEmitter.prototype, {
         }
         this.emitChange(this.events.change_breadcrumb);
     },
+    changeViews: function (data) {
+        viewData = data;
+        this.emitChange(this.events.change_views);
+    },
+    getViewData: function () {
+        return viewData;
+    },
     getSubMenus: function () {
         return subMenus;
     },
@@ -79,7 +87,8 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     events: {
         change_menus: "change_menus",
         change_firstMenus: "change_firstMenus",
-        change_breadcrumb:"change_breadcrumb"
+        change_breadcrumb:"change_breadcrumb",
+        change_views:"change_views"
     }
 
 });
@@ -94,6 +103,9 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.ChangeBreadcrumb:
             MenuStore.changeBreadcrumb(action.level,action.breadcrumbData);
+            break;
+        case MonitorConstants.ChangeViews:
+            MenuStore.changeViews(action.viewData);
             break;
         default:
             break;
