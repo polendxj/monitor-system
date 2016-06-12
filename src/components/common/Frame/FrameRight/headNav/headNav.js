@@ -165,6 +165,64 @@ menus = [
                 secondLayer: []
             }
         ]
+    },
+    {
+        id:4,
+        name: '用户中心',
+        icon: 'fa fa-home',
+        url: '',
+        status: false,
+        firstLayer: [
+            {
+                id:41,
+                name: '账户设置',
+                icon: 'fa fa-desktop',
+                url: '',
+                status: false,
+                secondLayer: []
+            },
+            {
+                id:42,
+                name: '个人设置',
+                icon: 'fa fa-smile-o',
+                url: '',
+                status: false,
+                secondLayer: []
+            },
+            {
+                id:43,
+                name: '通知设置',
+                icon: 'fa fa-list-alt',
+                url: '',
+                status: false,
+                secondLayer: []
+            }
+        ]
+    },
+    {
+        id:5,
+        name: '系统管理',
+        icon: 'fa fa-home',
+        url: '',
+        status: false,
+        firstLayer: [
+            {
+                id:51,
+                name: '告警和故障',
+                icon: 'fa fa-desktop',
+                url: '',
+                status: false,
+                secondLayer: []
+            },
+            {
+                id:52,
+                name: '拓扑管理',
+                icon: 'fa fa-smile-o',
+                url: '',
+                status: false,
+                secondLayer: []
+            }
+        ]
     }
 ];
 var HeadNav = React.createClass({
@@ -182,6 +240,8 @@ var HeadNav = React.createClass({
                 <TopMenu menu={menus[0]} idx={0} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
                 <TopMenu menu={menus[1]} idx={1} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
                 <TopMenu menu={menus[2]} idx={2} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
+                <TopMenu menu={menus[3]} idx={3} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
+                <TopMenu menu={menus[4]} idx={4} transIdx={this.transIdx} selectedMenu={this.state.selectedMenu}/>
             </ul>
         )
     }

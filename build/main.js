@@ -36395,7 +36395,7 @@
 	            list.push(React.createElement(MenuItem, {key: value.id, onSelect: this._changeItem, 
 	                                eventKey: value.id}, value.text))
 	        }.bind(this));
-	        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text);
+	        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text+this.props.appendText);
 	        return (
 	            React.createElement(DropdownButton, {title: title, 
 	                            style: {height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}, 
@@ -36578,6 +36578,9 @@
 	});
 
 	var MyDatePicker = React.createClass({displayName: "MyDatePicker",
+	    hideDatePicker: function (param) {
+	        this.props.hideDatePicker(param);
+	    },
 	    componentDidMount: function () {
 	        $(".date").css("left", "-84px");
 
@@ -36588,8 +36591,12 @@
 	                React.createElement("div", {style: {position:"relative",width:"150px",left:"84px",marginLeft:"10px",float:"left"}}, React.createElement(DateTimeField, null), " "), 
 	                React.createElement("div", {style: {position:"relative",width:"30px",float:"left",marginLeft:"10px",marginTop:"6px"}}, "To"), 
 	                React.createElement("div", {style: {position:"relative",width:"150px",left:"84px",float:"left",marginLeft:"-7px"}}, React.createElement(DateTimeField, null)), 
-	                React.createElement("div", {style: {position:"relative",float:"left"}}, React.createElement(ReactButton, {bsStyle: "link", style: {border:"0 red solid"}}, "取消")), 
-	                React.createElement("div", {style: {position:"relative",float:"left"}}, React.createElement(ReactButton, {bsStyle: "link", style: {border:"0 red solid"}}, "保存"))
+	                React.createElement("div", {style: {position:"relative",float:"left"}}, React.createElement(ReactButton, {bsStyle: "link", 
+	                                                                             style: {border:"0 red solid"}, onClick: this.hideDatePicker.bind(this,"取消")}, "取消")
+	                ), 
+	                React.createElement("div", {style: {position:"relative",float:"left"}}, React.createElement(ReactButton, {bsStyle: "link", 
+	                                                                             style: {border:"0 red solid"}, onClick: this.hideDatePicker.bind(this,"保存")}, "保存")
+	                )
 	            )
 	        )
 	    }
@@ -73324,6 +73331,64 @@
 	                secondLayer: []
 	            }
 	        ]
+	    },
+	    {
+	        id:4,
+	        name: '用户中心',
+	        icon: 'fa fa-home',
+	        url: '',
+	        status: false,
+	        firstLayer: [
+	            {
+	                id:41,
+	                name: '账户设置',
+	                icon: 'fa fa-desktop',
+	                url: '',
+	                status: false,
+	                secondLayer: []
+	            },
+	            {
+	                id:42,
+	                name: '个人设置',
+	                icon: 'fa fa-smile-o',
+	                url: '',
+	                status: false,
+	                secondLayer: []
+	            },
+	            {
+	                id:43,
+	                name: '通知设置',
+	                icon: 'fa fa-list-alt',
+	                url: '',
+	                status: false,
+	                secondLayer: []
+	            }
+	        ]
+	    },
+	    {
+	        id:5,
+	        name: '系统管理',
+	        icon: 'fa fa-home',
+	        url: '',
+	        status: false,
+	        firstLayer: [
+	            {
+	                id:51,
+	                name: '告警和故障',
+	                icon: 'fa fa-desktop',
+	                url: '',
+	                status: false,
+	                secondLayer: []
+	            },
+	            {
+	                id:52,
+	                name: '拓扑管理',
+	                icon: 'fa fa-smile-o',
+	                url: '',
+	                status: false,
+	                secondLayer: []
+	            }
+	        ]
 	    }
 	];
 	var HeadNav = React.createClass({displayName: "HeadNav",
@@ -73340,7 +73405,9 @@
 	            React.createElement("ul", {className: "nav navbar-nav horizontal"}, 
 	                React.createElement(TopMenu, {menu: menus[0], idx: 0, transIdx: this.transIdx, selectedMenu: this.state.selectedMenu}), 
 	                React.createElement(TopMenu, {menu: menus[1], idx: 1, transIdx: this.transIdx, selectedMenu: this.state.selectedMenu}), 
-	                React.createElement(TopMenu, {menu: menus[2], idx: 2, transIdx: this.transIdx, selectedMenu: this.state.selectedMenu})
+	                React.createElement(TopMenu, {menu: menus[2], idx: 2, transIdx: this.transIdx, selectedMenu: this.state.selectedMenu}), 
+	                React.createElement(TopMenu, {menu: menus[3], idx: 3, transIdx: this.transIdx, selectedMenu: this.state.selectedMenu}), 
+	                React.createElement(TopMenu, {menu: menus[4], idx: 4, transIdx: this.transIdx, selectedMenu: this.state.selectedMenu})
 	            )
 	        )
 	    }
@@ -73480,7 +73547,7 @@
 	    },
 	    render: function () {
 	        var breadcrumb="";
-	        if(this.state.breadcrumbData.fourthID){
+	        if(!this.state.breadcrumbData.fourthID){
 	            breadcrumb=React.createElement(Breadcrumb, null, 
 	                React.createElement(Breadcrumb.Item, {href: "#"}, 
 	                    this.state.breadcrumbData.firstMenuName
@@ -73555,6 +73622,7 @@
 	var MenuTool = __webpack_require__(748);
 	var ButtonGroup = __webpack_require__(454);
 	var DropdownButton = __webpack_require__(370);
+	var ReactButton = __webpack_require__(455);
 	var MenuItem = __webpack_require__(618);
 	var Button = __webpack_require__(455);
 	var ObjectList = __webpack_require__(750);
@@ -73606,22 +73674,37 @@
 	var Timestamp = React.createClass({displayName: "Timestamp",
 	    getInitialState: function () {
 	        return ({
-	            timeItems: [{id: 1, text: "今日"}, {id: 2, text: "昨日"}, {id: 3, text: "7日内"}, {id: 4, text: "自定义"}]
+	            timeItems: [{id: 1, text: "今日"}, {id: 2, text: "昨日"}, {id: 3, text: "7日内"}, {id: 4, text: "自定义"}],
+	            visible: true,
+	            oldSelectedItem: "今日"
 	        })
 	    },
 	    onChange: function (key, value) {
 	        if (value == "自定义") {
-
+	            this.setState({visible: false});
+	        } else {
+	            this.setState({visible: true})
 	        }
+	        this.setState({oldSelectedItem: value});
+	    },
+	    hideDatePicker: function (param) {
+	        this.setState({visible: true});
 	    },
 	    render: function () {
+	        var result = "";
+	        var display = "时间段 : " + this.state.oldSelectedItem + "(2016-5-21 21:00 至 2016-5-21 22:30)";
+	        if (this.state.visible) {
+	            result = React.createElement("div", null, React.createElement(ToolBar.DropdownList, {onChange: this.onChange, items: this.state.timeItems, noCaret: true, 
+	                                                key: "bar0", prefixText: "时间段 : ", 
+	                                                appendText: "(2016-5-21 21:00 至 2016-5-21 22:30)", 
+	                                                defaultText: display}));
+	        } else {
+	            result = React.createElement("div", null, React.createElement(ToolBar.MyDatePicker, {hideDatePicker: this.hideDatePicker}));
+	        }
 	        return (
 	            React.createElement("div", {className: "col-sm-12 col-md-5 col-lg-5", style: {height:"47px",paddingLeft:"5px",marginTop:"-7px"}}, 
 	                React.createElement(ButtonGroup, null, 
-	                    React.createElement(ToolBar.DropdownList, {onChange: this.onChange, items: this.state.timeItems, noCaret: true, 
-	                                          key: "bar0", prefixText: "时间段 : ", 
-	                                          defaultText: "时间段 : 今日 (2016-5-21 21:00 至 2016-5-21 22:30)"}), 
-	                    React.createElement(ToolBar.MyDatePicker, null)
+	                    result
 	                )
 	            )
 	        )
@@ -73637,8 +73720,6 @@
 	    },
 	    componentDidMount: function () {
 	        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-	        this.setState({flag: !this.state.flag});
-	        console.log("a");
 	    },
 	    componentWillUnmount: function () {
 	        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
@@ -73648,12 +73729,25 @@
 	    },
 	    render: function () {
 	        var div = "";
-	        if (this.state.breadcrumbData.fourthID) {
-	            div = React.createElement("div", null, 
-	                React.createElement(ObjectList.VCenterList, null), 
-	                React.createElement(ObjectList.HypervisorList, null), 
-	                React.createElement(ObjectList.VMSList, null)
-	            );
+	        if (!this.state.breadcrumbData.fourthID) {
+	            switch (this.state.breadcrumbData.thirdID) {
+	                case 211:
+	                    div = React.createElement("div", null, 
+	                        React.createElement(ObjectList.VCenterList, null)
+	                    );
+	                    break;
+	                case 212:
+	                    div = React.createElement("div", null, 
+	                        React.createElement(ObjectList.HypervisorList, null)
+	                    );
+	                    break;
+	                case 213:
+	                    div = React.createElement("div", null, 
+	                        React.createElement(ObjectList.VMSList, null)
+	                    );
+	                    break;
+	            }
+
 	        }
 	        if (this.state.breadcrumbData.fourthID == 3) {
 	            div = React.createElement("div", null, 

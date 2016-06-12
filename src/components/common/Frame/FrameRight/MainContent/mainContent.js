@@ -7,6 +7,7 @@ var ToolBar = require("../../../ToolBar/ToolBar");
 var MenuTool = require("../headNav/menuTool");
 var ButtonGroup = require("react-bootstrap/lib/ButtonGroup");
 var DropdownButton = require("react-bootstrap/lib/DropdownButton");
+var ReactButton = require("react-bootstrap/lib/Button");
 var MenuItem = require("react-bootstrap/lib/MenuItem");
 var Button = require("react-bootstrap/lib/Button");
 var ObjectList = require("../../../ObjectList/ObjectList");
@@ -58,22 +59,37 @@ var Form = React.createClass({
 var Timestamp = React.createClass({
     getInitialState: function () {
         return ({
-            timeItems: [{id: 1, text: "今日"}, {id: 2, text: "昨日"}, {id: 3, text: "7日内"}, {id: 4, text: "自定义"}]
+            timeItems: [{id: 1, text: "今日"}, {id: 2, text: "昨日"}, {id: 3, text: "7日内"}, {id: 4, text: "自定义"}],
+            visible: true,
+            oldSelectedItem: "今日"
         })
     },
     onChange: function (key, value) {
         if (value == "自定义") {
-
+            this.setState({visible: false});
+        } else {
+            this.setState({visible: true})
         }
+        this.setState({oldSelectedItem: value});
+    },
+    hideDatePicker: function (param) {
+        this.setState({visible: true});
     },
     render: function () {
+        var result = "";
+        var display = "时间段 : " + this.state.oldSelectedItem + "(2016-5-21 21:00 至 2016-5-21 22:30)";
+        if (this.state.visible) {
+            result = <div><ToolBar.DropdownList onChange={this.onChange} items={this.state.timeItems} noCaret={true}
+                                                key={"bar0"} prefixText={"时间段 : "}
+                                                appendText={"(2016-5-21 21:00 至 2016-5-21 22:30)"}
+                                                defaultText={display}/></div>;
+        } else {
+            result = <div><ToolBar.MyDatePicker hideDatePicker={this.hideDatePicker}/></div>;
+        }
         return (
             <div className="col-sm-12 col-md-5 col-lg-5" style={{height:"47px",paddingLeft:"5px",marginTop:"-7px"}}>
                 <ButtonGroup>
-                    <ToolBar.DropdownList onChange={this.onChange} items={this.state.timeItems} noCaret={true}
-                                          key={"bar0"} prefixText={"时间段 : "}
-                                          defaultText={"时间段 : 今日 (2016-5-21 21:00 至 2016-5-21 22:30)"}/>
-                    <ToolBar.MyDatePicker />
+                    {result}
                 </ButtonGroup>
             </div>
         )
@@ -89,8 +105,6 @@ var Content = React.createClass({
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-        this.setState({flag: !this.state.flag});
-        console.log("a");
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
@@ -101,11 +115,24 @@ var Content = React.createClass({
     render: function () {
         var div = "";
         if (!this.state.breadcrumbData.fourthID) {
-            div = <div>
-                <ObjectList.VCenterList />
-                <ObjectList.HypervisorList />
-                <ObjectList.VMSList />
-            </div>;
+            switch (this.state.breadcrumbData.thirdID) {
+                case 211:
+                    div = <div>
+                        <ObjectList.VCenterList />
+                    </div>;
+                    break;
+                case 212:
+                    div = <div>
+                        <ObjectList.HypervisorList />
+                    </div>;
+                    break;
+                case 213:
+                    div = <div>
+                        <ObjectList.VMSList />
+                    </div>;
+                    break;
+            }
+
         }
         if (this.state.breadcrumbData.fourthID == 3) {
             div = <div>
