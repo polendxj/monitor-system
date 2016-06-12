@@ -10,6 +10,7 @@ var jQuery = require('jquery');
 var curToolBar = [];
 var preToolBarID = -1;
 var toolBarTitle="";
+var curOperator={id:-1,text:""};
 
 var AppStore = assign({}, EventEmitter.prototype, {
     changeToolBar: function (id, tools,title) {
@@ -17,6 +18,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
         preToolBarID=id;
         toolBarTitle=title;
         this.emitChange(this.events.change_toolbar);
+    },
+    setOperator: function (id,text) {
+        curOperator.id=id;
+        curOperator.text=text;
+        this.emitChange(this.events.current_operator);
+    },
+    getOperator: function () {
+        return curOperator;
     },
     getCurrentToolBar: function () {
         return curToolBar.bar;
@@ -37,7 +46,8 @@ var AppStore = assign({}, EventEmitter.prototype, {
         this.removeListener(event, callback);
     },
     events: {
-        change_toolbar: "change_toolbar"
+        change_toolbar: "change_toolbar",
+        current_operator:"current_operator"
     }
     //login: function(username, password) {
     //    ResourceUtils.AUTH.POST({
@@ -130,6 +140,9 @@ AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeToolBar:
             AppStore.changeToolBar(action.id, action.object,action.title);
+            break;
+        case MonitorConstants.SaveOperator:
+            AppStore.setOperator(action.id, action.text);
             break;
         default:
             break;

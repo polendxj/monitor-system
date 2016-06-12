@@ -12,6 +12,7 @@ var Button = require("react-bootstrap/lib/Button");
 var ObjectList=require("../../../ObjectList/ObjectList");
 
 
+
 var MainContent = React.createClass({
     render: function () {
 
@@ -56,12 +57,18 @@ var Timestamp = React.createClass({
             timeItems:[{id:1,text:"今日"},{id:2,text:"昨日"},{id:3,text:"7日内"},{id:4,text:"自定义"}]
         })
     },
+    onChange: function (key,value) {
+        if(value=="自定义"){
+
+        }
+    },
     render: function () {
         return (
             <div className="col-sm-12 col-md-5 col-lg-5" style={{height:"47px",paddingLeft:"5px",marginTop:"-7px"}}>
                 <ButtonGroup>
-                    <ToolBar.DropdownList items={this.state.timeItems} noCaret={true} key={"bar0"} prefixText={"时间段 : "}
+                    <ToolBar.DropdownList onChange={this.onChange} items={this.state.timeItems} noCaret={true} key={"bar0"} prefixText={"时间段 : "}
                                           defaultText={"时间段 : 今日 (2016-5-21 21:00 至 2016-5-21 22:30)"}/>
+                    <ToolBar.MyDatePicker />
                 </ButtonGroup>
             </div>
         )
