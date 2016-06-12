@@ -35528,6 +35528,7 @@
 	var AppAction = __webpack_require__(313);
 	var ToolBar = __webpack_require__(321);
 	var browserHistory = __webpack_require__(247).browserHistory;
+	var Button = __webpack_require__(653).Button;
 
 	var MenuStore = __webpack_require__(651);
 	var MenuAction = __webpack_require__(650);
@@ -35537,10 +35538,8 @@
 	var Menus = React.createClass({displayName: "Menus",
 	    getInitialState: function () {
 	        return ({
-	            subMenus: [
-
-	            ],
-	            breadcrumbData:"",
+	            subMenus: [],
+	            breadcrumbData: "",
 	            hoverParentIndex: -1,
 	            selectedParentIndex: -1,
 	            hoverIndex: -1,
@@ -35557,10 +35556,10 @@
 	    },
 	    _changeFirstMenu: function () {
 	        this.setState({subMenus: MenuStore.getSubMenus()});
-	        if(this.state.subMenus.subMenus.length>0){
+	        if (this.state.subMenus.subMenus.length > 0) {
 	            setTimeout(function () {
-	                MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[0]);
-	            }.bind(this),10);
+	                MenuAction.changeBreadcrumb("third", this.state.subMenus.subMenus[0]);
+	            }.bind(this), 10);
 	        }
 	    },
 	    _changeBreadcrumbData: function () {
@@ -35577,7 +35576,7 @@
 	        var curTool = "";
 	        this.setState({selectedIndex: idx});
 	        this.setState({selectedParentIndex: selectedParentIdx});
-	        MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[idx]);
+	        MenuAction.changeBreadcrumb("third", this.state.subMenus.subMenus[idx]);
 	        switch (this.state.subMenus.parentIdx) {
 	            case 1:
 	                switch (idx) {
@@ -35628,19 +35627,19 @@
 	        var panel2 = "";
 	        var panel3 = "";
 	        var that = this;
-	        if(this.state.breadcrumbData.fourthID!=""){
+	        if (this.state.breadcrumbData.fourthID != "") {
 	            panel3 = React.createElement("li", {style: {display:"block",width:"210px",backgroundColor:"#e6e6e6"}}, React.createElement("a", {href: "#", 
-	                                                                                              style: {padding:"7px 25px",color:"black"}}, React.createElement("span", {style: {fontWeight:"bold"}}, "自定义视图")), 
+	                                                                                              style: {padding:"7px 25px",color:"black"}}, React.createElement("span", {
+	                style: {fontWeight:"bold"}}, "自定义视图")), 
 	                React.createElement("ul", {className: "sub-menu", style: {display:"block",backgroundColor:"white"}}, 
 	                    React.createElement("li", {className: "secondLayer", 
-	                        style: {marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==0&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==0&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}, 
-	                        onMouseOver: that._hover.bind(that,0,1), 
-	                        onMouseLeave: that._leave}, React.createElement("a", {
-	                        href: "#", style: {padding:"7px 25px",color:"black"}}, "创建自定义视图")
+	                        style: {marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}
+	                        }, React.createElement(Button, {
+	                        style: {padding:"7px 25px 7px 10px",color:"black"}}, React.createElement("i", {className: "fa fa-plus"}), " 创建自定义视图")
 	                    )
 	                )
 	            )
-	        }else {
+	        } else {
 	            if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
 	                panel1 = React.createElement("li", {style: {display:"block",width:"210px",backgroundColor:"#e6e6e6"}}, React.createElement("a", {href: "#", 
 	                                                                                                  style: {padding:"7px 25px",color:"black"}}, React.createElement("span", {

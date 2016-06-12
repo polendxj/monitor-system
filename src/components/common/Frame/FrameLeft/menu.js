@@ -7,6 +7,7 @@ var AppStore = require('../../../../stores/AppStore');
 var AppAction = require('../../../../actions/AppAction');
 var ToolBar = require('../../../../components/common/ToolBar/ToolBar');
 var browserHistory = require('react-router').browserHistory;
+var Button = require("react-bootstrap").Button;
 
 var MenuStore = require('../../../../stores/MenuStore');
 var MenuAction = require('../../../../actions/MenuAction');
@@ -16,10 +17,8 @@ require('jquery');
 var Menus = React.createClass({
     getInitialState: function () {
         return ({
-            subMenus: [
-
-            ],
-            breadcrumbData:"",
+            subMenus: [],
+            breadcrumbData: "",
             hoverParentIndex: -1,
             selectedParentIndex: -1,
             hoverIndex: -1,
@@ -36,10 +35,10 @@ var Menus = React.createClass({
     },
     _changeFirstMenu: function () {
         this.setState({subMenus: MenuStore.getSubMenus()});
-        if(this.state.subMenus.subMenus.length>0){
+        if (this.state.subMenus.subMenus.length > 0) {
             setTimeout(function () {
-                MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[0]);
-            }.bind(this),10);
+                MenuAction.changeBreadcrumb("third", this.state.subMenus.subMenus[0]);
+            }.bind(this), 10);
         }
     },
     _changeBreadcrumbData: function () {
@@ -56,7 +55,7 @@ var Menus = React.createClass({
         var curTool = "";
         this.setState({selectedIndex: idx});
         this.setState({selectedParentIndex: selectedParentIdx});
-        MenuAction.changeBreadcrumb("third",this.state.subMenus.subMenus[idx]);
+        MenuAction.changeBreadcrumb("third", this.state.subMenus.subMenus[idx]);
         switch (this.state.subMenus.parentIdx) {
             case 1:
                 switch (idx) {
@@ -107,19 +106,19 @@ var Menus = React.createClass({
         var panel2 = "";
         var panel3 = "";
         var that = this;
-        if(this.state.breadcrumbData.fourthID!=""){
+        if (this.state.breadcrumbData.fourthID != "") {
             panel3 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                              style={{padding:"7px 25px",color:"black"}}><span style={{fontWeight:"bold"}}>自定义视图</span></a>
+                                                                                              style={{padding:"7px 25px",color:"black"}}><span
+                style={{fontWeight:"bold"}}>自定义视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
                     <li className="secondLayer"
-                        style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==0&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==0&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
-                        onMouseOver={that._hover.bind(that,0,1)}
-                        onMouseLeave={that._leave}><a
-                        href="#" style={{padding:"7px 25px",color:"black"}}>创建自定义视图</a>
+                        style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
+                        ><Button
+                        style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;创建自定义视图</Button>
                     </li>
                 </ul>
             </li>
-        }else {
+        } else {
             if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
                 panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
                                                                                                   style={{padding:"7px 25px",color:"black"}}><span
