@@ -60,7 +60,7 @@ var Title = React.createClass({
     },
     render: function () {
         var breadcrumb="";
-        if(this.state.breadcrumbData.fourthID){
+        if(!this.state.breadcrumbData.fourthID){
             breadcrumb=<Breadcrumb>
                 <Breadcrumb.Item href="#">
                     {this.state.breadcrumbData.firstMenuName}

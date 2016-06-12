@@ -100,7 +100,7 @@ var Content = React.createClass({
     },
     render: function () {
         var div = "";
-        if (this.state.breadcrumbData.fourthID) {
+        if (!this.state.breadcrumbData.fourthID) {
             div = <div>
                 <ObjectList.VCenterList />
                 <ObjectList.HypervisorList />
