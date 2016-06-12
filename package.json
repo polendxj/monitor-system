@@ -30,6 +30,7 @@
     "object-assign": "^4.0.1",
     "react": "^0.14.2",
     "react-bootstrap": "^0.29.4",
+    "react-bootstrap-datetimepicker": "0.0.22",
     "react-dom": "^0.14.2",
     "react-fa": "^4.0.0",
     "react-highcharts": "^5.0.6",

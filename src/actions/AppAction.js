@@ -10,6 +10,13 @@ var AppAction = {
             object: object,
             title: title
         });
+    },
+    saveOperator: function (id,text) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.SaveOperator,
+            id: id,
+            text: text
+        });
     }
 };
 
