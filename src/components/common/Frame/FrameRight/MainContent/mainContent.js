@@ -94,8 +94,7 @@ var Content = React.createClass({
                 <ObjectList.HypervisorList />
                 <ObjectList.VMSList />
             </div>;
-        }
-        if(this.state.breadcrumbData.fourthID==3){
+        }else if(this.state.breadcrumbData.fourthID==3){
             div = <div>
                 {"hhh"}
             </div>;
