@@ -77,7 +77,7 @@ var DropdownList = React.createClass({
             list.push(<MenuItem key={value.id} onSelect={this._changeItem}
                                 eventKey={value.id}>{value.text}</MenuItem>)
         }.bind(this));
-        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text);
+        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text+this.props.appendText);
         return (
             <DropdownButton title={title}
                             style={{height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}}
@@ -260,6 +260,9 @@ var Button = React.createClass({
 });
 
 var MyDatePicker = React.createClass({
+    hideDatePicker: function (param) {
+        this.props.hideDatePicker(param);
+    },
     componentDidMount: function () {
         $(".date").css("left", "-84px");
 
@@ -270,8 +273,12 @@ var MyDatePicker = React.createClass({
                 <div style={{position:"relative",width:"150px",left:"84px",marginLeft:"10px",float:"left"}}><DateTimeField /> </div>
                 <div style={{position:"relative",width:"30px",float:"left",marginLeft:"10px",marginTop:"6px"}}>To</div>
                 <div style={{position:"relative",width:"150px",left:"84px",float:"left",marginLeft:"-7px"}}><DateTimeField /></div>
-                <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link" style={{border:"0 red solid"}}>取消</ReactButton></div>
-                <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link" style={{border:"0 red solid"}}>保存</ReactButton></div>
+                <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link"
+                                                                             style={{border:"0 red solid"}} onClick={this.hideDatePicker.bind(this,"取消")}>取消</ReactButton>
+                </div>
+                <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link"
+                                                                             style={{border:"0 red solid"}} onClick={this.hideDatePicker.bind(this,"保存")}>保存</ReactButton>
+                </div>
             </div>
         )
     }
