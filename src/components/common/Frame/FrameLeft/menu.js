@@ -104,6 +104,9 @@ var Menus = React.createClass({
         browserHistory.push("/list");
 
     },
+    _clickCreateView: function () {
+        browserHistory.push("/createView");
+    },
     render: function () {
         var panel1 = "";
         var panel2 = "";
@@ -114,7 +117,7 @@ var Menus = React.createClass({
                                                                                               style={{padding:"7px 25px",color:"black"}}><span
                 style={{fontWeight:"bold"}}>自定义视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                    <li className="createView"
+                    <li className="createView" onClick={that._clickCreateView}
                         style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
                         ><Button
                         style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;创建自定义视图</Button>
