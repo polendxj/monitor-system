@@ -4,7 +4,7 @@ var jQuery = require('jquery');
 var browserHistory = require('react-router').browserHistory;
 var Logo = require('./common/Frame/FrameLeft/logo');
 var Menus = require('./common/Frame/FrameLeft/menu');
-var HeadNav = require('./common/Frame/FrameRight/headNav/headNav');
+var TopMenu = require('./common/Frame/FrameRight/headNav/TopMenu');
 var MainContent = require('./common/Frame/FrameRight/MainContent/mainContent');
 
 var FirstMenuLayer = require('./common/Frame/FrameRight/headNav/FirstMenuLayer');
@@ -30,7 +30,7 @@ var App = React.createClass({
                                 <div className="navbar-collapse collapse">
                                     <Logo _collapsedMenu={this._collapsedMenu}
                                           menuCollapsed={this.state.menuCollapsed}/>
-                                    <HeadNav />
+                                    <TopMenu />
                                     <NavButton />
                                 </div>
                                 <FirstMenuLayer />

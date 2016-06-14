@@ -18,7 +18,7 @@ var Menus = React.createClass({
     getInitialState: function () {
         return ({
             subMenus: [],
-            breadcrumbData: "",
+            breadcrumbData: MenuStore.getBreadcrumbData(),
             hoverParentIndex: -1,
             selectedParentIndex: -1,
             hoverIndex: -1,

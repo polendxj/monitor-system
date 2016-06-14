@@ -35,19 +35,25 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     changeFirstMenus: function (idx, tools) {
         subMenus.parentIdx = idx;
         subMenus.subMenus = tools.secondLayer;
-/*        breadcrumbData.firstMenuName = firstMenus.name;
-        breadcrumbData.secondMenuName = tools.name;
-        breadcrumbData.firstID = firstMenus.id;
-        breadcrumbData.secondID = tools.id;*/
         this.emitChange(this.events.change_firstMenus);
     },
     changeBreadcrumb: function (level, data) {
         if (level == 'first') {
             breadcrumbData.firstID = data.id;
             breadcrumbData.firstMenuName = data.name;
+            breadcrumbData.secondID = '';
+            breadcrumbData.secondMenuName = '';
+            breadcrumbData.thirdID = '';
+            breadcrumbData.thirdMenuName = '';
+            breadcrumbData.fourthID = '';
+            breadcrumbData.fourthMenuName = '';
         } else if (level == 'second') {
             breadcrumbData.secondID = data.id;
             breadcrumbData.secondMenuName = data.name;
+            breadcrumbData.thirdID = '';
+            breadcrumbData.thirdMenuName = '';
+            breadcrumbData.fourthID = '';
+            breadcrumbData.fourthMenuName = '';
         } else if (level == 'third'){
             breadcrumbData.thirdID = data.id;
             breadcrumbData.thirdMenuName = data.name;
