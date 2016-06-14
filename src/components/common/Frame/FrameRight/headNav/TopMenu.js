@@ -115,6 +115,14 @@ menus = [
                     },
                     {
                         id:223,
+                        name: 'VMS',
+                        icon: '',
+                        count:104,
+                        status: false,
+                        url: ''
+                    },
+                    {
+                        id:223,
                         name: 'Docker',
                         icon: '',
                         count:104,
