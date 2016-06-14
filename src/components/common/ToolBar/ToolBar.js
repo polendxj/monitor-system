@@ -14,7 +14,7 @@ var Checkbox = require("react-bootstrap/lib/Checkbox");
 var Tooltip = require("react-bootstrap/lib/Tooltip");
 var OverlayTrigger = require("react-bootstrap/lib/OverlayTrigger");
 var browserHistory = require('react-router').browserHistory;
-var ReactButton=require("react-bootstrap/lib/Button")
+var ReactButton=require("react-bootstrap/lib/Button");
 var AppStore = require('../../../stores/AppStore');
 var AppAction = require('../../../actions/AppAction');
 

@@ -25,7 +25,14 @@ var MenuAction = {
             level:level,
             breadcrumbData: object
         });
+    },
+    changeViews: function (data) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.ChangeViews,
+            viewData: data
+        });
     }
 };
+
 
 module.exports = MenuAction;

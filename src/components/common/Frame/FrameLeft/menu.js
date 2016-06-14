@@ -51,6 +51,9 @@ var Menus = React.createClass({
     _leave: function () {
         this.setState({hoverIndex: -1});
     },
+    _clickViewMenu: function (data) {
+        MenuAction.changeViews(data);
+    },
     _clickSubMenu: function (idx, selectedParentIdx) {
         var curTool = "";
         this.setState({selectedIndex: idx});
@@ -111,10 +114,14 @@ var Menus = React.createClass({
                                                                                               style={{padding:"7px 25px",color:"black"}}><span
                 style={{fontWeight:"bold"}}>自定义视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                    <li className="secondLayer"
+                    <li className="createView"
                         style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
                         ><Button
-                        style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;创建自定义视图</Button>
+                        style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;创建自定义视图</Button>
+                    </li>
+                    <li className="views"
+                        style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
+                        onClick={that._clickViewMenu.bind(that,"VCenter")}><span style={{cursor:"pointer"}}>VCenter</span>
                     </li>
                 </ul>
             </li>

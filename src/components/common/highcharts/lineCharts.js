@@ -8,7 +8,7 @@ var ReactHighcharts = require('react-highcharts/dist/bundle/highcharts');
 var LineCharts = React.createClass({
     render: function () {
         return (
-            <ReactHighcharts className="col-sm-12 col-md-9" config={this.props.data} style={{paddingLeft:"0px"}}></ReactHighcharts>
+            <ReactHighcharts className="col-sm-12 col-md-9 col-lg-9" config={this.props.data} style={{paddingLeft:"0px",marginTop:"35px",marginLeft:"-10px"}}></ReactHighcharts>
         )
     }
 });

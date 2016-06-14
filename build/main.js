@@ -143,9 +143,9 @@
 	var browserHistory = __webpack_require__(247).browserHistory;
 	var IndexRoute = __webpack_require__(247).IndexRoute;
 	var App=__webpack_require__(308);
-	var Dashboard=__webpack_require__(752);
+	var Dashboard=__webpack_require__(756);
 	var List=__webpack_require__(749);
-	var AllCharts = __webpack_require__(753);
+	var AllCharts = __webpack_require__(751);
 
 	__webpack_require__(757);
 
@@ -25601,7 +25601,7 @@
 	var HeadNav = __webpack_require__(746);
 	var MainContent = __webpack_require__(749);
 
-	var FirstMenuLayer = __webpack_require__(751);
+	var FirstMenuLayer = __webpack_require__(755);
 	var NavButton = __webpack_require__(747);
 
 
@@ -35572,6 +35572,9 @@
 	    _leave: function () {
 	        this.setState({hoverIndex: -1});
 	    },
+	    _clickViewMenu: function (data) {
+	        MenuAction.changeViews(data);
+	    },
 	    _clickSubMenu: function (idx, selectedParentIdx) {
 	        var curTool = "";
 	        this.setState({selectedIndex: idx});
@@ -35632,10 +35635,14 @@
 	                                                                                              style: {padding:"7px 25px",color:"black"}}, React.createElement("span", {
 	                style: {fontWeight:"bold"}}, "自定义视图")), 
 	                React.createElement("ul", {className: "sub-menu", style: {display:"block",backgroundColor:"white"}}, 
-	                    React.createElement("li", {className: "secondLayer", 
+	                    React.createElement("li", {className: "createView", 
 	                        style: {marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}
 	                        }, React.createElement(Button, {
-	                        style: {padding:"7px 25px 7px 10px",color:"black"}}, React.createElement("i", {className: "fa fa-plus"}), " 创建自定义视图")
+	                        style: {padding:"7px 25px 7px 10px",color:"black"}}, React.createElement("i", {className: "fa fa-plus"}), "  创建自定义视图")
+	                    ), 
+	                    React.createElement("li", {className: "views", 
+	                        style: {marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}, 
+	                        onClick: that._clickViewMenu.bind(that,"VCenter")}, React.createElement("span", {style: {cursor:"pointer"}}, "VCenter")
 	                    )
 	                )
 	            )
@@ -36157,7 +36164,8 @@
 	    ChangeMenus:null,
 	    ChangeFirstMenus:null,
 	    SaveOperator:null,
-	    ChangeBreadcrumb:null
+	    ChangeBreadcrumb:null,
+	    ChangeViews:null
 	});
 
 	module.exports = MonitorConstants;
@@ -36331,7 +36339,7 @@
 	var Tooltip = __webpack_require__(620);
 	var OverlayTrigger = __webpack_require__(621);
 	var browserHistory = __webpack_require__(247).browserHistory;
-	var ReactButton=__webpack_require__(455)
+	var ReactButton=__webpack_require__(455);
 	var AppStore = __webpack_require__(647);
 	var AppAction = __webpack_require__(313);
 
@@ -63068,8 +63076,15 @@
 	            level:level,
 	            breadcrumbData: object
 	        });
+	    },
+	    changeViews: function (data) {
+	        AntiFraudDispatcher.dispatch({
+	            actionType: MonitorConstants.ChangeViews,
+	            viewData: data
+	        });
 	    }
 	};
+
 
 	module.exports = MenuAction;
 
@@ -63105,6 +63120,7 @@
 	    parentIdx: "",
 	    subMenus: ""
 	};
+	var viewData="";
 
 	var MenuStore = assign({}, EventEmitter.prototype, {
 	    changeMenus: function (tools) {
@@ -63138,6 +63154,13 @@
 	        }
 	        this.emitChange(this.events.change_breadcrumb);
 	    },
+	    changeViews: function (data) {
+	        viewData = data;
+	        this.emitChange(this.events.change_views);
+	    },
+	    getViewData: function () {
+	        return viewData;
+	    },
 	    getSubMenus: function () {
 	        return subMenus;
 	    },
@@ -63159,7 +63182,8 @@
 	    events: {
 	        change_menus: "change_menus",
 	        change_firstMenus: "change_firstMenus",
-	        change_breadcrumb:"change_breadcrumb"
+	        change_breadcrumb:"change_breadcrumb",
+	        change_views:"change_views"
 	    }
 
 	});
@@ -63174,6 +63198,9 @@
 	            break;
 	        case MonitorConstants.ChangeBreadcrumb:
 	            MenuStore.changeBreadcrumb(action.level,action.breadcrumbData);
+	            break;
+	        case MonitorConstants.ChangeViews:
+	            MenuStore.changeViews(action.viewData);
 	            break;
 	        default:
 	            break;
@@ -73629,6 +73656,8 @@
 	var MenuAction = __webpack_require__(650);
 	var MenuStore = __webpack_require__(651);
 
+	var AllCharts = __webpack_require__(751);
+
 
 	var MainContent = React.createClass({displayName: "MainContent",
 	    render: function () {
@@ -73714,17 +73743,24 @@
 	    getInitialState: function () {
 	        return ({
 	            breadcrumbData: MenuStore.getBreadcrumbData(),
+	            viewData:"",
 	            flag: false
 	        })
 	    },
 	    componentDidMount: function () {
 	        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+	        MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
+	        
 	    },
 	    componentWillUnmount: function () {
 	        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+	        MenuStore.removeChangeListener(MenuStore.events.change_views, this._changeViews);
 	    },
 	    _changeBreadcrumbData: function () {
 	        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+	    },
+	    _changeViews:function(){
+	        this.setState({viewData: MenuStore.getViewData()});
 	    },
 	    render: function () {
 	        var div = "";
@@ -73747,12 +73783,18 @@
 	                    break;
 	            }
 
+	        }else{
+	            if (this.state.breadcrumbData.fourthID == 3 && !this.state.viewData) {
+	                div = React.createElement("div", null, 
+	                    "此处应该显示图表"
+	                );
+	            }else if(this.state.viewData=="VCenter"){
+	                div =React.createElement("div", null, 
+	                    React.createElement(AllCharts, null)
+	                );
+	            }
 	        }
-	        if (this.state.breadcrumbData.fourthID == 3) {
-	            div = React.createElement("div", null, 
-	                "hhh"
-	            );
-	        }
+
 	        return (
 	            React.createElement("div", {style: {padding:"0 10px 0 10px"}}, 
 	                div
@@ -74242,122 +74284,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Created by Captain on 2016/6/8.
-	 */
-	var React = __webpack_require__(84);
-	var ToolBar=__webpack_require__(321);
-	var MenuStore=__webpack_require__(651);
-	var MenuAction=__webpack_require__(650);
-
-	var style= {
-	        height: "35px",
-	        backgroundColor: "white",
-	        marginTop: "0px",
-	        color: "black",
-	        paddingTop:"0px"
-	};
-	var FirstMenuLayer = React.createClass({displayName: "FirstMenuLayer",
-	    getInitialState: function () {
-	        return ({
-	            firstMenus:[],
-	            selectedIndex:0
-	        })
-	    },
-	    componentDidMount: function () {
-	        MenuStore.addChangeListener(MenuStore.events.change_menus,this._changeTopMenu);
-	    },
-	    componentWillUnmount: function () {
-	        MenuStore.removeChangeListener(MenuStore.events.change_menus,this._changeTopMenu);
-	    },
-	    _changeTopMenu: function () {
-	        this.setState({firstMenus:MenuStore.getFirstMenus()});
-	        setTimeout(function () {
-	            console.log(this.state.firstMenus[0]);
-	            MenuAction.changeFirstMenus(0,this.state.firstMenus[0]);
-	        }.bind(this),1);
-	        setTimeout(function () {
-	            MenuAction.changeBreadcrumb("second",this.state.firstMenus[0]);
-	        }.bind(this),1);
-	    },
-	    _click: function (idx) {
-	        this.setState({selectedIndex:idx});
-	        MenuAction.changeFirstMenus(idx,this.state.firstMenus[idx]);
-	        setTimeout(function () {
-	            MenuAction.changeBreadcrumb("second",this.state.firstMenus[idx]);
-	        }.bind(this),1);
-	    },
-	    render: function () {
-	        var that = this;
-	        return (
-	            React.createElement("div", {style: {height:"49px",backgroundColor:"white",paddingLeft:"150px"}}, 
-	                
-	                    this.state.firstMenus.map(function (firstMenu,idx) {
-	                        return(
-	                            React.createElement("button", {key: firstMenu.name, onClick: that._click.bind(that,idx), type: "button", 
-	                                    className: "btn btn-info btn-flat", 
-	                                    style: {borderBottom:that.state.selectedIndex==idx?"2px #ffa72f solid":"0",height: "35px",backgroundColor: "white",marginTop: "0px",color: "black",paddingTop:"0px"}}, React.createElement("span", {
-	                                style: {fontSize:"14px",lineHeight:"35px"}}, firstMenu.name)
-	                            )
-	                        )
-	                    })
-	                
-	            )
-	        )
-	    }
-	});
-
-	var FirstLayerBtn=React.createClass({displayName: "FirstLayerBtn",
-	    render: function () {
-	        return (
-	            React.createElement("button", {onClick: this._click, type: "button", 
-	                    className: "btn btn-info btn-flat", 
-	                    style: style}, React.createElement("span", {
-	                style: {fontSize:"14px",lineHeight:"35px"}}, this.props.menu.name)
-	            )
-	        )
-	    }
-	});
-
-	module.exports = FirstMenuLayer;
-
-/***/ },
-/* 752 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(84);
-	var ReactDOM = __webpack_require__(241);
-	var jQuery = __webpack_require__(309);
-
-
-
-	var Dashboard = React.createClass({displayName: "Dashboard",
-	    render: function () {
-	        return (
-	            React.createElement("div", {className: "cl-mcont", style: {padding:"10px 0px"}}, 
-	                React.createElement("div", {style: {padding:"0px 0px 0px 6px"}}, 
-	                    "Dashboard"
-	                )
-	            )
-	        )
-
-	    }
-	});
-
-
-	module.exports = Dashboard;
-
-
-/***/ },
-/* 753 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Created by Captain on 2016/6/5.
 	 */
 	var React = __webpack_require__(84);
-	var LineCharts = __webpack_require__(754);
-	var PieCharts = __webpack_require__(756);
-	var ReactHighcharts = __webpack_require__(755);
+	var LineCharts = __webpack_require__(752);
+	var PieCharts = __webpack_require__(754);
+	var ReactHighcharts = __webpack_require__(753);
 
 	var percent = 30;
 	var pieChartsData = [
@@ -74567,7 +74499,7 @@
 	module.exports = AllCharts;
 
 /***/ },
-/* 754 */
+/* 752 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -74575,19 +74507,19 @@
 	 */
 	var React = __webpack_require__(84);
 	// Note that Highcharts has to be required separately
-	var ReactHighcharts = __webpack_require__(755);
+	var ReactHighcharts = __webpack_require__(753);
 
 	var LineCharts = React.createClass({displayName: "LineCharts",
 	    render: function () {
 	        return (
-	            React.createElement(ReactHighcharts, {className: "col-sm-12 col-md-9", config: this.props.data, style: {paddingLeft:"0px"}})
+	            React.createElement(ReactHighcharts, {className: "col-sm-12 col-md-9 col-lg-9", config: this.props.data, style: {paddingLeft:"0px",marginTop:"35px",marginLeft:"-10px"}})
 	        )
 	    }
 	});
 	module.exports = LineCharts;
 
 /***/ },
-/* 755 */
+/* 753 */
 /***/ function(module, exports, __webpack_require__) {
 
 	!function(t,e){ true?module.exports=e(__webpack_require__(84)):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports.Highcharts=e(require("react")):t.Highcharts=e(t.react)}(this,function(t){return function(t){function e(n){if(i[n])return i[n].exports;var o=i[n]={exports:{},id:n,loaded:!1};return t[n].call(o.exports,o,o.exports,e),o.loaded=!0,o.exports}var i={};return e.m=t,e.c=i,e.p="",e(0)}([function(t,e,i){(function(e){"use strict";if(!n){e.HighchartsAdapter=i(4);var n=i(7)}t.exports=i(3)}).call(e,function(){return this}())},function(t,e,i){"use strict";var n=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t[n]=i[n])}return t},o=i(2);if("undefined"==typeof Highcharts)throw Error('Starting with version 3 of react-highcharts, Highcharts is not bundled by default.  use "react-highcharts/dist/bundle/highcharts" instead, or include highcharts. ');t.exports=function(t,e){var i="Highcharts"+e,r=o.createClass({displayName:i,propTypes:{config:o.PropTypes.object.isRequired,isPureConfig:o.PropTypes.bool},renderChart:function(o){if(!o)throw new Error("Config must be specified for the "+i+" component");var r=o.chart;this.chart=new t[e](n({},o,{chart:n({},r,{renderTo:this.refs.chart})}))},shouldComponentUpdate:function(t){return this.props.isPureConfig&&this.props.config===t.config||this.renderChart(t.config),!0},getChart:function(){if(!this.chart)throw new Error("getChart() should not be called before the component is mounted");return this.chart},componentDidMount:function(){this.renderChart(this.props.config)},render:function(){var t=this.props;return t=n({},t,{ref:"chart"}),o.createElement("div",t)}});return r.Highcharts=t,r}},function(e,i){e.exports=t},function(t,e,i){"use strict";var n=i(1);t.exports=n(Highcharts,"Chart")},function(t,e){/**
@@ -74612,7 +74544,7 @@
 	t.hoverPoint=null)},importEvents:function(){if(!this.hasImportedEvents){var e,i=this,n=t(i.series.options.point,i.options),o=n.events;i.events=o;for(e in o)ge(i,e,o[e]);this.hasImportedEvents=!0}},setState:function(e,i){var n,o,r,s,a=this,l=ut(a.plotX),h=a.plotY,c=a.series,d=c.options.states,p=ke[c.type].marker&&c.options.marker,u=p&&!p.enabled,f=p&&p.states[e],g=f&&f.enabled===!1,m=c.stateMarkerGraphic,y=a.marker||{},x=c.chart,v=c.halo;e=e||$t,s=a.pointAttr[e]||c.pointAttr[e],e===a.state&&!i||a.selected&&e!==Qt||d[e]&&d[e].enabled===!1||e&&(g||u&&f.enabled===!1)||e&&y.states&&y.states[e]&&y.states[e].enabled===!1||(a.graphic?(n=p&&a.graphic.symbolName&&s.r,a.graphic.attr(t(s,n?{x:l-n,y:h-n,width:2*n,height:2*n}:{})),m&&m.hide()):(e&&f&&(n=f.radius,r=y.symbol||c.symbol,m&&m.currentSymbol!==r&&(m=m.destroy()),m?m[i?"animate":"attr"]({x:l-n,y:h-n}):r&&(c.stateMarkerGraphic=m=x.renderer.symbol(r,l-n,h-n,2*n,2*n).attr(s).add(c.markerGroup),m.currentSymbol=r)),m&&(m[e&&x.isInsidePlot(l,h,x.inverted)?"show":"hide"](),m.element.point=a)),o=d[e]&&d[e].halo,o&&o.size?(v||(c.halo=v=x.renderer.path().add(x.seriesGroup)),v.attr(ne({fill:Ce(a.color||c.color).setOpacity(o.opacity).get()},o.attributes))[i?"animate":"attr"]({d:a.haloPath(o.size)})):v&&v.attr({d:[]}),a.state=e)},haloPath:function(t){var e=this.series,i=e.chart,n=e.getPlotBox(),o=i.inverted;return i.renderer.symbols.circle(n.translateX+(o?e.yAxis.len-this.plotY:this.plotX)-t,n.translateY+(o?e.xAxis.len-this.plotX:this.plotY)-t,2*t,2*t)}}),ne(je.prototype,{onMouseOver:function(){var t=this,e=t.chart,i=e.hoverSeries;i&&i!==t&&i.onMouseOut(),t.options.events.mouseOver&&ye(t,"mouseOver"),t.setState(Jt),e.hoverSeries=t},onMouseOut:function(){var t=this,e=t.options,i=t.chart,n=i.tooltip,o=i.hoverPoint;i.hoverSeries=null,o&&o.onMouseOut(),t&&e.events.mouseOut&&ye(t,"mouseOut"),!n||e.stickyTracking||n.shared&&!t.noSharedTooltip||n.hide(),t.setState()},setState:function(t){var e,i=this,n=i.options,o=i.graph,r=n.states,s=n.lineWidth,a=0;if(t=t||$t,i.state!==t){if(i.state=t,r[t]&&r[t].enabled===!1)return;if(t&&(s=r[t].lineWidth||s+(r[t].lineWidthPlus||0)),o&&!o.dashstyle)for(e={"stroke-width":s},o.attr(e);i["zoneGraph"+a];)i["zoneGraph"+a].attr(e),a+=1}},setVisible:function(t,e){var i,n=this,o=n.chart,r=n.legendItem,s=o.options.chart.ignoreHiddenSeries,a=n.visible;n.visible=t=n.userOptions.visible=t===B?!a:t,i=t?"show":"hide",de(["group","dataLabelsGroup","markerGroup","tracker"],function(t){n[t]&&n[t][i]()}),(o.hoverSeries===n||(o.hoverPoint&&o.hoverPoint.series)===n)&&n.onMouseOut(),r&&o.legend.colorizeItem(n,t),n.isDirty=!0,n.options.stacking&&de(o.series,function(t){t.options.stacking&&t.visible&&(t.isDirty=!0)}),de(n.linkedSeries,function(e){e.setVisible(t,!1)}),s&&(o.isDirtyBox=!0),e!==!1&&o.redraw(),ye(n,i)},show:function(){this.setVisible(!0)},hide:function(){this.setVisible(!1)},select:function(t){var e=this;e.selected=t=t===B?!e.selected:t,e.checkbox&&(e.checkbox.checked=t),ye(e,t?"select":"unselect")},drawTracker:ni.drawTrackerGraph}),ne(lt,{Color:Ce,Point:Ve,Tick:E,Renderer:H,SVGElement:z,SVGRenderer:Pe,arrayMin:A,arrayMax:S,charts:Bt,dateFormat:Y,error:P,format:v,pathAnim:F,getOptions:I,hasBidiBug:Ot,isTouchDevice:Mt,setOptions:O,addEvent:ge,removeEvent:me,createElement:u,discardElement:C,css:p,each:de,map:fe,merge:t,splat:d,extendClass:f,pInt:e,svg:Dt,canvas:It,vml:!Dt&&!It,product:Xt,version:Wt})}()}])});
 
 /***/ },
-/* 756 */
+/* 754 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -74623,16 +74555,126 @@
 	 */
 	var React = __webpack_require__(84);
 	// Note that Highcharts has to be required separately
-	var ReactHighcharts = __webpack_require__(755);
+	var ReactHighcharts = __webpack_require__(753);
 
 	var PieCharts = React.createClass({displayName: "PieCharts",
 	    render: function () {
 	        return (
-	            React.createElement(ReactHighcharts, {className: "col-sm-12 col-md-3", config: this.props.data, ref: "chart"})
+	            React.createElement(ReactHighcharts, {className: "col-sm-12 col-md-3 col-lg-3", config: this.props.data, ref: "chart", style: {paddingLeft:"5px",marginTop:"35px",marginLeft:"10px"}})
 	        )
 	    }
 	});
 	module.exports = PieCharts;
+
+/***/ },
+/* 755 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Captain on 2016/6/8.
+	 */
+	var React = __webpack_require__(84);
+	var ToolBar=__webpack_require__(321);
+	var MenuStore=__webpack_require__(651);
+	var MenuAction=__webpack_require__(650);
+
+	var style= {
+	        height: "35px",
+	        backgroundColor: "white",
+	        marginTop: "0px",
+	        color: "black",
+	        paddingTop:"0px"
+	};
+	var FirstMenuLayer = React.createClass({displayName: "FirstMenuLayer",
+	    getInitialState: function () {
+	        return ({
+	            firstMenus:[],
+	            selectedIndex:0
+	        })
+	    },
+	    componentDidMount: function () {
+	        MenuStore.addChangeListener(MenuStore.events.change_menus,this._changeTopMenu);
+	    },
+	    componentWillUnmount: function () {
+	        MenuStore.removeChangeListener(MenuStore.events.change_menus,this._changeTopMenu);
+	    },
+	    _changeTopMenu: function () {
+	        this.setState({firstMenus:MenuStore.getFirstMenus()});
+	        setTimeout(function () {
+	            console.log(this.state.firstMenus[0]);
+	            MenuAction.changeFirstMenus(0,this.state.firstMenus[0]);
+	        }.bind(this),1);
+	        setTimeout(function () {
+	            MenuAction.changeBreadcrumb("second",this.state.firstMenus[0]);
+	        }.bind(this),1);
+	    },
+	    _click: function (idx) {
+	        this.setState({selectedIndex:idx});
+	        MenuAction.changeFirstMenus(idx,this.state.firstMenus[idx]);
+	        setTimeout(function () {
+	            MenuAction.changeBreadcrumb("second",this.state.firstMenus[idx]);
+	        }.bind(this),1);
+	    },
+	    render: function () {
+	        var that = this;
+	        return (
+	            React.createElement("div", {style: {height:"49px",backgroundColor:"white",paddingLeft:"150px"}}, 
+	                
+	                    this.state.firstMenus.map(function (firstMenu,idx) {
+	                        return(
+	                            React.createElement("button", {key: firstMenu.name, onClick: that._click.bind(that,idx), type: "button", 
+	                                    className: "btn btn-info btn-flat", 
+	                                    style: {borderBottom:that.state.selectedIndex==idx?"2px #ffa72f solid":"0",height: "35px",backgroundColor: "white",marginTop: "0px",color: "black",paddingTop:"0px"}}, React.createElement("span", {
+	                                style: {fontSize:"14px",lineHeight:"35px"}}, firstMenu.name)
+	                            )
+	                        )
+	                    })
+	                
+	            )
+	        )
+	    }
+	});
+
+	var FirstLayerBtn=React.createClass({displayName: "FirstLayerBtn",
+	    render: function () {
+	        return (
+	            React.createElement("button", {onClick: this._click, type: "button", 
+	                    className: "btn btn-info btn-flat", 
+	                    style: style}, React.createElement("span", {
+	                style: {fontSize:"14px",lineHeight:"35px"}}, this.props.menu.name)
+	            )
+	        )
+	    }
+	});
+
+	module.exports = FirstMenuLayer;
+
+/***/ },
+/* 756 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(84);
+	var ReactDOM = __webpack_require__(241);
+	var jQuery = __webpack_require__(309);
+
+
+
+	var Dashboard = React.createClass({displayName: "Dashboard",
+	    render: function () {
+	        return (
+	            React.createElement("div", {className: "cl-mcont", style: {padding:"10px 0px"}}, 
+	                React.createElement("div", {style: {padding:"0px 0px 0px 6px"}}, 
+	                    "Dashboard"
+	                )
+	            )
+	        )
+
+	    }
+	});
+
+
+	module.exports = Dashboard;
+
 
 /***/ },
 /* 757 */

@@ -15,6 +15,8 @@ var ObjectList = require("../../../ObjectList/ObjectList");
 var MenuAction = require('../../../../../actions/MenuAction');
 var MenuStore = require('../../../../../stores/MenuStore');
 
+var AllCharts = require('../../../highcharts/AllCharts');
+
 
 var MainContent = React.createClass({
     render: function () {
@@ -100,17 +102,24 @@ var Content = React.createClass({
     getInitialState: function () {
         return ({
             breadcrumbData: MenuStore.getBreadcrumbData(),
+            viewData:"",
             flag: false
         })
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
+        
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        MenuStore.removeChangeListener(MenuStore.events.change_views, this._changeViews);
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+    },
+    _changeViews(){
+        this.setState({viewData: MenuStore.getViewData()});
     },
     render: function () {
         var div = "";
@@ -133,12 +142,18 @@ var Content = React.createClass({
                     break;
             }
 
+        }else{
+            if (this.state.breadcrumbData.fourthID == 3 && !this.state.viewData) {
+                div = <div>
+                    {"此处应该显示图表"}
+                </div>;
+            }else if(this.state.viewData=="VCenter"){
+                div =<div>
+                    <AllCharts />
+                </div>;
+            }
         }
-        if (this.state.breadcrumbData.fourthID == 3) {
-            div = <div>
-                {"hhh"}
-            </div>;
-        }
+
         return (
             <div style={{padding:"0 10px 0 10px"}}>
                 {div}
