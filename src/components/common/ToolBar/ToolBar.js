@@ -173,12 +173,7 @@ var Button = React.createClass({
         var curTool = "";
         if (type == 3 || type == 5 || type == 7) {
             if (type == 3) {
-                /*browserHistory.push("/allCharts");*/
-                var chart={
-                    id:3,
-                    name:"图表"
-                }
-                MenuAction.changeBreadcrumb("fourth",chart);
+                MenuAction.changeBreadcrumb("fourth",AppStore.getOperator());
             }
             if (AppStore.getPreToolBarID() == 2) {
                 curTool = {
