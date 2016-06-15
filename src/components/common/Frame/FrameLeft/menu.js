@@ -51,9 +51,6 @@ var Menus = React.createClass({
     _leave: function () {
         this.setState({hoverIndex: -1});
     },
-    _clickViewMenu: function (data) {
-        MenuAction.changeViews(data);
-    },
     _clickSubMenu: function (idx, selectedParentIdx) {
         var curTool = "";
         this.setState({selectedIndex: idx});
@@ -104,8 +101,14 @@ var Menus = React.createClass({
         browserHistory.push("/list");
 
     },
+    _clickViewMenu: function (data) {
+        MenuAction.changeViews(data);
+    },
     _clickCreateView: function () {
         browserHistory.push("/createView");
+    },
+    _editView: function (viewName, viewDesc) {
+        browserHistory.push("/editView");
     },
     render: function () {
         var panel1 = "";
@@ -120,11 +123,14 @@ var Menus = React.createClass({
                     <li className="createView" onClick={that._clickCreateView}
                         style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
                         ><Button
-                        style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;创建自定义视图</Button>
+                        style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;
+                        创建自定义视图</Button>
                     </li>
                     <li className="views"
                         style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
-                        onClick={that._clickViewMenu.bind(that,"VCenter")}><span style={{cursor:"pointer"}}>VCenter</span>
+                        ><span onClick={that._clickViewMenu.bind(that,"VCenter")} style={{cursor:"pointer"}}>VCenter
+                    </span><i onClick={that._editView.bind(that,"VCenter","version 5.5")} className="fa fa-edit fa-lg"
+                              title="编辑" style={{float:"right",paddingRight:"20px",lineHeight:"22px",cursor:"pointer"}}></i>
                     </li>
                 </ul>
             </li>

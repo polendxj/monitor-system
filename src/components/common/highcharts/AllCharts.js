@@ -44,7 +44,8 @@ var pieChartsData = [
         series: [{
             type: 'pie',
             name: '值',
-            data: [['空闲', 20],
+            data: [
+                ['空闲', 20],
                 ['已使用', 40],
                 ['交换空间', 40]
             ]

@@ -14,6 +14,7 @@ var CreateView = React.createClass({
     getInitialState: function () {
         return ({
             helpState: false,
+            succTip: false,
             viewName: "",
             viewDesc: ""
         })
@@ -26,15 +27,32 @@ var CreateView = React.createClass({
         var value = e.target.value;
         this.setState({viewDesc: value});
     },
-    _createView: function () {
+    _blur: function (e) {
+        var value = e.target.value;
+        this.setState({viewName: value});
         if (this.state.viewName == "") {
             this.setState({helpState: true});
         } else {
             this.setState({helpState: false});
         }
-        console.log(this.state.viewName);
+    },
+    _createView: function () {
+        if (this.state.viewName == "") {
+            this.setState({helpState: true});
+        } else {
+            this.setState({helpState: false});
+            this.setState({succTip: true});
+        }
     },
     render: function () {
+        var succTipStyle = {
+            display: this.state.succTip ? "block" : "none",
+            padding: "30px 0 30px 80px",
+            border: "1px solid #95DD95",
+            fontSize: "14px",
+            lineHeight: "20px",
+            background: "#EEFFEE 15px 15px no-repeat"
+        };
         return (
             <div style={{padding: "23px 0 5px 20px",backgroundColor:"white"}}>
                 <div
@@ -43,44 +61,55 @@ var CreateView = React.createClass({
                     <span style={{fontSize:"9px",padding:"0 4px",fontWeight: "normal"}}>{"> >"}</span>
                     创建自定义视图
                 </div>
-                <div style={{background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}>
-                    自定义视图名称
-                </div>
-                <Form horizontal>
-                    <FormGroup controlId="formHostName" validationState={this.state.helpState?"error":""}>
-                        <Col componentClass={ControlLabel} sm={1}>
-                            名称
-                        </Col>
-                        <Col sm={2}>
-                            <FormControl controlId="viewName" value={this.state.viewName}
-                                         onChange={this._handleViewName}/>
-                        </Col>
-                        <Col sm={3}>
-                            <HelpBlock style={{display:this.state.helpState?"block":"none"}}>请填写自定义视图名称</HelpBlock>
-                        </Col>
-                    </FormGroup>
-
-                    <div style={{color:"#888888",lineHeight:"24px",clear:"both",margin:"-10px 0 0 140px"}}><i
-                        className="fa fa-info-circle" style={{fontSize:"14px"}}></i>&nbsp;给自定义视图起一个名字，随后您可以将 widget
-                        加入这个视图。
+                <div style={{display:this.state.succTip?"none":"block"}}>
+                    <div
+                        style={{background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}>
+                        自定义视图名称
                     </div>
-                    <FormGroup controlId="formVisibleName">
-                        <Col componentClass={ControlLabel} sm={1}>
-                            描述
-                        </Col>
-                        <Col sm={2}>
-                            <FormControl componentClass="textarea" controlId="viewDesc" value={this.state.viewDesc}
-                                         onChange={this._handleViewDesc}/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="formVisibleName">
-                        <Col sm={1}>
-                        </Col>
-                        <Col sm={1}>
-                            <Button onClick={this._createView} style={{backgroundColor:"#54ADE9"}}>创建</Button>
-                        </Col>
-                    </FormGroup>
-                </Form>
+                    <Form horizontal>
+                        <FormGroup controlId="formHostName" validationState={this.state.helpState?"error":""}>
+                            <Col componentClass={ControlLabel} sm={1}>
+                                名称
+                            </Col>
+                            <Col sm={2}>
+                                <FormControl controlId="viewName" value={this.state.viewName}
+                                             onChange={this._handleViewName} onBlur={this._blur}/>
+                            </Col>
+                            <Col sm={3}>
+                                <HelpBlock style={{display:this.state.helpState?"block":"none"}}>请填写自定义视图名称</HelpBlock>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formVisibleName">
+                            <Col sm={1}>
+                            </Col>
+                            <Col sm={4}>
+                                <div style={{color:"#888888",lineHeight:"24px",clear:"both",marginTop:"-10px"}}><i
+                                    className="fa fa-info-circle" style={{fontSize:"14px"}}></i>&nbsp;给自定义视图起一个名字，随后您可以将
+                                    widget
+                                    加入这个视图。
+                                </div>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formVisibleName">
+                            <Col componentClass={ControlLabel} sm={1}>
+                                描述
+                            </Col>
+                            <Col sm={2}>
+                                <FormControl componentClass="textarea" controlId="viewDesc" value={this.state.viewDesc}
+                                             onChange={this._handleViewDesc}/>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="formVisibleName">
+                            <Col sm={1}>
+                            </Col>
+                            <Col sm={2}>
+                                <Button onClick={this._createView}
+                                        style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>创建</Button>
+                            </Col>
+                        </FormGroup>
+                    </Form>
+                </div>
+                <div style={succTipStyle}><b>自定义视图添加成功！</b></div>
             </div>
         )
     }
