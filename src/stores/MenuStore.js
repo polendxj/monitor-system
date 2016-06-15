@@ -11,16 +11,10 @@ var jQuery = require('jquery');
 
 
 var firstMenus = [];
-var breadcrumbData = {
-    firstID: '',
-    secondID: '',
-    thirdID: '',
-    fourthID: '',
-    firstMenuName: "",
-    secondMenuName: "",
-    thirdMenuName: "",
-    fourthMenuName:''
-};
+var breadcrumbData = [{
+    breadcrumbID: '',
+    breadcrumbName: ""
+}];
 var subMenus = {
     parentIdx: "",
     subMenus: ""
