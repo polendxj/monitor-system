@@ -158,6 +158,7 @@ var Content = React.createClass({
             }else if(this.state.viewData=="VCenter"){
                 div =<div>
                     <AllCharts />
+                    <div style={{clear:"both"}}></div>
                 </div>;
             }
         }

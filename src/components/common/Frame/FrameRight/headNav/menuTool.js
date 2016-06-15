@@ -6,7 +6,7 @@ var ToolBar = require("../../../ToolBar/ToolBar");
 var AppStore = require('../../../../../stores/AppStore');
 var AppAction = require('../../../../../actions/AppAction');
 var Breadcrumb = require('react-bootstrap/lib/Breadcrumb');
-var MenuStore=require('../../../../../stores/MenuStore');
+var MenuStore = require('../../../../../stores/MenuStore');
 
 
 var MenuTool = React.createClass({
@@ -41,7 +41,7 @@ var Title = React.createClass({
     getInitialState: function () {
         return ({
             title: "",
-            breadcrumbData : MenuStore.getBreadcrumbData()
+            breadcrumbData: MenuStore.getBreadcrumbData()
         })
     },
     componentDidMount: function () {
@@ -59,10 +59,10 @@ var Title = React.createClass({
         this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
     },
     render: function () {
-        var breadcrumb="";
+        var breadcrumb = "";
         console.log(this.state.breadcrumbData);
-        if(!this.state.breadcrumbData.fourthID){
-            breadcrumb=<Breadcrumb>
+        if (!this.state.breadcrumbData.fourthID) {
+            breadcrumb = <Breadcrumb>
                 <Breadcrumb.Item href="#">
                     {this.state.breadcrumbData.firstMenuName}
                 </Breadcrumb.Item>
@@ -73,8 +73,8 @@ var Title = React.createClass({
                     {this.state.breadcrumbData.thirdMenuName}
                 </Breadcrumb.Item>
             </Breadcrumb>
-        }else{
-            breadcrumb=<Breadcrumb>
+        } else {
+            breadcrumb = <Breadcrumb>
                 <Breadcrumb.Item href="#">
                     {this.state.breadcrumbData.firstMenuName}
                 </Breadcrumb.Item>
@@ -103,9 +103,28 @@ var Title = React.createClass({
 });
 
 
-
 var Operator = React.createClass({
+    getInitialState: function () {
+        return ({
+            breadcrumbData: MenuStore.getBreadcrumbData()
+        })
+    },
+    _changeBreadcrumbData: function () {
+        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+    },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
     render: function () {
+        if (!this.state.breadcrumbData.fourthID){
+
+        }else{
+
+        }
+
         return (
             <div className="col-sm-5 col-md-5 col-lg-5" style={{height:"30px",marginTop:"9px"}}>
                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>

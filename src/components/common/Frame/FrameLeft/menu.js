@@ -113,7 +113,7 @@ var Menus = React.createClass({
         var panel3 = "";
         var that = this;
         if (this.state.breadcrumbData.fourthID != "") {
-            panel3 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+            panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
                                                                                               style={{padding:"7px 25px",color:"black"}}><span
                 style={{fontWeight:"bold"}}>自定义视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
@@ -125,6 +125,16 @@ var Menus = React.createClass({
                     <li className="views"
                         style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
                         onClick={that._clickViewMenu.bind(that,"VCenter")}><span style={{cursor:"pointer"}}>VCenter</span>
+                    </li>
+                </ul>
+            </li>
+            panel2=<li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                            style={{padding:"7px 25px",color:"black"}}><span
+                style={{fontWeight:"bold"}}>动态视图</span></a>
+                <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
+                    <li className="views"
+                        style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
+                        onClick={that._clickViewMenu.bind(that,"VCenter")}><span style={{cursor:"pointer"}}>实时图表过滤</span>
                     </li>
                 </ul>
             </li>

@@ -203,9 +203,9 @@ var AllCharts = React.createClass({
     render: function () {
         return (
             <div>
-                <LineCharts data={lineChartsData[0]}/>
-                <PieCharts data={pieChartsData[0]}/>
-                <LineCharts data={lineChartsData[1]}/>
+                <LineCharts data={lineChartsData[0]} title={"localhost:127.0.0.1"}/>
+                <PieCharts data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />
+                <LineCharts data={lineChartsData[1]} title={"mysql:127.0.0.1"}/>
             </div>
         )
     }

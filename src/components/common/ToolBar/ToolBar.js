@@ -133,7 +133,7 @@ var Text = React.createClass({
                     </FormGroup>
 
                     <div
-                        style={{display:this.state.tipItems.length > 0?"block":"none",width:"100%",boxShadow:"1px 1px 5px lightgray",backgroundColor:"white",padding:"10px",position:"absolute"}}>
+                        style={{zIndex:"100",display:this.state.tipItems.length > 0?"block":"none",width:"100%",boxShadow:"1px 1px 5px lightgray",backgroundColor:"white",padding:"10px",position:"absolute"}}>
                         {tips}
                     </div>
                 </Form>
