@@ -2,6 +2,7 @@
  * Created by Captain on 2016/6/14.
  */
 var React = require("react");
+var browserHistory = require('react-router').browserHistory;
 var Button = require("react-bootstrap").Button;
 var Form = require("react-bootstrap").Form;
 var FormGroup = require("react-bootstrap").FormGroup;
@@ -9,6 +10,9 @@ var FormControl = require("react-bootstrap").FormControl;
 var ControlLabel = require("react-bootstrap").ControlLabel;
 var Col = require("react-bootstrap").Col;
 var HelpBlock = require("react-bootstrap").HelpBlock;
+var Breadcrumb = require("react-bootstrap").Breadcrumb;
+var MenuStore = require('../../../stores/MenuStore');
+var MenuAction = require('../../../actions/MenuAction');
 
 var CreateView = React.createClass({
     getInitialState: function () {
@@ -16,8 +20,19 @@ var CreateView = React.createClass({
             helpState: false,
             succTip: false,
             viewName: "",
-            viewDesc: ""
+            viewDesc: "",
+            breadcrumbDataList: MenuStore.getBreadcrumbData()
         })
+    },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    _changeBreadcrumbData: function () {
+        this.setState({succTip: false});
+        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _handleViewName: function (e) {
         var value = e.target.value;
@@ -44,22 +59,48 @@ var CreateView = React.createClass({
             this.setState({succTip: true});
         }
     },
+    _redirect: function (idx) {
+        if(idx==0||idx==1){
+            MenuAction.changeBreadcrumb(4,"");
+            browserHistory.push("/list");
+        }else if(idx==3||idx==2) {
+            MenuAction.changeBreadcrumb(idx+2,"");
+            browserHistory.push("/list");
+        }
+    },
     render: function () {
+        var breadcrumbs = [];
+        var length=this.state.breadcrumbDataList.length-1;
         var succTipStyle = {
             display: this.state.succTip ? "block" : "none",
             padding: "30px 0 30px 80px",
             border: "1px solid #95DD95",
             fontSize: "14px",
             lineHeight: "20px",
+            fontWeight:"bold",
             background: "#EEFFEE 15px 15px no-repeat"
         };
+        this.state.breadcrumbDataList.forEach(function (breadcrumbData, idx) {
+            if (idx < length) {
+                breadcrumbs.push (
+                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#">
+                        {breadcrumbData.breadcrumbName}
+                    </Breadcrumb.Item>
+                )
+            } else {
+                breadcrumbs.push (
+                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
+                        {breadcrumbData.breadcrumbName}
+                    </Breadcrumb.Item>
+                )
+            }
+        }.bind(this));
         return (
             <div style={{padding: "23px 0 5px 20px",backgroundColor:"white"}}>
-                <div
-                    style={{fontSize: "13px",fontWeight: "bold",color: "#434343",borderBottom: "1px solid #cdcdcd"}}>
-                    自定义视图
-                    <span style={{fontSize:"9px",padding:"0 4px",fontWeight: "normal"}}>{"> >"}</span>
-                    创建自定义视图
+                <div style={{display:"inline-block",paddingRight:"20px"}}>
+                    <Breadcrumb>
+                        {breadcrumbs}
+                    </Breadcrumb>
                 </div>
                 <div style={{display:this.state.succTip?"none":"block"}}>
                     <div
@@ -109,7 +150,7 @@ var CreateView = React.createClass({
                         </FormGroup>
                     </Form>
                 </div>
-                <div style={succTipStyle}><b>自定义视图添加成功！</b></div>
+                <div style={succTipStyle}>自定义视图添加成功！</div>
             </div>
         )
     }

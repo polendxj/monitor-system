@@ -27,20 +27,21 @@ var FirstMenuLayer = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_menus, this._changeTopMenu);
     },
     _changeTopMenu: function () {
+        this.setState({selectedIndex: 0});
         this.setState({firstMenus: MenuStore.getFirstMenus()});
         setTimeout(function () {
             console.log(this.state.firstMenus[0]);
             MenuAction.changeFirstMenus(0, this.state.firstMenus[0]);
         }.bind(this), 1);
         setTimeout(function () {
-            MenuAction.changeBreadcrumb("second", this.state.firstMenus[0]);
+            MenuAction.changeBreadcrumb(2, this.state.firstMenus[0]);
         }.bind(this), 5);
     },
     _click: function (idx) {
         this.setState({selectedIndex: idx});
         MenuAction.changeFirstMenus(idx, this.state.firstMenus[idx]);
         setTimeout(function () {
-            MenuAction.changeBreadcrumb("second", this.state.firstMenus[idx]);
+            MenuAction.changeBreadcrumb(2, this.state.firstMenus[idx]);
         }.bind(this), 1);
     },
     render: function () {

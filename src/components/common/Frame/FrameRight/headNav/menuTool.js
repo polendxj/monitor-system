@@ -7,7 +7,7 @@ var AppStore = require('../../../../../stores/AppStore');
 var AppAction = require('../../../../../actions/AppAction');
 var Breadcrumb = require('react-bootstrap/lib/Breadcrumb');
 var MenuStore = require('../../../../../stores/MenuStore');
-
+var MenuAction = require('../../../../../actions/MenuAction');
 
 var MenuTool = React.createClass({
     getInitialState: function () {
@@ -41,7 +41,7 @@ var Title = React.createClass({
     getInitialState: function () {
         return ({
             title: "",
-            breadcrumbData: MenuStore.getBreadcrumbData()
+            breadcrumbDataList: MenuStore.getBreadcrumbData()
         })
     },
     componentDidMount: function () {
@@ -56,44 +56,51 @@ var Title = React.createClass({
         this.setState({title: AppStore.getToolBarTitle()});
     },
     _changeBreadcrumbData: function () {
-        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
+    },
+    _redirect: function (idx) {
+        MenuAction.changeViews("");
+        if(idx==0||idx==1){
+            MenuAction.changeBreadcrumb(4,"");
+            browserHistory.push("/list");
+        }else if(idx==3||idx==2) {
+            MenuAction.changeBreadcrumb(idx+2,"");
+            browserHistory.push("/list");
+        }
     },
     render: function () {
-        var breadcrumb = "";
-        console.log(this.state.breadcrumbData);
-        if (!this.state.breadcrumbData.fourthID) {
-            breadcrumb = <Breadcrumb>
-                <Breadcrumb.Item href="#">
-                    {this.state.breadcrumbData.firstMenuName}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href="http://getbootstrap.com/components/#breadcrumbs">
-                    {this.state.breadcrumbData.secondMenuName}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    {this.state.breadcrumbData.thirdMenuName}
-                </Breadcrumb.Item>
-            </Breadcrumb>
-        } else {
-            breadcrumb = <Breadcrumb>
-                <Breadcrumb.Item href="#">
-                    {this.state.breadcrumbData.firstMenuName}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href="http://getbootstrap.com/components/#breadcrumbs">
-                    {this.state.breadcrumbData.secondMenuName}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item >
-                    {this.state.breadcrumbData.thirdMenuName}
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    {this.state.breadcrumbData.fourthMenuName}
-                </Breadcrumb.Item>
-            </Breadcrumb>
-        }
+        var length=this.state.breadcrumbDataList.length-1;
+        var breadcrumbs=[];
+        this.state.breadcrumbDataList.forEach(function (breadcrumbData, idx) {
+            if(length<=2){
+                breadcrumbs.push (
+                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
+                        {breadcrumbData.breadcrumbName}
+                    </Breadcrumb.Item>
+                )
+            }else{
+                if (idx < length) {
+                    breadcrumbs.push (
+                        <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#">
+                            {breadcrumbData.breadcrumbName}
+                        </Breadcrumb.Item>
+                    )
+                } else {
+                    breadcrumbs.push (
+                        <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
+                            {breadcrumbData.breadcrumbName}
+                        </Breadcrumb.Item>
+                    )
+                }
+            }
+        }.bind(this));
         return (
             <div className="col-sm-7 col-md-7 col-lg-7"
                  style={{height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}>
                 <div style={{display:"inline-block",paddingRight:"20px"}}>
-                    {breadcrumb}
+                    <Breadcrumb>
+                        {breadcrumbs}
+                    </Breadcrumb>
                 </div>
             </div>
         )
@@ -119,9 +126,9 @@ var Operator = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     render: function () {
-        if (!this.state.breadcrumbData.fourthID){
+        if (!this.state.breadcrumbData.fourthID) {
 
-        }else{
+        } else {
 
         }
 

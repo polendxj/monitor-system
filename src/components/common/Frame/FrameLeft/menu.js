@@ -14,15 +14,22 @@ var MenuAction = require('../../../../actions/MenuAction');
 
 require('jquery');
 
+var viewBtn = [
+    {id: 10001, name: "创建自定义视图"}
+]
+var viewCreate = [
+    {id: 20001, name: "VCenter"}
+]
+
 var Menus = React.createClass({
     getInitialState: function () {
         return ({
             subMenus: [],
-            breadcrumbData: MenuStore.getBreadcrumbData(),
+            breadcrumbDataList: MenuStore.getBreadcrumbData(),
             hoverParentIndex: -1,
             selectedParentIndex: -1,
             hoverIndex: -1,
-            selectedIndex: -1
+            selectedIndex: 0
         })
     },
     componentDidMount: function () {
@@ -34,15 +41,17 @@ var Menus = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     _changeFirstMenu: function () {
+        this.setState({selectedIndex: 0});
         this.setState({subMenus: MenuStore.getSubMenus()});
+        this.setState({selectedParentIndex: 0});
         if (this.state.subMenus.subMenus.length > 0) {
             setTimeout(function () {
-                MenuAction.changeBreadcrumb("third", this.state.subMenus.subMenus[0]);
+                MenuAction.changeBreadcrumb(3, this.state.subMenus.subMenus[0]);
             }.bind(this), 10);
         }
     },
     _changeBreadcrumbData: function () {
-        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _hover: function (idx, hoverParentIdx) {
         this.setState({hoverIndex: idx});
@@ -55,7 +64,7 @@ var Menus = React.createClass({
         var curTool = "";
         this.setState({selectedIndex: idx});
         this.setState({selectedParentIndex: selectedParentIdx});
-        MenuAction.changeBreadcrumb("third", this.state.subMenus.subMenus[idx]);
+        MenuAction.changeBreadcrumb(3, this.state.subMenus.subMenus[idx]);
         switch (this.state.subMenus.parentIdx) {
             case 1:
                 switch (idx) {
@@ -101,46 +110,53 @@ var Menus = React.createClass({
         browserHistory.push("/list");
 
     },
-    _clickViewMenu: function (data) {
-        MenuAction.changeViews(data);
+    _clickViewMenu: function (obj) {
+        MenuAction.changeViews(obj.name);
+        MenuAction.changeBreadcrumb(5, obj);
     },
-    _clickCreateView: function () {
+    _clickCreateView: function (obj) {
+        MenuAction.changeBreadcrumb(5, obj);
         browserHistory.push("/createView");
     },
-    _editView: function (viewName, viewDesc) {
+    _editView: function (viewName, viewDesc, obj) {
+        MenuAction.changeBreadcrumb(5, obj);
         browserHistory.push("/editView");
     },
     render: function () {
         var panel1 = "";
         var panel2 = "";
-        var panel3 = "";
         var that = this;
-        if (this.state.breadcrumbData.fourthID != "") {
+        console.log(this.state.breadcrumbDataList);
+        if (this.state.breadcrumbDataList.length >= 4) {
             panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
                                                                                               style={{padding:"7px 25px",color:"black"}}><span
                 style={{fontWeight:"bold"}}>自定义视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                    <li className="createView" onClick={that._clickCreateView}
+                    <li className="createView" onClick={that._clickCreateView.bind(that,viewBtn[0])}
                         style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
                         ><Button
                         style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;
-                        创建自定义视图</Button>
+                        {viewBtn[0].name}</Button>
                     </li>
                     <li className="views"
                         style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
-                        ><span onClick={that._clickViewMenu.bind(that,"VCenter")} style={{cursor:"pointer"}}>VCenter
-                    </span><i onClick={that._editView.bind(that,"VCenter","version 5.5")} className="fa fa-edit fa-lg"
-                              title="编辑" style={{float:"right",paddingRight:"20px",lineHeight:"22px",cursor:"pointer"}}></i>
+                        ><span onClick={that._clickViewMenu.bind(that,viewCreate[0])}
+                               style={{cursor:"pointer"}}>{viewCreate[0].name}
+                    </span><i onClick={that._editView.bind(that,"VCenter","version 5.5",viewCreate[0])}
+                              className="fa fa-edit fa-lg"
+                              title="编辑"
+                              style={{float:"right",paddingRight:"20px",lineHeight:"22px",cursor:"pointer"}}></i>
                     </li>
                 </ul>
             </li>
-            panel2=<li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                            style={{padding:"7px 25px",color:"black"}}><span
+            panel2 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                              style={{padding:"7px 25px",color:"black"}}><span
                 style={{fontWeight:"bold"}}>动态视图</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
                     <li className="views"
                         style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
-                        onClick={that._clickViewMenu.bind(that,"VCenter")}><span style={{cursor:"pointer"}}>实时图表过滤</span>
+                        onClick={that._clickViewMenu.bind(that,"VCenter")}><span
+                        style={{cursor:"pointer"}}>实时图表过滤</span>
                     </li>
                 </ul>
             </li>
@@ -185,7 +201,6 @@ var Menus = React.createClass({
             <ul className="cl-vnavigation">
                 {panel1}
                 {panel2}
-                {panel3}
             </ul>
         )
     }

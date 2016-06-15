@@ -173,7 +173,10 @@ var Button = React.createClass({
         var curTool = "";
         if (type == 3 || type == 5 || type == 7) {
             if (type == 3) {
-                MenuAction.changeBreadcrumb("fourth",AppStore.getOperator());
+                setTimeout(function () {
+                    MenuAction.changeViews("");
+                },1);
+                MenuAction.changeBreadcrumb(4,AppStore.getOperator());
             }
             if (AppStore.getPreToolBarID() == 2) {
                 curTool = {
