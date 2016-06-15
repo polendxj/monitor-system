@@ -440,14 +440,14 @@ var TopMenu = React.createClass({
             MenuAction.changeMenus(menus[0]);
         },1);
         setTimeout(function () {
-            MenuAction.changeBreadcrumb("first",menus[0]);
+            MenuAction.changeBreadcrumb(1,menus[0]);
         },1);
     },
     _click: function (idx) {
         this.setState({selectedIndex:idx});
         MenuAction.changeMenus(menus[idx]);
         setTimeout(function () {
-            MenuAction.changeBreadcrumb("first",menus[idx]);
+            MenuAction.changeBreadcrumb(1,menus[idx]);
         }.bind(this),1);
     },
     render: function () {

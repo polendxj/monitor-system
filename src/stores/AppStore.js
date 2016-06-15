@@ -10,7 +10,7 @@ var jQuery = require('jquery');
 var curToolBar = [];
 var preToolBarID = -1;
 var toolBarTitle="";
-var curOperator={id:-1,text:""};
+var curOperator={id:-1,name:""};
 
 var AppStore = assign({}, EventEmitter.prototype, {
     changeToolBar: function (id, tools,title) {
@@ -21,7 +21,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
     },
     setOperator: function (id,text) {
         curOperator.id=id;
-        curOperator.text=text;
+        curOperator.name=text;
         this.emitChange(this.events.current_operator);
     },
     getOperator: function () {

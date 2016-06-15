@@ -1,0 +1,125 @@
+{
+  "name": "VCloud",
+  "children": [
+    {
+      "name": "VCenter1:192.168.10.1",
+      "responseTime":50,
+      "children": [
+        {
+          "name": "Hypervisor1",
+          "children": [
+            {"name": "VM1", "size": 3938},
+            {"name": "VM2", "size": 3812},
+            {"name": "VM3", "size": 6714},
+            {"name": "VM4", "size": 743}
+          ]
+        },
+        {
+          "name": "Hypervisor2",
+          "children": [
+            {"name": "VM1", "size": 2222},
+            {"name": "VM2", "size": 3333},
+            {"name": "VM3", "size": 7777},
+            {"name": "VM4", "size": 5555}
+          ]
+        },
+        {
+          "name": "Hypervisor3",
+          "children": [
+            {"name": "VM4", "size": 1257}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VCenter2:192.168.10.2",
+      "responseTime":1200,
+      "children": [
+        {
+          "name": "Hypervisor1",
+          "children": [
+            {"name": "VM1", "size": 3938},
+            {"name": "VM2", "size": 3812},
+            {"name": "VM3", "size": 6714},
+            {"name": "VM4", "size": 743}
+          ]
+        },
+        {
+          "name": "Hypervisor2",
+          "children": [
+            {"name": "VM1", "size": 2222},
+            {"name": "VM2", "size": 3333},
+            {"name": "VM3", "size": 7777},
+            {"name": "VM4", "size": 5555}
+          ]
+        },
+        {
+          "name": "Hypervisor3",
+          "children": [
+            {"name": "VM4", "size": 1257}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VCenter3:192.168.10.3",
+      "responseTime":800,
+      "children": [
+        {
+          "name": "Hypervisor1",
+          "children": [
+            {"name": "VM1", "size": 3938},
+            {"name": "VM2", "size": 3812},
+            {"name": "VM3", "size": 6714},
+            {"name": "VM4", "size": 743}
+          ]
+        },
+        {
+          "name": "Hypervisor2",
+          "children": [
+            {"name": "VM1", "size": 2222},
+            {"name": "VM2", "size": 3333},
+            {"name": "VM3", "size": 7777},
+            {"name": "VM4", "size": 5555}
+          ]
+        },
+        {
+          "name": "Hypervisor3",
+          "children": [
+            {"name": "VM4", "size": 1257}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "VCenter3:192.168.10.3",
+      "responseTime":1100,
+      "children": [
+        {
+          "name": "Hypervisor1",
+          "children": [
+            {"name": "VM1", "size": 3938},
+            {"name": "VM2", "size": 3812},
+            {"name": "VM3", "size": 6714},
+            {"name": "VM4", "size": 743}
+          ]
+        },
+        {
+          "name": "Hypervisor2",
+          "children": [
+            {"name": "VM1", "size": 2222},
+            {"name": "VM2", "size": 3333},
+            {"name": "VM3", "size": 7777},
+            {"name": "VM4", "size": 5555}
+          ]
+        },
+        {
+          "name": "Hypervisor3",
+          "children": [
+            {"name": "VM4", "size": 1257}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -104,7 +104,7 @@ var Timestamp = React.createClass({
 var Content = React.createClass({
     getInitialState: function () {
         return ({
-            breadcrumbData: MenuStore.getBreadcrumbData(),
+            breadcrumbDataList: MenuStore.getBreadcrumbData(),
             viewData:"",
             flag: false
         })
@@ -119,15 +119,15 @@ var Content = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_views, this._changeViews);
     },
     _changeBreadcrumbData: function () {
-        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _changeViews(){
         this.setState({viewData: MenuStore.getViewData()});
     },
     render: function () {
         var div = "";
-        if (!this.state.breadcrumbData.fourthID) {
-            switch (this.state.breadcrumbData.thirdID) {
+        if (this.state.breadcrumbDataList.length<4) {
+            switch (this.state.breadcrumbDataList[2].breadcrumbID) {
                 case 221:
                     div = <div>
                         <ObjectList.VCenterList />
@@ -151,7 +151,7 @@ var Content = React.createClass({
             }
 
         }else{
-            if (this.state.breadcrumbData.fourthID == 3 && !this.state.viewData) {
+            if (this.state.breadcrumbDataList[3].breadcrumbID == 3 && !this.state.viewData) {
                 div = <div>
                     {"此处应该显示图表"}
                 </div>;
