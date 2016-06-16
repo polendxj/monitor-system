@@ -57,14 +57,19 @@ var ConfigurationPage = React.createClass({
             }
         }.bind(this));
         return (
-            <div style={{padding: "23px 0 5px 20px",backgroundColor:"white"}}>
-                <div style={{display:"inline-block",paddingRight:"20px"}}>
-                    <Breadcrumb>
-                        {breadcrumbs}
-                    </Breadcrumb>
+            <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
+                <div style={{height:"47px"}}>
+                    <div className="col-sm-7 col-md-7 col-lg-7"
+                         style={{height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}>
+                        <div style={{display:"inline-block",paddingRight:"20px"}}>
+                            <Breadcrumb>
+                                {breadcrumbs}
+                            </Breadcrumb>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    配置页
+                        配置页
                 </div>
             </div>
 
