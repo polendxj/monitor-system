@@ -56,7 +56,7 @@ var CreateView = React.createClass({
                     </Breadcrumb>
                 </div>
                 <div style={{display:this.state.succTip?"none":"block"}}>
-
+                    配置页
                 </div>
             </div>
         )

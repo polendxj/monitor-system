@@ -181,7 +181,9 @@ var Button = React.createClass({
             }
         }else if(type == 4){
             MenuAction.changeBreadcrumb(4, "");
-        } else if (type == 0) {
+        } else if(type==1){
+            MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+        }else if (type == 0) {
             this.setState({lgShow: true})
         }
     },

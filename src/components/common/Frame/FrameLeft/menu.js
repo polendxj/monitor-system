@@ -16,10 +16,10 @@ require('jquery');
 
 var viewBtn = [
     {id: 10001, name: "创建自定义视图"}
-]
+];
 var viewCreate = [
     {id: 20001, name: "VCenter"}
-]
+];
 
 var Menus = React.createClass({
     getInitialState: function () {
