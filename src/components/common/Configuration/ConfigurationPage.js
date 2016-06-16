@@ -59,6 +59,7 @@ var CreateView = React.createClass({
                     配置页
                 </div>
             </div>
+
         )
     }
 });

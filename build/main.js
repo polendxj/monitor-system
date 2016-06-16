@@ -86410,61 +86410,68 @@
 	            }
 	        }.bind(this));
 	        return (
-	            React.createElement("div", {style: {padding: "23px 0 5px 20px",backgroundColor:"white"}}, 
-	                React.createElement("div", {style: {display:"inline-block",paddingRight:"20px"}}, 
-	                    React.createElement(Breadcrumb, null, 
-	                        breadcrumbs
-	                    )
-	                ), 
-	                React.createElement("div", {style: {display:this.state.succTip?"none":"block"}}, 
-	                    React.createElement("div", {
-	                        style: {background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}, 
-	                        "自定义视图名称"
-	                    ), 
-	                    React.createElement(Form, {horizontal: true}, 
-	                        React.createElement(FormGroup, {controlId: "formHostName", validationState: this.state.helpState?"error":""}, 
-	                            React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
-	                                "名称"
-	                            ), 
-	                            React.createElement(Col, {sm: 2}, 
-	                                React.createElement(FormControl, {controlId: "viewName", value: this.state.viewName, 
-	                                             onChange: this._handleViewName, onBlur: this._blur})
-	                            ), 
-	                            React.createElement(Col, {sm: 3}, 
-	                                React.createElement(HelpBlock, {style: {display:this.state.helpState?"block":"none"}}, "请填写自定义视图名称")
-	                            )
-	                        ), 
-	                        React.createElement(FormGroup, {controlId: "formVisibleName"}, 
-	                            React.createElement(Col, {sm: 1}
-	                            ), 
-	                            React.createElement(Col, {sm: 4}, 
-	                                React.createElement("div", {style: {color:"#888888",lineHeight:"24px",clear:"both",marginTop:"-10px"}}, React.createElement("i", {
-	                                    className: "fa fa-info-circle", style: {fontSize:"14px"}}), " 给自定义视图起一个名字，随后您可以将" + " " +
-	                                    "widget" + " " +
-	                                    "加入这个视图。"
-	                                )
-	                            )
-	                        ), 
-	                        React.createElement(FormGroup, {controlId: "formVisibleName"}, 
-	                            React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
-	                                "描述"
-	                            ), 
-	                            React.createElement(Col, {sm: 2}, 
-	                                React.createElement(FormControl, {componentClass: "textarea", controlId: "viewDesc", value: this.state.viewDesc, 
-	                                             onChange: this._handleViewDesc})
-	                            )
-	                        ), 
-	                        React.createElement(FormGroup, {controlId: "formVisibleName"}, 
-	                            React.createElement(Col, {sm: 1}
-	                            ), 
-	                            React.createElement(Col, {sm: 2}, 
-	                                React.createElement(Button, {onClick: this._createView, 
-	                                        style: {color:"white",backgroundColor:"#54ADE9",float:"right"}}, "创建")
+	            React.createElement("div", {style: {backgroundColor:"white",padding:"3px 0 30px 0"}}, 
+	                React.createElement("div", {style: {height:"47px"}}, 
+	                    React.createElement("div", {className: "col-sm-7 col-md-7 col-lg-7", 
+	                         style: {height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}, 
+	                        React.createElement("div", {style: {display:"inline-block",paddingRight:"20px"}}, 
+	                            React.createElement(Breadcrumb, null, 
+	                                breadcrumbs
 	                            )
 	                        )
 	                    )
 	                ), 
-	                React.createElement("div", {style: succTipStyle}, "自定义视图添加成功！")
+	                React.createElement("div", null, 
+	                    React.createElement("div", {style: {display:this.state.succTip?"none":"block"}}, 
+	                        React.createElement("div", {
+	                            style: {background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}, 
+	                            "自定义视图名称"
+	                        ), 
+	                        React.createElement(Form, {horizontal: true}, 
+	                            React.createElement(FormGroup, {controlId: "formHostName", validationState: this.state.helpState?"error":""}, 
+	                                React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
+	                                    "名称"
+	                                ), 
+	                                React.createElement(Col, {sm: 2}, 
+	                                    React.createElement(FormControl, {controlId: "viewName", value: this.state.viewName, 
+	                                                 onChange: this._handleViewName, onBlur: this._blur})
+	                                ), 
+	                                React.createElement(Col, {sm: 3}, 
+	                                    React.createElement(HelpBlock, {style: {display:this.state.helpState?"block":"none"}}, "请填写自定义视图名称")
+	                                )
+	                            ), 
+	                            React.createElement(FormGroup, {controlId: "formVisibleName"}, 
+	                                React.createElement(Col, {sm: 1}
+	                                ), 
+	                                React.createElement(Col, {sm: 4}, 
+	                                    React.createElement("div", {style: {color:"#888888",lineHeight:"24px",clear:"both",marginTop:"-10px"}}, React.createElement("i", {
+	                                        className: "fa fa-info-circle", style: {fontSize:"14px"}}), " 给自定义视图起一个名字，随后您可以将" + " " +
+	                                        "widget" + " " +
+	                                        "加入这个视图。"
+	                                    )
+	                                )
+	                            ), 
+	                            React.createElement(FormGroup, {controlId: "formVisibleName"}, 
+	                                React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
+	                                    "描述"
+	                                ), 
+	                                React.createElement(Col, {sm: 2}, 
+	                                    React.createElement(FormControl, {componentClass: "textarea", controlId: "viewDesc", value: this.state.viewDesc, 
+	                                                 onChange: this._handleViewDesc})
+	                                )
+	                            ), 
+	                            React.createElement(FormGroup, {controlId: "formVisibleName"}, 
+	                                React.createElement(Col, {sm: 1}
+	                                ), 
+	                                React.createElement(Col, {sm: 2}, 
+	                                    React.createElement(Button, {onClick: this._createView, 
+	                                            style: {color:"white",backgroundColor:"#54ADE9",float:"right"}}, "创建")
+	                                )
+	                            )
+	                        )
+	                    ), 
+	                    React.createElement("div", {style: succTipStyle}, "自定义视图添加成功！")
+	                )
 	            )
 	        )
 	    }
@@ -86491,6 +86498,7 @@
 	var Breadcrumb = __webpack_require__(653).Breadcrumb;
 	var MenuStore = __webpack_require__(651);
 	var MenuAction = __webpack_require__(650);
+	var MenuTool = __webpack_require__(748);
 
 	var EditView = React.createClass({displayName: "EditView",
 	    getInitialState: function () {
@@ -86581,61 +86589,65 @@
 	            }
 	        }.bind(this));
 	        return (
-	            React.createElement("div", {style: {padding: "23px 0 5px 20px",backgroundColor:"white"}}, 
-	                React.createElement("div", {style: {display:"inline-block",paddingRight:"20px"}}, 
-	                    React.createElement(Breadcrumb, null, 
-	                        breadcrumbs
-	                    )
-	                ), 
-	                React.createElement("div", {style: {background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}, 
-	                    "自定义视图名称"
-	                ), 
-	                React.createElement("div", {style: {display:this.state.succTip?"none":"block"}}, 
-	                    React.createElement(Form, {horizontal: true}, 
-	                        React.createElement(FormGroup, {controlId: "formHostName", validationState: this.state.helpState?"error":""}, 
-	                            React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
-	                                "名称"
-	                            ), 
-	                            React.createElement(Col, {sm: 2}, 
-	                                React.createElement(FormControl, {controlId: "viewName", value: this.state.viewName, 
-	                                             onChange: this._handleViewName, onBlur: this._blur})
-	                            ), 
-	                            React.createElement(Col, {sm: 3}, 
-	                                React.createElement(HelpBlock, {style: {display:this.state.helpState?"block":"none"}}, "请填写自定义视图名称")
-	                            )
-	                        ), 
-	                        React.createElement(FormGroup, {controlId: "formVisibleName"}, 
-	                            React.createElement(Col, {sm: 1}
-	                            ), 
-	                            React.createElement(Col, {sm: 4}, 
-	                                React.createElement("div", {style: {color:"#888888",lineHeight:"24px",clear:"both",marginTop:"-10px"}}, React.createElement("i", {
-	                                    className: "fa fa-info-circle", style: {fontSize:"14px"}}), " 给自定义视图起一个名字，随后您可以将" + " " +
-	                                    "widget" + " " +
-	                                    "加入这个视图。"
-	                                )
-	                            )
-	                        ), 
-	                        React.createElement(FormGroup, {controlId: "formVisibleName"}, 
-	                            React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
-	                                "描述"
-	                            ), 
-	                            React.createElement(Col, {sm: 2}, 
-	                                React.createElement(FormControl, {componentClass: "textarea", controlId: "viewDesc", value: this.state.viewDesc, 
-	                                             onChange: this._handleViewDesc})
-	                            )
-	                        ), 
-	                        React.createElement(FormGroup, {controlId: "formVisibleName"}, 
-	                            React.createElement(Col, {sm: 1}
-	                            ), 
-	                            React.createElement(Col, {sm: 2}, 
-	                                React.createElement(Button, {onClick: this._deleteView, style: {float:"right"}}, "删除"), 
-	                                React.createElement(Button, {onClick: this._editView, 
-	                                        style: {color:"white",backgroundColor:"#54ADE9",float:"right"}}, "修改")
+	            React.createElement("div", {style: {backgroundColor:"white",padding:"3px 0 30px 0"}}, 
+	                React.createElement("div", {style: {height:"47px"}}, 
+	                    React.createElement("div", {className: "col-sm-7 col-md-7 col-lg-7", 
+	                         style: {height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}, 
+	                        React.createElement("div", {style: {display:"inline-block",paddingRight:"20px"}}, 
+	                            React.createElement(Breadcrumb, null, 
+	                                breadcrumbs
 	                            )
 	                        )
 	                    )
 	                ), 
-	                React.createElement("div", {style: succTipStyle}, this.state.succTipText)
+	                React.createElement("div", null, 
+	                    React.createElement("div", {style: {display:this.state.succTip?"none":"block"}}, 
+	                        React.createElement(Form, {horizontal: true}, 
+	                            React.createElement(FormGroup, {controlId: "formHostName", validationState: this.state.helpState?"error":""}, 
+	                                React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
+	                                    "名称"
+	                                ), 
+	                                React.createElement(Col, {sm: 2}, 
+	                                    React.createElement(FormControl, {controlId: "viewName", value: this.state.viewName, 
+	                                                 onChange: this._handleViewName, onBlur: this._blur})
+	                                ), 
+	                                React.createElement(Col, {sm: 3}, 
+	                                    React.createElement(HelpBlock, {style: {display:this.state.helpState?"block":"none"}}, "请填写自定义视图名称")
+	                                )
+	                            ), 
+	                            React.createElement(FormGroup, {controlId: "formVisibleName"}, 
+	                                React.createElement(Col, {sm: 1}
+	                                ), 
+	                                React.createElement(Col, {sm: 4}, 
+	                                    React.createElement("div", {style: {color:"#888888",lineHeight:"24px",clear:"both",marginTop:"-10px"}}, React.createElement("i", {
+	                                        className: "fa fa-info-circle", style: {fontSize:"14px"}}), " 给自定义视图起一个名字，随后您可以将" + " " +
+	                                        "widget" + " " +
+	                                        "加入这个视图。"
+	                                    )
+	                                )
+	                            ), 
+	                            React.createElement(FormGroup, {controlId: "formVisibleName"}, 
+	                                React.createElement(Col, {componentClass: ControlLabel, sm: 1}, 
+	                                    "描述"
+	                                ), 
+	                                React.createElement(Col, {sm: 2}, 
+	                                    React.createElement(FormControl, {componentClass: "textarea", controlId: "viewDesc", value: this.state.viewDesc, 
+	                                                 onChange: this._handleViewDesc})
+	                                )
+	                            ), 
+	                            React.createElement(FormGroup, {controlId: "formVisibleName"}, 
+	                                React.createElement(Col, {sm: 1}
+	                                ), 
+	                                React.createElement(Col, {sm: 2}, 
+	                                    React.createElement(Button, {onClick: this._deleteView, style: {float:"right"}}, "删除"), 
+	                                    React.createElement(Button, {onClick: this._editView, 
+	                                            style: {color:"white",backgroundColor:"#54ADE9",float:"right"}}, "修改")
+	                                )
+	                            )
+	                        )
+	                    ), 
+	                    React.createElement("div", {style: succTipStyle}, this.state.succTipText)
+	                )
 	            )
 	        )
 	    }
