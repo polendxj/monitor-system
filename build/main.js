@@ -35541,10 +35541,10 @@
 
 	var viewBtn = [
 	    {id: 10001, name: "创建自定义视图"}
-	]
+	];
 	var viewCreate = [
 	    {id: 20001, name: "VCenter"}
-	]
+	];
 
 	var Menus = React.createClass({displayName: "Menus",
 	    getInitialState: function () {
@@ -35596,7 +35596,10 @@
 
 	    },
 	    _clickViewMenu: function (obj) {
-	        MenuAction.changeViews(obj.name);
+	        browserHistory.push("/list");
+	        setTimeout(function () {
+	            MenuAction.changeViews(obj.name);
+	        },1);
 	        MenuAction.changeBreadcrumb(5, obj);
 	    },
 	    _clickCreateView: function (obj) {
@@ -36493,7 +36496,9 @@
 	            }
 	        }else if(type == 4){
 	            MenuAction.changeBreadcrumb(4, "");
-	        } else if (type == 0) {
+	        } else if(type==1){
+	            MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+	        }else if (type == 0) {
 	            this.setState({lgShow: true})
 	        }
 	    },
@@ -75290,7 +75295,6 @@
 	var Tooltip = __webpack_require__(620);
 	var TopologyChart = __webpack_require__(758);
 
-
 	var Dashboard = React.createClass({displayName: "Dashboard",
 	    render: function () {
 	        return (
@@ -76323,7 +76327,8 @@
 	            .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
 	        var diagonal = d3.svg.diagonal.radial()
-	            .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+	            .projection(function(d) { return [d.y, d.x]; });
+	            /*.projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });*/
 
 	        var svg = d3.select(".chart").append("svg")
 	            .attr("width", diameter)
@@ -76347,15 +76352,34 @@
 	                .data(nodes)
 	                .enter().append("g")
 	                .attr("class", "node")
-	                .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+	                .attr("transform", function(d) { return "rotate(" + (d.x-180) + ")translate(" + d.y + ")"; })
 
-	            node.append("circle")
+	            /*node.append("circle")
 	                .attr("r", 4.5)
 	                .style("fill", function (d) {
 	                    if(d.size<2000||d.responseTime>1000){
 	                        return "red";
 	                    }
-	                });
+	                });*/
+	            node.append("svg:image")
+	                .attr("class", "circle")
+	                .attr("xlink:href", function(d){
+	                    //根据类型来使用图片
+	                    switch (d.imgType){
+	                        case 0:
+	                            return "/imgs/topology/cloud_ok.png";
+	                            break;
+	                        case 1:
+	                        case 2:
+	                        case 3:
+	                            return "/imgs/topology/server_ok.png";
+	                            break;
+	                    }
+	                })
+	                .attr("x", "-32px")
+	                .attr("y", "-32px")
+	                .attr("width", "64px")
+	                .attr("height", "64px");
 
 	            node.append("text")
 	                .attr("dy", ".31em")
