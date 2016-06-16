@@ -183,6 +183,9 @@ var Button = React.createClass({
             MenuAction.changeBreadcrumb(4, "");
         } else if(type==1){
             MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+            setTimeout(function () {
+                browserHistory.push("/configurationPage");
+            },10);
         }else if (type == 0) {
             this.setState({lgShow: true})
         }

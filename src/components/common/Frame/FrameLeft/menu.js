@@ -82,71 +82,74 @@ var Menus = React.createClass({
         browserHistory.push("/createView");
     },
     _editView: function (viewName, viewDesc, obj) {
-        MenuAction.changeBreadcrumb(5, obj);
+        var o = {id:obj.id, name: "编辑自定义视图"};
+        MenuAction.changeBreadcrumb(5, o);
         browserHistory.push("/editView");
     },
     render: function () {
         var panel1 = "";
         var panel2 = "";
         var that = this;
-        console.log(this.state.breadcrumbDataList);
-        if (this.state.breadcrumbDataList.length >= 4) {
+        if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
             panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                              style={{padding:"7px 25px",color:"black"}}><span
-                style={{fontWeight:"bold"}}>自定义视图</span></a>
+                                                                                              style={{padding:"7px 30px",color:"black"}}><span
+                style={{fontWeight:"bold"}}>全部类型</span></a>
                 <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                    <li className="createView" onClick={that._clickCreateView.bind(that,viewBtn[0])}
-                        style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
-                        ><Button
-                        style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;
-                        {viewBtn[0].name}</Button>
+                    {this.state.subMenus.subMenus.map(function (subMenu, idx) {
+                        return <li key={subMenu.name} onMouseOver={that._hover.bind(that,idx,0)}
+                                   onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,idx,0)}
+                                   className="secondLayer"
+                                   style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==idx&&that.state.hoverParentIndex==0)||(that.state.selectedIndex==idx&&that.state.selectedParentIndex==0))? "#e6e6e6":"white"}}>
+                            <a
+                                href="#" style={{padding:"7px 30px",color:"black"}}>{subMenu.name}<span
+                                style={{color:"#45A2E1"}}>&nbsp;&nbsp;({subMenu.count})</span></a></li>;
+                    })}
+                </ul>
+            </li>;
+            panel2 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                              style={{padding:"7px 25px",color:"black"}}><span
+                style={{fontWeight:"bold"}}>故障管理</span></a>
+                <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
+                    <li className="secondLayer"
+                        style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==0&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==0&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
+                        onMouseOver={that._hover.bind(that,0,1)}
+                        onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,0,1)}><a
+                        href="#" style={{padding:"7px 25px",color:"black"}}>故障历史</a>
                     </li>
-                    <li className="views"
-                        style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
-                        ><span onClick={that._clickViewMenu.bind(that,viewCreate[0])}
-                               style={{cursor:"pointer"}}>{viewCreate[0].name}
+                    <li className="secondLayer"
+                        style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==1&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==1&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
+                        onMouseOver={that._hover.bind(that,1,1)}
+                        onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,1,1)}><a
+                        href="#" style={{padding:"7px 25px",color:"black"}}>故障修复状态</a>
+                    </li>
+                </ul>
+            </li>
+        }
+        if (this.state.breadcrumbDataList.length >= 4) {
+            switch (this.state.breadcrumbDataList[3].breadcrumbID){
+                case 3:
+                    panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
+                                                                                                      style={{padding:"7px 25px",color:"black"}}><span
+                        style={{fontWeight:"bold"}}>自定义视图</span></a>
+                        <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
+                            <li className="createView" onClick={that._clickCreateView.bind(that,viewBtn[0])}
+                                style={{marginBottom:"4px",height:"50px",lineHeight:"50px",paddingLeft: "25px",backgroundColor:"white"}}
+                                ><Button
+                                style={{padding:"7px 25px 7px 10px",color:"black"}}><i className="fa fa-plus"></i>&nbsp;&nbsp;
+                                {viewBtn[0].name}</Button>
+                            </li>
+                            <li className="views"
+                                style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
+                                ><span onClick={that._clickViewMenu.bind(that,viewCreate[0])}
+                                       style={{cursor:"pointer"}}>{viewCreate[0].name}
                     </span><i onClick={that._editView.bind(that,"VCenter","version 5.5",viewCreate[0])}
                               className="fa fa-edit fa-lg"
                               title="编辑"
                               style={{float:"right",lineHeight:"22px",cursor:"pointer"}}></i>
-                    </li>
-                </ul>
-            </li>
-        } else {
-            if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
-                panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                                  style={{padding:"7px 30px",color:"black"}}><span
-                    style={{fontWeight:"bold"}}>全部类型</span></a>
-                    <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                        {this.state.subMenus.subMenus.map(function (subMenu, idx) {
-                            return <li key={subMenu.name} onMouseOver={that._hover.bind(that,idx,0)}
-                                       onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,idx,0)}
-                                       className="secondLayer"
-                                       style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==idx&&that.state.hoverParentIndex==0)||(that.state.selectedIndex==idx&&that.state.selectedParentIndex==0))? "#e6e6e6":"white"}}>
-                                <a
-                                    href="#" style={{padding:"7px 30px",color:"black"}}>{subMenu.name}<span
-                                    style={{color:"#45A2E1"}}>&nbsp;&nbsp;({subMenu.count})</span></a></li>;
-                        })}
-                    </ul>
-                </li>;
-                panel2 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                                  style={{padding:"7px 25px",color:"black"}}><span
-                    style={{fontWeight:"bold"}}>故障管理</span></a>
-                    <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                        <li className="secondLayer"
-                            style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==0&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==0&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
-                            onMouseOver={that._hover.bind(that,0,1)}
-                            onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,0,1)}><a
-                            href="#" style={{padding:"7px 25px",color:"black"}}>故障历史</a>
-                        </li>
-                        <li className="secondLayer"
-                            style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==1&&that.state.hoverParentIndex==1)||(that.state.selectedIndex==1&&that.state.selectedParentIndex==1))? "#e6e6e6":"white"}}
-                            onMouseOver={that._hover.bind(that,1,1)}
-                            onMouseLeave={that._leave} onClick={that._clickSubMenu.bind(that,1,1)}><a
-                            href="#" style={{padding:"7px 25px",color:"black"}}>故障修复状态</a>
-                        </li>
-                    </ul>
-                </li>
+                            </li>
+                        </ul>
+                    </li>;
+                    break;
             }
         }
         return (

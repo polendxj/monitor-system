@@ -12,6 +12,7 @@ var List=require('./components/common/Frame/FrameRight/MainContent/mainContent')
 var AllCharts = require("./components/common/highcharts/AllCharts");
 var CreateView = require('./components/common/createViews/CreateView');
 var EditView = require('./components/common/createViews/EditView');
+var ConfigurationPage = require('./components/common/Configuration/ConfigurationPage');
 
 require('../static/maxent.min.js');
 
@@ -38,6 +39,7 @@ ReactDOM.render((
             <Route path="allCharts" component={AllCharts} />
             <Route path="createView" component={CreateView} />
             <Route path="editView" component={EditView} />
+            <Route path="configurationPage" component={ConfigurationPage} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));

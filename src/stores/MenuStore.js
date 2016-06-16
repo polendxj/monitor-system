@@ -39,7 +39,6 @@ var MenuStore = assign({}, EventEmitter.prototype, {
         if(data!=""){
             breadcrumbDataList.push(breadcrumbData);
         }
-        console.log(breadcrumbDataList);
         this.emitChange(this.events.change_breadcrumb);
     },
     changeViews: function (data) {

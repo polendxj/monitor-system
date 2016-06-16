@@ -14,7 +14,7 @@ var Breadcrumb = require("react-bootstrap").Breadcrumb;
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
 
-var CreateView = React.createClass({
+var ConfigurationPage = React.createClass({
     getInitialState: function () {
         return ({
             breadcrumbDataList: MenuStore.getBreadcrumbData()
@@ -29,7 +29,15 @@ var CreateView = React.createClass({
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
-
+    _redirect: function (idx) {
+        if(idx==0||idx==1){
+            MenuAction.changeBreadcrumb(4,"");
+            browserHistory.push("/list");
+        }else if(idx==3||idx==2) {
+            MenuAction.changeBreadcrumb(idx+2,"");
+            browserHistory.push("/list");
+        }
+    },
     render: function () {
         var breadcrumbs = [];
         var length=this.state.breadcrumbDataList.length-1;
@@ -55,7 +63,7 @@ var CreateView = React.createClass({
                         {breadcrumbs}
                     </Breadcrumb>
                 </div>
-                <div style={{display:this.state.succTip?"none":"block"}}>
+                <div>
                     配置页
                 </div>
             </div>
@@ -63,4 +71,4 @@ var CreateView = React.createClass({
     }
 });
 
-module.exports = CreateView;
+module.exports = ConfigurationPage;

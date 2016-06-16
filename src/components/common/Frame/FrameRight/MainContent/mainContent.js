@@ -305,7 +305,7 @@ var Content = React.createClass({
     },
     render: function () {
         var div = "";
-        if (this.state.breadcrumbDataList.length < 4) {
+        if (this.state.breadcrumbDataList.length == 3) {
             switch (this.state.breadcrumbDataList[2].breadcrumbID) {
                 case 221:
                     div = <div>
@@ -329,7 +329,7 @@ var Content = React.createClass({
                     break;
             }
 
-        } else {
+        } else if (this.state.breadcrumbDataList.length >=4){
             if (this.state.breadcrumbDataList[3].breadcrumbID == 3 && !this.state.viewData) {
                 div = <div>
 
