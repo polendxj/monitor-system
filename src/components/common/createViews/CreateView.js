@@ -103,10 +103,6 @@ var CreateView = React.createClass({
                     </Breadcrumb>
                 </div>
                 <div style={{display:this.state.succTip?"none":"block"}}>
-                    <div
-                        style={{background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}>
-                        自定义视图名称
-                    </div>
                     <Form horizontal>
                         <FormGroup controlId="formHostName" validationState={this.state.helpState?"error":""}>
                             <Col componentClass={ControlLabel} sm={1}>
