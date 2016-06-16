@@ -71,7 +71,10 @@ var Menus = React.createClass({
 
     },
     _clickViewMenu: function (obj) {
-        MenuAction.changeViews(obj.name);
+        browserHistory.push("/list");
+        setTimeout(function () {
+            MenuAction.changeViews(obj.name);
+        },1);
         MenuAction.changeBreadcrumb(5, obj);
     },
     _clickCreateView: function (obj) {

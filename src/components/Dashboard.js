@@ -11,7 +11,6 @@ var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
 var Tooltip = require('react-bootstrap/lib/Tooltip');
 var TopologyChart = require('./common/topology/TopologyChart');
 
-
 var Dashboard = React.createClass({
     render: function () {
         return (
