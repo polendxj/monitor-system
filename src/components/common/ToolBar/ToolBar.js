@@ -14,12 +14,12 @@ var Checkbox = require("react-bootstrap/lib/Checkbox");
 var Tooltip = require("react-bootstrap/lib/Tooltip");
 var OverlayTrigger = require("react-bootstrap/lib/OverlayTrigger");
 var browserHistory = require('react-router').browserHistory;
-var ReactButton=require("react-bootstrap/lib/Button");
+var ReactButton = require("react-bootstrap/lib/Button");
 var AppStore = require('../../../stores/AppStore');
 var AppAction = require('../../../actions/AppAction');
 
 var MenuAction = require('../../../actions/MenuAction');
-var MenuStore=require('../../../stores/MenuStore');
+var MenuStore = require('../../../stores/MenuStore');
 
 var CreateVCenterModal = require("../VCenter/createVCenterModal");
 
@@ -30,7 +30,8 @@ var icons = [
     {id: 0, icon: "fa fa-plus"},
     {id: 1, icon: "fa fa-cog"},
     {id: 2, icon: "fa fa-refresh"},
-    {id: 3, icon: "fa fa-line-chart"}
+    {id: 3, icon: "fa fa-line-chart"},
+    {id: 4, icon: "fa fa-list"}
 ];
 
 
@@ -59,8 +60,8 @@ var DropdownList = React.createClass({
     _changeItem: function (eventKey) {
         this.setState({selected: eventKey});
         this.props.items.forEach(function (value, key) {
-            if (eventKey== value.id) {
-                this.props.onChange(eventKey,value.text);
+            if (eventKey == value.id) {
+                this.props.onChange(eventKey, value.text);
                 return false;
             }
         }.bind(this));
@@ -77,7 +78,7 @@ var DropdownList = React.createClass({
             list.push(<MenuItem key={value.id} onSelect={this._changeItem}
                                 eventKey={value.id}>{value.text}</MenuItem>)
         }.bind(this));
-        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text+this.props.appendText);
+        var title = this.state.selected == index ? this.props.defaultText : this.props.prefixText + (this.props.items[index].text + this.props.appendText);
         return (
             <DropdownButton title={title}
                             style={{height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}}
@@ -167,55 +168,19 @@ var Button = React.createClass({
     _hover: function () {
         this.setState({isNormal: false});
     },
-    _click: function (type,text) {
+    _click: function (type, text) {
         // TODO 保存点击的按钮
-        AppAction.saveOperator(type,text);
+        AppAction.saveOperator(type, text);
         var curTool = "";
-        if (type == 3 || type == 5 || type == 7) {
+        if (type == 3) {
             if (type == 3) {
                 setTimeout(function () {
                     MenuAction.changeViews("");
-                },1);
-                MenuAction.changeBreadcrumb(4,AppStore.getOperator());
+                }, 1);
+                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             }
-            if (AppStore.getPreToolBarID() == 2) {
-                curTool = {
-                    id: 3,
-                    bar: [
-                        <DropdownList key={"bar0"} prefixText={"VCenter : "} defaultText={"请选择VCenter"}/>,
-                        <Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-                        <Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>,
-                        <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-                    ]
-                };
-                AppAction.changeToolBar(3, curTool, AppStore.getToolBarTitle());
-            } else if (AppStore.getPreToolBarID() == 4) {
-                curTool = {
-                    id: 5,
-                    bar: [
-                        <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                        <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                        <DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>,
-                        <DropdownList key={"bar3"} prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-
-                    ]
-                };
-                AppAction.changeToolBar(5, curTool, AppStore.getToolBarTitle());
-            } else if (AppStore.getPreToolBarID() == 6) {
-                curTool = {
-                    id: 7,
-                    bar: [
-                        <DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                        <Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                        <DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>,
-                        <DropdownList key={"bar3"} t prefixText={"监控项 : "} defaultText={"请选择监控项"}/>
-
-                    ]
-                };
-                AppAction.changeToolBar(7, curTool, AppStore.getToolBarTitle());
-            }
-
-
+        }else if(type == 4){
+            MenuAction.changeBreadcrumb(4, "");
         } else if (type == 0) {
             this.setState({lgShow: true})
         }
@@ -268,14 +233,18 @@ var MyDatePicker = React.createClass({
     render: function () {
         return (
             <div style={{position:"relative"}}>
-                <div style={{position:"relative",width:"150px",left:"84px",marginLeft:"10px",float:"left"}}><DateTimeField /> </div>
+                <div style={{position:"relative",width:"150px",left:"84px",marginLeft:"10px",float:"left"}}>
+                    <DateTimeField /></div>
                 <div style={{position:"relative",width:"30px",float:"left",marginLeft:"10px",marginTop:"6px"}}>To</div>
-                <div style={{position:"relative",width:"150px",left:"84px",float:"left",marginLeft:"-7px"}}><DateTimeField /></div>
+                <div style={{position:"relative",width:"150px",left:"84px",float:"left",marginLeft:"-7px"}}>
+                    <DateTimeField /></div>
                 <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link"
-                                                                             style={{border:"0 red solid"}} onClick={this.hideDatePicker.bind(this,"取消")}>取消</ReactButton>
+                                                                             style={{border:"0 red solid"}}
+                                                                             onClick={this.hideDatePicker.bind(this,"取消")}>取消</ReactButton>
                 </div>
                 <div style={{position:"relative",float:"left"}}><ReactButton bsStyle="link"
-                                                                             style={{border:"0 red solid"}} onClick={this.hideDatePicker.bind(this,"保存")}>保存</ReactButton>
+                                                                             style={{border:"0 red solid"}}
+                                                                             onClick={this.hideDatePicker.bind(this,"保存")}>保存</ReactButton>
                 </div>
             </div>
         )

@@ -7,7 +7,7 @@ require("../../../css/myCss/myCss.css");
 
 var TopologyChart = React.createClass({
     componentDidMount: function () {
-        var diameter = 960;
+        var diameter = 760;
 
         var tree = d3.layout.tree()
             .size([360, diameter / 2 - 120])
@@ -18,7 +18,7 @@ var TopologyChart = React.createClass({
 
         var svg = d3.select(".chart").append("svg")
             .attr("width", diameter)
-            .attr("height", diameter - 50)
+            .attr("height", diameter)
             .append("g")
             .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 

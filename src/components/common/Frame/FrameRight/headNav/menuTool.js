@@ -8,6 +8,8 @@ var AppAction = require('../../../../../actions/AppAction');
 var Breadcrumb = require('react-bootstrap/lib/Breadcrumb');
 var MenuStore = require('../../../../../stores/MenuStore');
 var MenuAction = require('../../../../../actions/MenuAction');
+var browserHistory = require('react-router').browserHistory;
+
 
 var MenuTool = React.createClass({
     getInitialState: function () {
@@ -60,34 +62,35 @@ var Title = React.createClass({
     },
     _redirect: function (idx) {
         MenuAction.changeViews("");
-        if(idx==0||idx==1){
-            MenuAction.changeBreadcrumb(4,"");
-            browserHistory.push("/list");
-        }else if(idx==3||idx==2) {
-            MenuAction.changeBreadcrumb(idx+2,"");
-            browserHistory.push("/list");
+        if (idx == 0 || idx == 1) {
+            MenuAction.changeBreadcrumb(4, "");
+        } else if (idx == 3 || idx == 2) {
+            MenuAction.changeBreadcrumb(idx + 2, "");
         }
     },
     render: function () {
-        var length=this.state.breadcrumbDataList.length-1;
-        var breadcrumbs=[];
+        var length = this.state.breadcrumbDataList.length - 1;
+        var breadcrumbs = [];
         this.state.breadcrumbDataList.forEach(function (breadcrumbData, idx) {
-            if(length<=2){
-                breadcrumbs.push (
-                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
+            if (length <= 2) {
+                breadcrumbs.push(
+                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#"
+                                     active>
                         {breadcrumbData.breadcrumbName}
                     </Breadcrumb.Item>
                 )
-            }else{
+            } else {
                 if (idx < length) {
-                    breadcrumbs.push (
-                        <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#">
+                    breadcrumbs.push(
+                        <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)}
+                                         href="#">
                             {breadcrumbData.breadcrumbName}
                         </Breadcrumb.Item>
                     )
                 } else {
-                    breadcrumbs.push (
-                        <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
+                    breadcrumbs.push(
+                        <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)}
+                                         href="#" active>
                             {breadcrumbData.breadcrumbName}
                         </Breadcrumb.Item>
                     )
@@ -126,19 +129,131 @@ var Operator = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     render: function () {
-        if (!this.state.breadcrumbData.fourthID) {
-
-        } else {
-
+        var btnGroup = "";
+        if (this.state.breadcrumbData.length == 3) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    btnGroup = <div>
+                        <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                        <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
+                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
+                        <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
+                    </div>;
+                    break;
+                case 222:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                        <ToolBar.Button label={"配置"} icon={1} tip={"配置Hypervisor"}/>
+                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
+                    </div>;
+                    break;
+                case 223:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                        <ToolBar.Button label={"配置"} icon={1} tip={"配置VMS"}/>
+                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
+                    </div>;
+                    break;
+                case 224:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                        <ToolBar.Button label={"配置"} icon={1} tip={"配置Docker"}/>
+                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
+                    </div>;
+                    break;
+            }
+        }else if(this.state.breadcrumbData.length == 4){
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"VCenter列表"}/>
+                                <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
+                            </div>;
+                    }
+                    break;
+                case 222:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Hypervisor"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Hypervisor列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 223:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VMS"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 224:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Docker"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
+                            </div>;
+                    }
+                    break;
+            }
+        }else if(this.state.breadcrumbData.length == 5){
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"VCenter列表"}/>
+                                <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
+                            </div>;
+                    }
+                    break;
+                case 222:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Hypervisor"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Hypervisor列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 223:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VMS"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 224:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Docker"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
+                            </div>;
+                    }
+                    break;
+            }
         }
-
         return (
             <div className="col-sm-5 col-md-5 col-lg-5" style={{height:"30px",marginTop:"9px"}}>
-                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
-                <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
-                <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
-
+                {btnGroup}
                 <div style={{width:"3px",height:"100%",borderLeft:"thin lightgray dotted",float:"right"}}></div>
 
             </div>

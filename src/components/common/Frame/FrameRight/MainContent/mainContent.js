@@ -41,21 +41,200 @@ var MainContent = React.createClass({
 var Form = React.createClass({
     getInitialState: function () {
         return ({
-            groupItems: [{id: 1, text: "zabbix server"}],
-            serviceItems: [{id: 1, text: "vcenter"}, {id: 2, text: "hypervisor"}]
+            groupItems: [{id: 1, text: "cpu使用率"}, {id: 2, text: "内存使用率"}, {id: 3, text: "磁盘使用率"}], // TODO 此处要替换成根据面包屑获取监控项
+            serviceItems: [{id: 1, text: "vcenter"}, {id: 2, text: "hypervisor"}],
+            breadcrumbData: MenuStore.getBreadcrumbData()
         })
     },
     onChange: function (key, value) {
 
     },
+    _changeBreadcrumbData: function () {
+        this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
+    },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
     render: function () {
+        var formGroup = "";
+        if (this.state.breadcrumbData.length == 3) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    formGroup = <div>
+                        <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                      tip={"请输入VCenter IP或名称"} appendText={""}/>
+                    </div>;
+                    break;
+                case 222:
+                    formGroup = <div>
+                        <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                      tip={"请输入VCenter IP或名称"} appendText={""}/>
+                        <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                      tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                    </div>;
+                    break;
+                case 223:
+                    formGroup = <div>
+                        <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                      tip={"请输入VCenter IP或名称"} appendText={""}/>
+                        <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                      tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"请输入VM IP或名称"}
+                                      tip={"请输入VM IP或名称"} appendText={""}/>
+                    </div>;
+                    break;
+                case 224:
+                    formGroup = <div>
+                        <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                      tip={"请输入VCenter IP或名称"} appendText={""}/>
+                        <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                      tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"请输入Docker IP或名称"}
+                                      tip={"请输入Docker IP或名称"} appendText={""}/>
+                    </div>;
+                    break;
+            }
+        } else if (this.state.breadcrumbData.length == 4) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"} prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 222:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"} prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 223:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"请输入VM IP或名称"}
+                                              tip={"请输入VM IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"}
+                                                      prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 224:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"请输入Docker IP或名称"}
+                                              tip={"请输入Docker IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"}
+                                                      prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+            }
+        } else if (this.state.breadcrumbData.length == 5) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"} prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 222:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"} prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 223:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"请输入VM IP或名称"}
+                                              tip={"请输入VM IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"}
+                                                      prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 224:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入VCenter IP或名称"}
+                                              tip={"请输入VCenter IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"请输入Hypervisor IP或名称"}
+                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"请输入Docker IP或名称"}
+                                              tip={"请输入Docker IP或名称"} appendText={""}/>
+                                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
+                                                      key={"bar0"}
+                                                      prefixText={"监控项 : "}
+                                                      defaultText={"请选择监控项"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+            }
+        }
         return (
             <div className="col-sm-12 col-md-7 col-lg-7" style={{height:"47px",textAlign:"right"}}>
-                <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems} key={"bar0"} prefixText={"组 : "}
-                                      defaultText={"请选择组"} appendText={""} />
-                <ToolBar.DropdownList onChange={this.onChange} items={this.state.serviceItems} key={"bar2"} prefixText={"服务 : "}
-                                      defaultText={"请选择应用服务"} appendText={""} />
-                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"} appendText={""} />
+                {formGroup}
             </div>
         )
     }
@@ -105,14 +284,14 @@ var Content = React.createClass({
     getInitialState: function () {
         return ({
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
-            viewData:"",
+            viewData: "",
             flag: false
         })
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
-        
+
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
@@ -126,7 +305,7 @@ var Content = React.createClass({
     },
     render: function () {
         var div = "";
-        if (this.state.breadcrumbDataList.length<4) {
+        if (this.state.breadcrumbDataList.length < 4) {
             switch (this.state.breadcrumbDataList[2].breadcrumbID) {
                 case 221:
                     div = <div>
@@ -150,14 +329,15 @@ var Content = React.createClass({
                     break;
             }
 
-        }else{
+        } else {
             if (this.state.breadcrumbDataList[3].breadcrumbID == 3 && !this.state.viewData) {
                 div = <div>
-                    {"此处应该显示图表"}
+
                 </div>;
-            }else if(this.state.viewData=="VCenter"){
-                div =<div>
+            } else if (this.state.viewData == "VCenter") {
+                div = <div>
                     <AllCharts />
+
                     <div style={{clear:"both"}}></div>
                 </div>;
             }

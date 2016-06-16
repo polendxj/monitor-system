@@ -9,6 +9,7 @@ var ButtonGroup = require('react-bootstrap/lib/ButtonGroup');
 var Button = require('react-bootstrap/lib/Button');
 var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
 var Tooltip = require('react-bootstrap/lib/Tooltip');
+var TopologyChart = require('./common/topology/TopologyChart');
 
 
 var Dashboard = React.createClass({
@@ -1007,7 +1008,9 @@ var Dashboard = React.createClass({
                     <Row style={{marginTop:"-15px",marginRight:"-3px"}}>
                         <Col xs={12} md={12} className="block-flat">
                             <div className="header" style={{fontSize:"20px"}}>资源监控拓扑图</div>
-                            <div className="content"></div>
+                            <div className="content" style={{textAlign:"center"}}>
+                                <TopologyChart />
+                            </div>
                         </Col>
                     </Row>
                 </div>

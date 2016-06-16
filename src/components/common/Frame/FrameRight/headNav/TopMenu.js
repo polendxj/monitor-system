@@ -7,6 +7,7 @@ var MenuTool = require('./menuTool');
 
 var MenuAction = require('../../../../../actions/MenuAction');
 var MenuStore=require('../../../../../stores/MenuStore');
+var browserHistory = require('react-router').browserHistory;
 
 menus = [
     {
@@ -99,7 +100,7 @@ menus = [
                 secondLayer: [
                     {
                         id:221,
-                        name: 'vCenter',
+                        name: 'VCenter',
                         icon: '',
                         count:2,
                         status: true,
@@ -445,10 +446,16 @@ var TopMenu = React.createClass({
     },
     _click: function (idx) {
         this.setState({selectedIndex:idx});
-        MenuAction.changeMenus(menus[idx]);
-        setTimeout(function () {
-            MenuAction.changeBreadcrumb(1,menus[idx]);
-        }.bind(this),1);
+        if(idx==0){
+            browserHistory.push("/dashboard");
+            MenuAction.changeMenus(menus[idx]);
+        }else{
+            MenuAction.changeMenus(menus[idx]);
+            setTimeout(function () {
+                MenuAction.changeBreadcrumb(1,menus[idx]);
+            }.bind(this),1);
+        }
+
     },
     render: function () {
         var that = this;

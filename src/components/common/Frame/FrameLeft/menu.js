@@ -47,6 +47,7 @@ var Menus = React.createClass({
         if (this.state.subMenus.subMenus.length > 0) {
             setTimeout(function () {
                 MenuAction.changeBreadcrumb(3, this.state.subMenus.subMenus[0]);
+                this._clickSubMenu(0,0);
             }.bind(this), 10);
         }
     },
@@ -65,47 +66,6 @@ var Menus = React.createClass({
         this.setState({selectedIndex: idx});
         this.setState({selectedParentIndex: selectedParentIdx});
         MenuAction.changeBreadcrumb(3, this.state.subMenus.subMenus[idx]);
-        switch (this.state.subMenus.parentIdx) {
-            case 1:
-                switch (idx) {
-                    case 0:
-                        curTool = {
-                            id: 2,
-                            bar: [
-                                <ToolBar.DropdownList key={"bar0"} prefixText={"VCenter : "}
-                                                      defaultText={"请选择VCenter"}/>,
-                                <ToolBar.Text key={"bar1"} placeholder={"请输入Hypervisor名称"} tip={"Hypervisor IP或名称"}/>,
-                                <ToolBar.Text key={"bar2"} placeholder={"请输入VM名称"} tip={"VM IP或名称"}/>
-                            ]
-                        };
-                        AppAction.changeToolBar(2, curTool);
-                        break;
-                    case 1:
-                        curTool = {
-                            id: 4,
-                            bar: [
-                                <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                                <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                                <ToolBar.DropdownList key={"bar2"} prefixText={"服务 : "} defaultText={"请选择应用服务"}/>
-                            ]
-                        };
-                        AppAction.changeToolBar(4, curTool);
-                        break;
-                    case 2:
-                        curTool = {
-                            id: 6,
-                            bar: [
-                                <ToolBar.DropdownList key={"bar0"} prefixText={"组 : "} defaultText={"请选择组"}/>,
-                                <ToolBar.Text key={"bar1"} placeholder={"请输入主机IP或名称"} tip={"主机IP或名称"}/>,
-                                <ToolBar.DropdownList key={"bar2"} prefixText={"数据库 : "} defaultText={"请选择数据库"}/>
-
-                            ]
-                        };
-                        AppAction.changeToolBar(6, curTool);
-                        break;
-                }
-                break;
-        }
 
         browserHistory.push("/list");
 
@@ -145,25 +105,14 @@ var Menus = React.createClass({
                     </span><i onClick={that._editView.bind(that,"VCenter","version 5.5",viewCreate[0])}
                               className="fa fa-edit fa-lg"
                               title="编辑"
-                              style={{float:"right",paddingRight:"20px",lineHeight:"22px",cursor:"pointer"}}></i>
-                    </li>
-                </ul>
-            </li>
-            panel2 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                              style={{padding:"7px 25px",color:"black"}}><span
-                style={{fontWeight:"bold"}}>动态视图</span></a>
-                <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
-                    <li className="views"
-                        style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
-                        onClick={that._clickViewMenu.bind(that,"VCenter")}><span
-                        style={{cursor:"pointer"}}>实时图表过滤</span>
+                              style={{float:"right",lineHeight:"22px",cursor:"pointer"}}></i>
                     </li>
                 </ul>
             </li>
         } else {
             if (typeof(this.state.subMenus.subMenus) != "undefined" && this.state.subMenus.subMenus.length > 0) {
                 panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
-                                                                                                  style={{padding:"7px 25px",color:"black"}}><span
+                                                                                                  style={{padding:"7px 30px",color:"black"}}><span
                     style={{fontWeight:"bold"}}>全部类型</span></a>
                     <ul className="sub-menu" style={{display:"block",backgroundColor:"white"}}>
                         {this.state.subMenus.subMenus.map(function (subMenu, idx) {
@@ -172,7 +121,7 @@ var Menus = React.createClass({
                                        className="secondLayer"
                                        style={{marginBottom:"4px",paddingLeft: "0px",backgroundColor:((that.state.hoverIndex==idx&&that.state.hoverParentIndex==0)||(that.state.selectedIndex==idx&&that.state.selectedParentIndex==0))? "#e6e6e6":"white"}}>
                                 <a
-                                    href="#" style={{padding:"7px 25px",color:"black"}}>{subMenu.name}<span
+                                    href="#" style={{padding:"7px 30px",color:"black"}}>{subMenu.name}<span
                                     style={{color:"#45A2E1"}}>&nbsp;&nbsp;({subMenu.count})</span></a></li>;
                         })}
                     </ul>
