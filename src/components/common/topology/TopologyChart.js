@@ -14,7 +14,8 @@ var TopologyChart = React.createClass({
             .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
         var diagonal = d3.svg.diagonal.radial()
-            .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
+            .projection(function(d) { return [d.y, d.x]; });
+            /*.projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });*/
 
         var svg = d3.select(".chart").append("svg")
             .attr("width", diameter)
@@ -38,15 +39,34 @@ var TopologyChart = React.createClass({
                 .data(nodes)
                 .enter().append("g")
                 .attr("class", "node")
-                .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+                .attr("transform", function(d) { return "rotate(" + (d.x-180) + ")translate(" + d.y + ")"; })
 
-            node.append("circle")
+            /*node.append("circle")
                 .attr("r", 4.5)
                 .style("fill", function (d) {
                     if(d.size<2000||d.responseTime>1000){
                         return "red";
                     }
-                });
+                });*/
+            node.append("svg:image")
+                .attr("class", "circle")
+                .attr("xlink:href", function(d){
+                    //根据类型来使用图片
+                    switch (d.imgType){
+                        case 0:
+                            return "/imgs/topology/cloud_ok.png";
+                            break;
+                        case 1:
+                        case 2:
+                        case 3:
+                            return "/imgs/topology/server_ok.png";
+                            break;
+                    }
+                })
+                .attr("x", "-32px")
+                .attr("y", "-32px")
+                .attr("width", "64px")
+                .attr("height", "64px");
 
             node.append("text")
                 .attr("dy", ".31em")

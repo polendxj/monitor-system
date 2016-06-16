@@ -1,92 +1,105 @@
 {
   "name": "VCloud",
+  "imgType":0,
   "children": [
     {
       "name": "VCenter1:192.168.10.1",
+      "imgType":1,
       "responseTime":50,
       "children": [
         {
           "name": "Hypervisor1",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 3938},
-            {"name": "VM2", "size": 3812},
-            {"name": "VM3", "size": 6714},
-            {"name": "VM4", "size": 743}
+            {"name": "VM1", "size": 3938,"imgType":3},
+            {"name": "VM2", "size": 3812,"imgType":3},
+            {"name": "VM3", "size": 6714,"imgType":3},
+            {"name": "VM4", "size": 743,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor2",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 2222},
-            {"name": "VM2", "size": 3333},
-            {"name": "VM3", "size": 7777},
-            {"name": "VM4", "size": 5555}
+            {"name": "VM1", "size": 2222,"imgType":3},
+            {"name": "VM2", "size": 3333,"imgType":3},
+            {"name": "VM3", "size": 7777,"imgType":3},
+            {"name": "VM4", "size": 5555,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor3",
+          "imgType":2,
           "children": [
-            {"name": "VM4", "size": 1257}
+            {"name": "VM4", "size": 1257,"imgType":3}
           ]
         }
       ]
     },
     {
       "name": "VCenter2:192.168.10.2",
+      "imgType":1,
       "responseTime":1200,
       "children": [
         {
           "name": "Hypervisor1",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 3938},
-            {"name": "VM2", "size": 3812},
-            {"name": "VM3", "size": 6714},
-            {"name": "VM4", "size": 743}
+            {"name": "VM1", "size": 3938,"imgType":3},
+            {"name": "VM2", "size": 3812,"imgType":3},
+            {"name": "VM3", "size": 6714,"imgType":3},
+            {"name": "VM4", "size": 743,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor2",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 2222},
-            {"name": "VM2", "size": 3333},
-            {"name": "VM3", "size": 7777},
-            {"name": "VM4", "size": 5555}
+            {"name": "VM1", "size": 2222,"imgType":3},
+            {"name": "VM2", "size": 3333,"imgType":3},
+            {"name": "VM3", "size": 7777,"imgType":3},
+            {"name": "VM4", "size": 5555,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor3",
+          "imgType":2,
           "children": [
-            {"name": "VM4", "size": 1257}
+            {"name": "VM4", "size": 1257,"imgType":3}
           ]
         }
       ]
     },
     {
       "name": "VCenter3:192.168.10.3",
+      "imgType":1,
       "responseTime":800,
       "children": [
         {
           "name": "Hypervisor1",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 3938},
-            {"name": "VM2", "size": 3812},
-            {"name": "VM3", "size": 6714},
-            {"name": "VM4", "size": 743}
+            {"name": "VM1", "size": 2222,"imgType":3},
+            {"name": "VM2", "size": 3333,"imgType":3},
+            {"name": "VM3", "size": 7777,"imgType":3},
+            {"name": "VM4", "size": 5555,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor2",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 2222},
-            {"name": "VM2", "size": 3333},
-            {"name": "VM3", "size": 7777},
-            {"name": "VM4", "size": 5555}
+            {"name": "VM1", "size": 2222,"imgType":3},
+            {"name": "VM2", "size": 3333,"imgType":3},
+            {"name": "VM3", "size": 7777,"imgType":3},
+            {"name": "VM4", "size": 5555,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor3",
+          "imgType":2,
           "children": [
-            {"name": "VM4", "size": 1257}
+            {"name": "VM4", "size": 1257,"imgType":3}
           ]
         }
       ]
@@ -97,26 +110,29 @@
       "children": [
         {
           "name": "Hypervisor1",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 3938},
-            {"name": "VM2", "size": 3812},
-            {"name": "VM3", "size": 6714},
-            {"name": "VM4", "size": 743}
+            {"name": "VM1", "size": 2222,"imgType":3},
+            {"name": "VM2", "size": 3333,"imgType":3},
+            {"name": "VM3", "size": 7777,"imgType":3},
+            {"name": "VM4", "size": 5555,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor2",
+          "imgType":2,
           "children": [
-            {"name": "VM1", "size": 2222},
-            {"name": "VM2", "size": 3333},
-            {"name": "VM3", "size": 7777},
-            {"name": "VM4", "size": 5555}
+            {"name": "VM1", "size": 2222,"imgType":3},
+            {"name": "VM2", "size": 3333,"imgType":3},
+            {"name": "VM3", "size": 7777,"imgType":3},
+            {"name": "VM4", "size": 5555,"imgType":3}
           ]
         },
         {
           "name": "Hypervisor3",
+          "imgType":2,
           "children": [
-            {"name": "VM4", "size": 1257}
+            {"name": "VM4", "size": 1257,"imgType":3}
           ]
         }
       ]

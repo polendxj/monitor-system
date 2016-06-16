@@ -3,7 +3,6 @@ var ReactDOM = require('react-dom');
 var jQuery = require('jquery');
 
 
-
 var Dashboard = React.createClass({
     render: function () {
         return (
