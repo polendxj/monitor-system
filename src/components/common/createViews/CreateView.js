@@ -60,6 +60,7 @@ var CreateView = React.createClass({
         }
     },
     _redirect: function (idx) {
+        console.log(idx);
         if(idx==0||idx==1){
             MenuAction.changeBreadcrumb(4,"");
             browserHistory.push("/list");
@@ -109,10 +110,10 @@ var CreateView = React.createClass({
                 </div>
                 <div>
                     <div style={{display:this.state.succTip?"none":"block"}}>
-                        <div
+                        {/*<div
                             style={{background:"#F5F6F9",margin:"10px 0",height:"32px",lineHeight:"32px",padding:"0 18px"}}>
                             自定义视图名称
-                        </div>
+                        </div>*/}
                         <Form horizontal>
                             <FormGroup controlId="formHostName" validationState={this.state.helpState?"error":""}>
                                 <Col componentClass={ControlLabel} sm={1}>
