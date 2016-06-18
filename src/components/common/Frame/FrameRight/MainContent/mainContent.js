@@ -225,7 +225,7 @@ var Form = React.createClass({
                                 <ToolBar.DropdownList onChange={this.onChange} items={this.state.groupItems}
                                                       key={"bar0"}
                                                       prefixText={"监控项 : "}
-                                                      defaultText={"请选择监控项"} appendText={""}/>
+                                                      defaultText={"添加监控视图"} appendText={""}/>
                             </div>;
                             break;
                     }

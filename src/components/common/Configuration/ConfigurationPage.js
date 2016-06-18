@@ -13,6 +13,8 @@ var HelpBlock = require("react-bootstrap").HelpBlock;
 var Breadcrumb = require("react-bootstrap").Breadcrumb;
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
+var ObjectList = require("../ObjectList/ObjectList");
+
 
 var ConfigurationPage = React.createClass({
     getInitialState: function () {
@@ -68,8 +70,8 @@ var ConfigurationPage = React.createClass({
                         </div>
                     </div>
                 </div>
-                <div>
-                        配置页
+                <div style={{padding:"0 10px 0 10px"}}>
+                    <ObjectList.HypervisorConfig />
                 </div>
             </div>
 

@@ -144,6 +144,54 @@ var Text = React.createClass({
     }
 });
 
+var TextOfNoTips = React.createClass({
+    getInitialState: function () {
+        return ({
+            hoverStatus: false,
+            focusStatus:false,
+            value:5
+        })
+    },
+    _hover: function () {
+        this.setState({hoverStatus: true});
+    },
+    _mouseOut: function () {
+        this.setState({hoverStatus: false});
+
+    },
+    _blur: function () {
+        this.setState({focusStatus: false});
+    },
+    _focus: function () {
+        this.setState({focusStatus: true});
+    },
+    onChange: function (e) {
+      this.setState({value:e.target.value});
+    },
+    render: function () {
+        var tips = [];
+        var status=this.state.hoverStatus;
+        if(this.state.focusStatus){
+            status=true;
+        }
+        return (
+            <OverlayTrigger placement="top"
+                            overlay={<Tooltip id={this.props.tip}><strong>{this.props.tip}</strong></Tooltip>}>
+                <Form inline style={{display:"inline-block",position:"relative"}}>
+                    <FormGroup controlId="formControlsText" style={{marginTop:"-4px"}}>
+                        <FormControl autoComplete={"off"} type="text" placeholder={this.props.placeholder}
+                                     style={{border:status?"thin lightgray solid":"0 lightgray solid",fontSize:"13px",backgroundColor:status?"white":"transparent"}}
+                                     value={this.state.value} onFocus={this._focus} onMouseOver={this._hover} onMouseOut={this._mouseOut} onBlur={this._blur}
+                                     onChange={this.onChange}
+                            />
+                    </FormGroup>
+                </Form>
+            </OverlayTrigger>
+
+        )
+    }
+});
+
 var Button = React.createClass({
     getInitialState: function () {
         return ({
@@ -179,14 +227,14 @@ var Button = React.createClass({
                 }, 1);
                 MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             }
-        }else if(type == 4){
+        } else if (type == 4) {
             MenuAction.changeBreadcrumb(4, "");
-        } else if(type==1){
+        } else if (type == 1) {
             MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             setTimeout(function () {
                 browserHistory.push("/configurationPage");
-            },10);
-        }else if (type == 0) {
+            }, 10);
+        } else if (type == 0) {
             this.setState({lgShow: true})
         }
     },
@@ -261,6 +309,7 @@ module.exports = {
     SelectTool,
     DropdownList,
     Text,
+    TextOfNoTips,
     Button,
     MyDatePicker
 };

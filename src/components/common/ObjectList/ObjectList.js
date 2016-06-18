@@ -6,6 +6,7 @@ var Tabs = require("react-bootstrap/lib/Tabs");
 var Tab = require("react-bootstrap/lib/Tab");
 var ProgressBar = require("react-bootstrap/lib/ProgressBar");
 var Table = require("react-bootstrap/lib/Table");
+var ToolBar = require("../ToolBar/ToolBar");
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -36,7 +37,6 @@ var VCenterList = React.createClass({
                             <th>版本</th>
                             <th style={{textAlign:"center"}}>Hypervisor数量 (单位:个)</th>
                             <th style={{textAlign:"center"}}>VMS数量 (单位:个)</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,14 +45,12 @@ var VCenterList = React.createClass({
                             <td>1.0.0</td>
                             <td style={{textAlign:"center"}}><a href="#">47</a></td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td></td>
                         </tr>
                         <tr>
                             <td>VCenter:10.9.0.171</td>
                             <td>1.0.0</td>
                             <td style={{textAlign:"center"}}><a href="#">20</a></td>
                             <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                            <td></td>
                         </tr>
                         </tbody>
                     </Table>
@@ -95,7 +93,7 @@ var HypervisorList = React.createClass({
                             <th>BIOS编号</th>
                             <th style={{textAlign:"center"}}>启动时间</th>
                             <th style={{textAlign:"center"}}>VM数量 (单位:个)</th>
-                            <th>操作</th>
+                            <th style={{textAlign:"center"}}>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -108,7 +106,7 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -119,7 +117,7 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
                         </tbody>
                     </Table>
@@ -279,7 +277,7 @@ var VMSList = React.createClass({
                             <th>集群名称</th>
                             <th>电源状态</th>
                             <th style={{textAlign:"center"}}>启动时间</th>
-                            <th>操作</th>
+                            <th style={{textAlign:"center"}}>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -292,7 +290,7 @@ var VMSList = React.createClass({
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
@@ -303,7 +301,7 @@ var VMSList = React.createClass({
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
                         </tbody>
                     </Table>
@@ -466,7 +464,7 @@ var MysqlList = React.createClass({
                             <th>版本</th>
                             <th style={{textAlign:"center"}}>启动时间</th>
                             <th>状态</th>
-                            <th>操作</th>
+                            <th style={{textAlign:"center"}}>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -475,14 +473,15 @@ var MysqlList = React.createClass({
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
                         </tbody>
                     </Table>
@@ -556,9 +555,91 @@ var MysqlList = React.createClass({
     }
 });
 
+var HypervisorConfig=React.createClass({
+    getInitialState: function () {
+        return {
+            key: 1
+        };
+    },
+    handleSelect(key) {
+        this.setState({key});
+    },
+    componentDidMount: function () {
+        $(".tab-content").css("padding", 0);
+        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    },
+    render: function () {
+        return (
+            <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                  style={{padding:"0"}}>
+                <Tab eventKey={1} title="刷新频率" style={{padding:"0"}}>
+                    <Table responsive style={{margin:"0"}}>
+                        <thead>
+                        <tr>
+                            <th>监控项</th>
+                            <th>监控频率 (单位:秒)</th>
+                            <th>描述</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td>这里是一个很长很长的描述信息</td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td>这里是一个很长很长的描述信息</td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                </Tab>
+                <Tab eventKey={2} title="告警阈值" style={{padding:"0"}}>
+                    <Table responsive style={{margin:"0"}}>
+                        <thead>
+                        <tr>
+                            <th>监控项</th>
+                            <th>告警线</th>
+                            <th>描述</th>
+                            <th style={{textAlign:"center"}}>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>xxxxxxxxxxxxxx</td>
+                            <td>xxxxxxxxxxxxxx</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button></td>
+
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>xxxxxxxxxxxxxx</td>
+                            <td>xxxxxxxxxxxxxx</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button></td>
+
+                        </tr>
+                        </tbody>
+                    </Table>
+                </Tab>
+            </Tabs>
+        )
+    }
+});
+
 module.exports = {
     VCenterList,
     HypervisorList,
     VMSList,
-    MysqlList
+    MysqlList,
+    HypervisorConfig
 };
