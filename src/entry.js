@@ -13,6 +13,10 @@ var AllCharts = require("./components/common/highcharts/AllCharts");
 var CreateView = require('./components/common/createViews/CreateView');
 var EditView = require('./components/common/createViews/EditView');
 var ConfigurationPage = require('./components/common/Configuration/ConfigurationPage');
+var CreateVCenterModal = require('./components/common/VCenter/createVCenterModal');
+var UserList = require('./components/common/SystemConfig/UserConfig/UserList');
+var CreateUser = require('./components/common/SystemConfig/UserConfig/CreateUser');
+var UpdatePwd = require('./components/common/SystemConfig/UserConfig/UpdatePwd');
 
 require('../static/maxent.min.js');
 
@@ -40,6 +44,10 @@ ReactDOM.render((
             <Route path="createView" component={CreateView} />
             <Route path="editView" component={EditView} />
             <Route path="configurationPage" component={ConfigurationPage} />
+            <Route path="createVCenterModal" component={CreateVCenterModal} />
+            <Route path="userList" component={UserList} />
+            <Route path="createUser" component={CreateUser} />
+            <Route path="updatePwd" component={UpdatePwd} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));

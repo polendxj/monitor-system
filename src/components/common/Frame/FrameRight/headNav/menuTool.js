@@ -62,10 +62,23 @@ var Title = React.createClass({
     },
     _redirect: function (idx) {
         MenuAction.changeViews("");
-        if (idx == 0 || idx == 1) {
+        if (idx == 0 || idx == 1 || idx == 2) {
             MenuAction.changeBreadcrumb(4, "");
-        } else if (idx == 3 || idx == 2) {
+            switch (this.state.breadcrumbDataList[2].breadcrumbID){
+                case 221:
+                    browserHistory.push("/list");
+                    break;
+                case 612:
+                    browserHistory.push("/userList");
+                    break;
+            }
+        } else if (idx == 3) {
             MenuAction.changeBreadcrumb(idx + 2, "");
+            switch (this.state.breadcrumbDataList[idx].breadcrumbID){
+                case 3:
+                    browserHistory.push("/list");
+                    break;
+            }
         }
     },
     render: function () {
@@ -161,6 +174,11 @@ var Operator = React.createClass({
                         <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
                     </div>;
                     break;
+                case 612:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"创建"} icon={0} tip={"创建用户"}/>
+                    </div>;
+                    break;
             }
         }else if(this.state.breadcrumbData.length == 4){
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -204,6 +222,11 @@ var Operator = React.createClass({
                                 <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
                             </div>;
                     }
+                    break;
+                case 612:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"创建"} icon={0} tip={"创建用户"}/>
+                    </div>;
                     break;
             }
         }else if(this.state.breadcrumbData.length == 5){

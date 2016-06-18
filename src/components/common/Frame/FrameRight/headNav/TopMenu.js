@@ -89,6 +89,24 @@ menus = [
                         status: false,
                         url: ''
                     }
+                ],
+                secondLayer1: [
+                    {
+                        id:217,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:218,
+                        name: '故障修复状态',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
+                    }
                 ]
             },
             {
@@ -127,6 +145,24 @@ menus = [
                         name: 'Docker',
                         icon: '',
                         count:104,
+                        status: false,
+                        url: ''
+                    }
+                ],
+                secondLayer1: [
+                    {
+                        id:224,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:225,
+                        name: '故障修复状态',
+                        icon: '',
+                        count:8,
                         status: false,
                         url: ''
                     }
@@ -195,6 +231,24 @@ menus = [
                         status: false,
                         url: ''
                     }
+                ],
+                secondLayer1: [
+                    {
+                        id:238,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:239,
+                        name: '故障修复状态',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
+                    }
                 ]
             },
             {
@@ -239,6 +293,24 @@ menus = [
                     {
                         id:245,
                         name: 'Tomcat',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
+                    }
+                ],
+                secondLayer1: [
+                    {
+                        id:246,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:247,
+                        name: '故障修复状态',
                         icon: '',
                         count:8,
                         status: false,
@@ -301,6 +373,24 @@ menus = [
                         status: false,
                         url: ''
                     }
+                ],
+                secondLayer1: [
+                    {
+                        id:257,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:258,
+                        name: '故障修复状态',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
+                    }
                 ]
             },
             {
@@ -339,6 +429,24 @@ menus = [
                         name: '负载均衡',
                         icon: '',
                         count:48,
+                        status: false,
+                        url: ''
+                    }
+                ],
+                secondLayer1: [
+                    {
+                        id:265,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:266,
+                        name: '故障修复状态',
+                        icon: '',
+                        count:8,
                         status: false,
                         url: ''
                     }
@@ -391,6 +499,24 @@ menus = [
                         status: false,
                         url: ''
                     }
+                ],
+                secondLayer1: [
+                    {
+                        id:276,
+                        name: '故障历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:277,
+                        name: '故障修复状态',
+                        icon: '',
+                        count:8,
+                        status: false,
+                        url: ''
+                    }
                 ]
             }
         ]
@@ -427,7 +553,35 @@ menus = [
         icon: 'fa fa-home',
         url: '',
         status: false,
-        firstLayer: []
+        firstLayer: [
+            {
+                id:61,
+                name: '用户中心',
+                icon: 'fa fa-home',
+                url: '',
+                status: false,
+                secondLayer: [
+                    {
+                        id:611,
+                        name: '修改密码',
+                        icon: 'fa fa-home',
+                        url: '',
+                        count:-1,
+                        status: false
+                    }
+                ],
+                secondLayer1: [
+                    {
+                        id:612,
+                        name: '全部用户',
+                        icon: 'fa fa-home',
+                        url: '',
+                        count:-1,
+                        status: false
+                    }
+                ]
+            }
+        ]
     }
 ];
 var TopMenu = React.createClass({

@@ -209,8 +209,7 @@ var Button = React.createClass({
                 marginTop: "-9px",
                 color: "white"
             },
-            isNormal: true,
-            lgShow: false
+            isNormal: true
         })
     },
     _hover: function () {
@@ -233,9 +232,24 @@ var Button = React.createClass({
             MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             setTimeout(function () {
                 browserHistory.push("/configurationPage");
-            }, 10);
-        } else if (type == 0) {
-            this.setState({lgShow: true})
+            },10);
+        }else if (type == 0) {
+            var obj=AppStore.getOperator();
+            var o = {id:obj.id, name: "创建"+MenuStore.getBreadcrumbData()[2].breadcrumbName};
+            switch (MenuStore.getBreadcrumbData()[2].breadcrumbID){
+                case 221:
+                case 222:
+                case 223:
+                case 224:
+                    o = {id:obj.id, name: "创建"+MenuStore.getBreadcrumbData()[2].breadcrumbName};
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createVCenterModal");
+                    break;
+                case 612:
+                    o = {id:obj.id, name: "创建用户"};
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createUser");
+            }
         }
     },
     _leave: function () {
@@ -244,12 +258,11 @@ var Button = React.createClass({
     },
     _lgClose: function (param) {
         if (param == "save") {
-            this.setState({lgShow: false});
             alert("保存成功!");
         } else {
             var r = confirm("您的VCenter信息未保存，确定不保存吗？");
             if (r) {
-                this.setState({lgShow: false})
+
             }
         }
     },
@@ -266,7 +279,6 @@ var Button = React.createClass({
                         className="btn btn-info btn-flat"
                         style={style}><span
                     style={{fontSize:"12px",marginTop:"-2px"}}>{this.props.label}</span>
-                    <CreateVCenterModal show={this.state.lgShow} onHide={this._lgClose}/>
                 </button>
 
             </OverlayTrigger>

@@ -25,7 +25,7 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     },
     changeFirstMenus: function (idx, tools) {
         subMenus.parentIdx = idx;
-        subMenus.subMenus = tools.secondLayer;
+        subMenus.subMenus = tools;
         this.emitChange(this.events.change_firstMenus);
     },
     changeBreadcrumb: function (level, data) {
