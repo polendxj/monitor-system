@@ -939,24 +939,24 @@ var Dashboard = React.createClass({
 
                             <div className="content" style={{height:"510px",overflow:"hidden"}}>
                                 <ul className="list-group">
-                                    <li className="list-group-item">1.Cras justo odio <span
+                                    <li className="list-group-item">1.安全监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-19</span></li>
+                                    <li className="list-group-item">2.新版API监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-18</span></li>
+                                    <li className="list-group-item">3.Docker监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-17</span></li>
+                                    <li className="list-group-item">4.新增DB2监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-17</span></li>
+                                    <li className="list-group-item">5.新版Lighttpd监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-16</span></li>
+                                    <li className="list-group-item">6.新增Microsoft IIS监控上线 <span
                                         style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">2.Dapibus ac facilisis in <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">3.Morbi leo risus <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">4.Porta ac consectetur ac <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">5.Vestibulum at eros <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">6.Vestibulum at eros <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">7.Vestibulum at eros <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">8.Vestibulum at eros <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
-                                    <li className="list-group-item">9.Vestibulum at eros <span
-                                        style={{float:"right",color:"lightgray"}}>2016-6-14</span></li>
+                                    <li className="list-group-item">7.新增网站监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-13</span></li>
+                                    <li className="list-group-item">8.新增网络存储设备监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-12</span></li>
+                                    <li className="list-group-item">9.新增存储监控上线 <span
+                                        style={{float:"right",color:"lightgray"}}>2016-6-12</span></li>
                                 </ul>
                             </div>
                             <div className="header">快速创建</div>
