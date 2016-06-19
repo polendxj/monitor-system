@@ -5,6 +5,12 @@ var React = require("react");
 var LineCharts = require("./lineCharts");
 var PieCharts = require("./PieCharts");
 var ReactHighcharts = require('react-highcharts/dist/bundle/highcharts');
+var Table = require('material-ui/lib/table/table');
+var TableHeader = require('material-ui/lib/table/table-header');
+var TableRow = require('material-ui/lib/table/table-row');
+var TableHeaderColumn = require('material-ui/lib/table/table-header-column');
+var TableBody = require('material-ui/lib/table/table-body');
+var TableRowColumn = require('material-ui/lib/table/table-row-column');
 
 var percent = 30;
 var pieChartsData = [
@@ -168,7 +174,7 @@ var lineChartsData = [
         plotOptions: {
             area: {
                 fillColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                    linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
                     stops: [
                         [0, Highcharts.getOptions().colors[0]],
                         [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
@@ -241,6 +247,38 @@ var lineChartsData = [
         }]
     }
 ];
+var tableData = tableData = [
+    {
+        name: 'John Smith',
+        status: 'Employed',
+        selected: true,
+    },
+    {
+        name: 'Randal White',
+        status: 'Unemployed',
+    },
+    {
+        name: 'Stephanie Sanders',
+        status: 'Employed',
+        selected: true,
+    },
+    {
+        name: 'Steve Brown',
+        status: 'Employed',
+    },
+    {
+        name: 'Joyce Whitten',
+        status: 'Employed',
+    },
+    {
+        name: 'Samuel Roberts',
+        status: 'Employed',
+    },
+    {
+        name: 'Adam Moore',
+        status: 'Employed',
+    },
+];
 var AllCharts = React.createClass({
     render: function () {
         var showChart="";
@@ -265,11 +303,70 @@ var AllCharts = React.createClass({
             }
         }.bind(this));
         return (
-            <div>
+            <div style={{marginTop:"10px"}}>
+                <MonitorItemsEdit />
                 {showChart}
             </div>
         )
     }
 });
 
+var MonitorItemsEdit = React.createClass({
+    getInitialState: function () {
+        return ({
+            fixedHeader: true,
+            fixedFooter: true,
+            stripedRows: false,
+            showRowHover: false,
+            selectable: false,
+            multiSelectable: false,
+            enableSelectAll: false,
+            deselectOnClickaway: false,
+            showCheckboxes: false,
+            height: ''
+        })
+    },
+    render: function () {
+        return (
+            <div id="monitorItemsPanel" style={{display:"none"}}>
+                <Table
+                    height={this.state.height}
+                    fixedHeader={this.state.fixedHeader}
+                    fixedFooter={this.state.fixedFooter}
+                    selectable={this.state.selectable}
+                    multiSelectable={this.state.multiSelectable}
+                    >
+                    <TableHeader
+                        displaySelectAll={this.state.showCheckboxes}
+                        adjustForCheckbox={this.state.showCheckboxes}
+                        enableSelectAll={this.state.enableSelectAll}
+                        >
+                        <TableRow style={{height:"30px"}}>
+                            <TableHeaderColumn colSpan="3" style={{textAlign: 'center',height:"30px"}}>
+                                Hypervisor 监控项
+                            </TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={this.state.showCheckboxes}
+                        deselectOnClickaway={this.state.deselectOnClickaway}
+                        showRowHover={this.state.showRowHover}
+                        stripedRows={this.state.stripedRows}
+                        >
+                        {tableData.map((row, index) => (
+                            <TableRow key={index} selected={row.selected}>
+                                <TableRowColumn style={{width:"5%"}}>{index+1}</TableRowColumn>
+                                <TableRowColumn style={{width:"80%"}}>{row.name}</TableRowColumn>
+                                <TableRowColumn style={{width:"15%",textAlign:"center"}}>
+                                    <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button>
+                                </TableRowColumn>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+        )
+
+    }
+});
 module.exports = AllCharts;
