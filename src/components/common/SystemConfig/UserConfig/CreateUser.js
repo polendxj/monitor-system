@@ -125,9 +125,8 @@ var Content = React.createClass({
                         <Col sm={2}>
                         </Col>
                         <Col sm={2}>
-                            <Button onClick={this._click.bind(this,"save")}
+                            <Button onClick={this._click}
                                     style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>保存</Button>
-                            <Button onClick={this._click.bind(this,"close")} style={{float:"right"}}>关闭</Button>
                         </Col>
                     </FormGroup>
                 </Form>

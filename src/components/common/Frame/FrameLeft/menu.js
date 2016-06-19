@@ -13,18 +13,18 @@ var MenuAction = require('../../../../actions/MenuAction');
 
 require('jquery');
 
-var viewBtn = [
+viewBtn=[
     {id: 10001, name: "创建自定义视图"}
 ];
-var viewCreate = [
-    {id: 20001, name: "VCenter"}
-];
-
 var Menus = React.createClass({
     getInitialState: function () {
         return ({
             subMenus: [],
             subSecondMenus: [],
+            viewCreate:[
+                {id: 20001, name: "VCenter"},
+                {id: 20002, name: "vcModel"}
+            ],
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
             hoverParentIndex: -1,
             selectedParentIndex: -1,
@@ -44,7 +44,7 @@ var Menus = React.createClass({
         this.setState({selectedIndex: 0});
         this.setState({subMenus: MenuStore.getSubMenus()});
         this.setState({selectedParentIndex: 0});
-        if(typeof(this.state.subMenus.subMenus) != "undefined"){
+        if (typeof(this.state.subMenus.subMenus) != "undefined") {
             if (typeof(this.state.subMenus.subMenus.secondLayer) != "undefined" && this.state.subMenus.subMenus.secondLayer.length > 0) {
                 switch (this.state.subMenus.subMenus.id) {
                     case 61:
@@ -65,6 +65,17 @@ var Menus = React.createClass({
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
+        if(this.state.breadcrumbDataList.length==4&&this.state.breadcrumbDataList[3].breadcrumbID==3){
+            if(this.state.viewCreate.length>0){
+                setTimeout(function () {
+                    this._clickViewMenu(this.state.viewCreate[0]);
+                }.bind(this), 10);
+            }else{
+                setTimeout(function () {
+                    MenuAction.changeViews("");
+                }.bind(this), 1);
+            }
+        }
     },
     _hover: function (idx, hoverParentIdx) {
         this.setState({hoverIndex: idx});
@@ -171,6 +182,21 @@ var Menus = React.createClass({
             }
         }
         if (this.state.breadcrumbDataList.length >= 4) {
+            var viewList = [];
+            if(this.state.viewCreate.length>0){
+                this.state.viewCreate.forEach(function (view, idx) {
+                    viewList.push(
+                        <li className="views" key={view.id}
+                            style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
+                            ><span onClick={this._clickViewMenu.bind(this,view)}
+                                   style={{cursor:"pointer"}}>{view.name}
+                                </span><i onClick={this._editView.bind(this,"VCenter","version 5.5",view)}
+                                          className="fa fa-edit fa-lg" title="编辑"
+                                          style={{float:"right",lineHeight:"22px",cursor:"pointer"}}></i>
+                        </li>
+                    )
+                }.bind(this));
+            }
             switch (this.state.breadcrumbDataList[3].breadcrumbID) {
                 case 3:
                     panel1 = <li style={{display:"block",width:"210px",backgroundColor:"#e6e6e6"}}><a href="#"
@@ -184,15 +210,7 @@ var Menus = React.createClass({
                                 className="fa fa-plus"></i>&nbsp;&nbsp;
                                 {viewBtn[0].name}</Button>
                             </li>
-                            <li className="views"
-                                style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
-                                ><span onClick={that._clickViewMenu.bind(that,viewCreate[0])}
-                                       style={{cursor:"pointer"}}>{viewCreate[0].name}
-                    </span><i onClick={that._editView.bind(that,"VCenter","version 5.5",viewCreate[0])}
-                              className="fa fa-edit fa-lg"
-                              title="编辑"
-                              style={{float:"right",lineHeight:"22px",cursor:"pointer"}}></i>
-                            </li>
+                            {viewList}
                         </ul>
                     </li>;
                     panel2 = "";

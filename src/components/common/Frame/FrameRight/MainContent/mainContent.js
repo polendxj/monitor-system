@@ -2,6 +2,7 @@
  * Created by Captain on 2016/6/2.
  */
 var React = require("react");
+var browserHistory = require('react-router').browserHistory;
 var Jquery = require("jquery");
 var ToolBar = require("../../../ToolBar/ToolBar");
 var MenuTool = require("../headNav/menuTool");
@@ -19,6 +20,27 @@ var AllCharts = require('../../../highcharts/AllCharts');
 
 
 var MainContent = React.createClass({
+    getInitialState: function () {
+        return ({
+            breadcrumbDataList: MenuStore.getBreadcrumbData(),
+            viewData: ""
+        })
+    },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
+
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        MenuStore.removeChangeListener(MenuStore.events.change_views, this._changeViews);
+    },
+    _changeBreadcrumbData: function () {
+        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
+    },
+    _changeViews(){
+        this.setState({viewData: MenuStore.getViewData()});
+    },
     render: function () {
 
         return (
@@ -26,7 +48,7 @@ var MainContent = React.createClass({
                 <div style={{height:"47px"}}>
                     <MenuTool />
                 </div>
-                <div style={{height:"47px"}}>
+                <div style={{height:"47px",display:this.state.breadcrumbDataList.length==4&&this.state.viewData==""?"none":"block"}}>
                     <Timestamp />
                     <Form />
                 </div>
@@ -303,6 +325,10 @@ var Content = React.createClass({
     _changeViews(){
         this.setState({viewData: MenuStore.getViewData()});
     },
+    _jumpToCreateView: function () {
+        MenuAction.changeBreadcrumb(5, viewBtn[0]);
+        browserHistory.push("/createView");
+    },
     render: function () {
         var div = "";
         if (this.state.breadcrumbDataList.length == 3) {
@@ -329,15 +355,23 @@ var Content = React.createClass({
                     break;
             }
 
-        } else if (this.state.breadcrumbDataList.length >=4){
+        } else if (this.state.breadcrumbDataList.length >= 4) {
             if (this.state.breadcrumbDataList[3].breadcrumbID == 3 && !this.state.viewData) {
                 div = <div>
-
-                </div>;
-            } else if (this.state.viewData == "VCenter") {
+                    <div className="col-sm-12 col-md-12 col-lg-12"
+                         style={{height:"200px",textAlign:"center",backgroundColor:"white"}}>
+                        <div style={{height:"47px"}}>
+                        </div>
+                        您目前没有自定义视图，立即
+                        <a href="#" onClick={this._jumpToCreateView}>&nbsp;创建自定义视图</a>
+                    </div>
+                    ;
+                    <div style={{clear:"both"}}></div>
+                </div>
+            } else if (this.state.viewData!= "") {
+                console.log(this.state.viewData);
                 div = <div>
-                    <AllCharts />
-
+                    <AllCharts name={this.state.viewData}/>
                     <div style={{clear:"both"}}></div>
                 </div>;
             }

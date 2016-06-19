@@ -12,7 +12,11 @@ var pieChartsData = [
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
-            plotShadow: false
+            plotShadow: false,
+            height:330
+        },
+        credits: {
+            enabled: false
         },
         exporting: {
             enabled: false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
@@ -58,17 +62,21 @@ var lineChartsData = [
             type: 'spline',
             animation: Highcharts.svg, // don't animate in old IE
             marginRight: 10,
+            height:330,
             events: {
                 load: function () {
                     // set up the updating of the chart each second
                     var series = this.series[0];
                     setInterval(function () {
                         var x = (new Date()).getTime(), // current time
-                            y = Math.round(Math.random() * 1000) / 10;
+                            y = Math.random() * 100;
                         series.addPoint([x, y], true, true);
                     }, 1000);
                 }
             }
+        },
+        credits: {
+            enabled: false
         },
         title: {
             text: "CPU使用率动态曲线图"
@@ -198,15 +206,67 @@ var lineChartsData = [
                 return data;
             })()
         }]
+    },
+    {
+        chart:{
+            height:330
+        },
+        title: {
+            text: '服务器使用率',
+            x: -20 //center
+        },
+        xAxis: {
+            categories: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00',
+                '12:00', '14:00', '16:00', '18:00', '20:00', '22:00']
+        },
+        yAxis: {
+            title: {
+                text: "使用率（%）"
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        series: [{
+            name: 'CPU Usage',
+            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: 'Disk Usage',
+            data: [22, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+            name: 'Memory Usage',
+            data: [0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }]
     }
 ];
 var AllCharts = React.createClass({
     render: function () {
+        var showChart="";
+        var charts=[
+            {
+                name:"VCenter",
+                chart:[]
+            },
+            {
+                name:"vcModel",
+                chart:[]
+            }
+        ];
+        charts[0].chart.push(<LineCharts data={lineChartsData[0]} title={"localhost:127.0.0.1"}/>);
+        charts[0].chart.push(<PieCharts data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />);
+        charts[0].chart.push(<PieCharts data={pieChartsData[0]} title={"hypervisor:184.2.10.11"} />);
+        charts[0].chart.push(<LineCharts data={lineChartsData[1]} title={"mysql:127.0.0.1"}/>);
+        charts[1].chart.push(<LineCharts data={lineChartsData[2]} title={"vm:127.0.0.1"}/>);
+        charts.forEach(function (chart) {
+            if(chart.name==this.props.name){
+                showChart=chart.chart;
+            }
+        }.bind(this));
         return (
             <div>
-                <LineCharts data={lineChartsData[0]} title={"localhost:127.0.0.1"}/>
-                <PieCharts data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />
-                <LineCharts data={lineChartsData[1]} title={"mysql:127.0.0.1"}/>
+                {showChart}
             </div>
         )
     }

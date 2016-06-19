@@ -193,8 +193,7 @@ var CreateVCenterModal = React.createClass({
                         <Col sm={5}>
                         </Col>
                         <Col sm={3}style={{marginLeft:"26px"}}>
-                            <Button onClick={this._onHide.bind(this,"save")} style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>保存</Button>
-                            <Button onClick={this._onHide.bind(this,"close")} style={{float:"right"}}>关闭</Button>
+                            <Button onClick={this._onHide} style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>保存</Button>
                         </Col>
                     </FormGroup>
                 </Form>

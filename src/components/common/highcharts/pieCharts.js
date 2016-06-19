@@ -17,7 +17,7 @@ var PieCharts = React.createClass({
         return (
             <div className="col-sm-12 col-md-6 col-lg-6" style={{border:"thin lightgray solid",padding:"3px",marginTop:"5px",marginLeft:"-1px"}}>
                 <ChartsTitle title={this.props.title} />
-                <ReactHighcharts className="col-sm-12 col-md-12 col-lg-12" config={this.props.data} ref="chart" style={{paddingLeft:"5px",paddingTop:"5px"}}></ReactHighcharts>
+                <ReactHighcharts className="col-sm-12 col-md-12 col-lg-12" config={this.props.data} ref="chart" style={{paddingLeft:"0",paddingTop:"5px"}}></ReactHighcharts>
 
             </div>
         )

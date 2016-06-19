@@ -221,9 +221,9 @@ var Button = React.createClass({
         var curTool = "";
         if (type == 3) {
             if (type == 3) {
-                setTimeout(function () {
+/*                setTimeout(function () {
                     MenuAction.changeViews("");
-                }, 1);
+                }, 1);*/
                 MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             }
         } else if (type == 4) {

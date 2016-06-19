@@ -603,6 +603,9 @@ var TopMenu = React.createClass({
         if(idx==0){
             browserHistory.push("/dashboard");
             MenuAction.changeMenus(menus[idx]);
+            setTimeout(function () {
+                MenuAction.changeBreadcrumb(1,menus[idx]);
+            }.bind(this),1);
         }else{
             MenuAction.changeMenus(menus[idx]);
             setTimeout(function () {

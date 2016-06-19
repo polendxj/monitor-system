@@ -27,15 +27,29 @@ var FirstMenuLayer = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_menus, this._changeTopMenu);
     },
     _changeTopMenu: function () {
-        this.setState({selectedIndex: 0});
         this.setState({firstMenus: MenuStore.getFirstMenus()});
+        //二级菜单暂时跳到第二个
         setTimeout(function () {
-            console.log(this.state.firstMenus[0]);
-            MenuAction.changeFirstMenus(0, this.state.firstMenus[0]);
-        }.bind(this), 1);
-        setTimeout(function () {
-            MenuAction.changeBreadcrumb(2, this.state.firstMenus[0]);
-        }.bind(this), 5);
+            console.log(MenuStore.getBreadcrumbData());
+            if(MenuStore.getBreadcrumbData()[0].breadcrumbID==2){
+                console.log(MenuStore.getBreadcrumbData());
+                this.setState({selectedIndex: 1});
+                setTimeout(function () {
+                    MenuAction.changeFirstMenus(1, this.state.firstMenus[1]);
+                }.bind(this), 1);
+                setTimeout(function () {
+                    MenuAction.changeBreadcrumb(2, this.state.firstMenus[1]);
+                }.bind(this), 5);
+            }else{
+                this.setState({selectedIndex: 0});
+                setTimeout(function () {
+                    MenuAction.changeFirstMenus(0, this.state.firstMenus[0]);
+                }.bind(this), 1);
+                setTimeout(function () {
+                    MenuAction.changeBreadcrumb(2, this.state.firstMenus[0]);
+                }.bind(this), 5);
+            }
+        }.bind(this),5);
     },
     _click: function (idx) {
         this.setState({selectedIndex: idx});
