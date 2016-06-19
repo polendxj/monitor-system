@@ -2,7 +2,7 @@
  * Created by jingpeng on 16/6/4.
  */
 var React = require("react");
-var Jqyery = require("jquery");
+var Jquery = require("jquery");
 var Form = require("react-bootstrap/lib/Form");
 var FormGroup = require("react-bootstrap/lib/FormGroup");
 var ControlLabel = require("react-bootstrap/lib/ControlLabel");
@@ -11,6 +11,8 @@ var DropdownButton = require("react-bootstrap/lib/DropdownButton");
 var DateTimeField = require('react-bootstrap-datetimepicker');
 var MenuItem = require("react-bootstrap/lib/MenuItem");
 var Checkbox = require("react-bootstrap/lib/Checkbox");
+var AutoComplete = require("material-ui/lib/auto-complete");
+var TextField = require("material-ui/lib/text-field");
 var Tooltip = require("react-bootstrap/lib/Tooltip");
 var OverlayTrigger = require("react-bootstrap/lib/OverlayTrigger");
 var browserHistory = require('react-router').browserHistory;
@@ -31,7 +33,8 @@ var icons = [
     {id: 1, icon: "fa fa-cog"},
     {id: 2, icon: "fa fa-refresh"},
     {id: 3, icon: "fa fa-line-chart"},
-    {id: 4, icon: "fa fa-list"}
+    {id: 4, icon: "fa fa-list"},
+    {id: 5, icon: "fa fa-plus"}
 ];
 
 
@@ -91,16 +94,53 @@ var DropdownList = React.createClass({
     }
 });
 
+var DropdownListOfMuti = React.createClass({
+    onSelect: function (e) {
+
+    },
+    render: function () {
+        var list = [];
+        var index = -1;
+        this.props.items.forEach(function (value, key) {
+            list.push(<MenuItem key={value.id} onSelect={this._changeItem}
+                                eventKey={value.id}>
+                <FormGroup>
+                    <Checkbox inputRef={value.text}>
+                        {value.text}
+                    </Checkbox>
+                </FormGroup>
+            </MenuItem>)
+        }.bind(this));
+        return (
+            <DropdownButton title={"增减视图"}
+                            style={{height:"47px",margin:"0",backgroundColor:"white",border:"0 lightgray solid"}}
+                            id={"default"}
+                            noCaret={false}
+                            open={true}
+                >
+                {list}
+            </DropdownButton>
+        )
+
+    }
+});
+
 var Text = React.createClass({
     getInitialState: function () {
         return ({
-            tipItems: [],
+            dataSource: [],
             tipHover: -1,
             selectedItem: ""
         })
     },
-    updateTipItems: function (e) {
-        this.setState({tipItems: ["10.9.0.170", "hypervisor"], selectedItem: e.target.value});
+    handleUpdateInput: function (value) {
+        this.setState({
+            dataSource: [
+                value,
+                value + value,
+                value + value + value,
+            ],
+        });
     },
     tipHover: function (index) {
         this.setState({tipHover: index});
@@ -115,30 +155,17 @@ var Text = React.createClass({
     },
     render: function () {
         var tips = [];
-        if (this.state.tipItems.length > 0) {
-            this.state.tipItems.forEach(function (val, key) {
-                tips.push(<div className="tipItems" onClick={this.itemSelected.bind(this,val)}
-                               onMouseOver={this.tipHover.bind(this,key)} key={this.props.tip+key}
-                               style={{cursor:"pointer",textAlign:"left",borderBottom:"thin #F0F0F0 solid",backgroundColor:this.state.tipHover==key?"#F0F0F0":""}}>{val}</div>)
-            }.bind(this));
-        }
         return (
-            <OverlayTrigger placement="top"
-                            overlay={<Tooltip id={this.props.tip}><strong>{this.props.tip}</strong></Tooltip>}>
-                <Form inline style={{height:"47px",display:"inline-block",position:"relative"}}>
-                    <FormGroup controlId="formControlsText" style={{marginTop:"-4px"}}>
-                        <FormControl autoComplete={"off"} type="text" placeholder={this.props.placeholder}
-                                     style={{height:"47px",border:"0 red solid",fontSize:"13px"}}
-                                     value={this.state.selectedItem} onBlur={this.formBlur}
-                                     onChange={this.updateTipItems}/>
-                    </FormGroup>
-
-                    <div
-                        style={{zIndex:"100",display:this.state.tipItems.length > 0?"block":"none",width:"100%",boxShadow:"1px 1px 5px lightgray",backgroundColor:"white",padding:"10px",position:"absolute"}}>
-                        {tips}
-                    </div>
-                </Form>
-            </OverlayTrigger>
+            <Form inline style={{marginTop:"-20px",height:"47px",display:"inline-block",position:"relative"}}>
+                <AutoComplete
+                    hintText=""
+                    dataSource={this.state.dataSource}
+                    onUpdateInput={this.handleUpdateInput}
+                    floatingLabelText={this.props.placeholder}
+                    fullWidth={false}
+                    style={{fontSize:"14px",color:"blue",width:"160px"}}
+                    />
+            </Form>
 
         )
     }
@@ -148,8 +175,8 @@ var TextOfNoTips = React.createClass({
     getInitialState: function () {
         return ({
             hoverStatus: false,
-            focusStatus:false,
-            value:5
+            focusStatus: false,
+            value: 5
         })
     },
     _hover: function () {
@@ -166,27 +193,19 @@ var TextOfNoTips = React.createClass({
         this.setState({focusStatus: true});
     },
     onChange: function (e) {
-      this.setState({value:e.target.value});
+        this.setState({value: e.target.value});
     },
     render: function () {
         var tips = [];
-        var status=this.state.hoverStatus;
-        if(this.state.focusStatus){
-            status=true;
+        var status = this.state.hoverStatus;
+        if (this.state.focusStatus) {
+            status = true;
         }
         return (
-            <OverlayTrigger placement="top"
-                            overlay={<Tooltip id={this.props.tip}><strong>{this.props.tip}</strong></Tooltip>}>
-                <Form inline style={{display:"inline-block",position:"relative"}}>
-                    <FormGroup controlId="formControlsText" style={{marginTop:"-4px"}}>
-                        <FormControl autoComplete={"off"} type="text" placeholder={this.props.placeholder}
-                                     style={{border:status?"thin lightgray solid":"0 lightgray solid",fontSize:"13px",backgroundColor:status?"white":"transparent"}}
-                                     value={this.state.value} onFocus={this._focus} onMouseOver={this._hover} onMouseOut={this._mouseOut} onBlur={this._blur}
-                                     onChange={this.onChange}
-                            />
-                    </FormGroup>
-                </Form>
-            </OverlayTrigger>
+            <TextField
+                defaultValue="5000"
+                style={{fontSize:"12px",marginTop:"-15px",width:"50px",height:"30px"}}
+                />
 
         )
     }
@@ -232,24 +251,26 @@ var Button = React.createClass({
             MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             setTimeout(function () {
                 browserHistory.push("/configurationPage");
-            },10);
-        }else if (type == 0) {
-            var obj=AppStore.getOperator();
-            var o = {id:obj.id, name: "创建"+MenuStore.getBreadcrumbData()[2].breadcrumbName};
-            switch (MenuStore.getBreadcrumbData()[2].breadcrumbID){
+            }, 10);
+        } else if (type == 0) {
+            var obj = AppStore.getOperator();
+            var o = {id: obj.id, name: "创建" + MenuStore.getBreadcrumbData()[2].breadcrumbName};
+            switch (MenuStore.getBreadcrumbData()[2].breadcrumbID) {
                 case 221:
                 case 222:
                 case 223:
                 case 224:
-                    o = {id:obj.id, name: "创建"+MenuStore.getBreadcrumbData()[2].breadcrumbName};
+                    o = {id: obj.id, name: "创建" + MenuStore.getBreadcrumbData()[2].breadcrumbName};
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createVCenterModal");
                     break;
                 case 612:
-                    o = {id:obj.id, name: "创建用户"};
+                    o = {id: obj.id, name: "创建用户"};
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createUser");
             }
+        }else if(type==5){
+            $("#monitorItemsPanel").slideToggle();
         }
     },
     _leave: function () {
@@ -323,5 +344,6 @@ module.exports = {
     Text,
     TextOfNoTips,
     Button,
-    MyDatePicker
+    MyDatePicker,
+    DropdownListOfMuti
 };

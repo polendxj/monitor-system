@@ -582,7 +582,7 @@ var HypervisorConfig=React.createClass({
                         <tr>
                             <th>监控项</th>
                             <th>监控频率 (单位:秒)</th>
-                            <th>描述</th>
+                            <th style={{textAlign:"center"}}>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -591,14 +591,18 @@ var HypervisorConfig=React.createClass({
                             <td>
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
-                            <td>这里是一个很长很长的描述信息</td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>cpu使用率</td>
                             <td>
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
-                            <td>这里是一个很长很长的描述信息</td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
                         </tr>
                         </tbody>
                     </Table>
@@ -609,23 +613,35 @@ var HypervisorConfig=React.createClass({
                         <tr>
                             <th>监控项</th>
                             <th>告警线</th>
-                            <th>描述</th>
+                            <th style={{textAlign:"center"}}>状态</th>
                             <th style={{textAlign:"center"}}>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>cpu使用率</td>
-                            <td>xxxxxxxxxxxxxx</td>
-                            <td>xxxxxxxxxxxxxx</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button></td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"green"}}>监控中</td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button>
+                            </td>
 
                         </tr>
                         <tr>
                             <td>cpu使用率</td>
-                            <td>xxxxxxxxxxxxxx</td>
-                            <td>xxxxxxxxxxxxxx</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button></td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
 
                         </tr>
                         </tbody>

@@ -148,8 +148,6 @@ var Operator = React.createClass({
                 case 221:
                     btnGroup = <div>
                         <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                        <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
-                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
                         <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
                     </div>;
                     break;
@@ -186,10 +184,6 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
-                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"VCenter列表"}/>
-                                <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
                             </div>;
                     }
                     break;
@@ -197,8 +191,8 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Hypervisor"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"Hypervisor列表"}/>
                             </div>;
                     }
@@ -207,8 +201,8 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VMS"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
                             </div>;
                     }
@@ -217,8 +211,8 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Docker"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
                             </div>;
                     }
@@ -235,10 +229,6 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
-                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VCenter"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"VCenter列表"}/>
-                                <ToolBar.Button label={"创建"} icon={0} tip={"创建VCenter"}/>
                             </div>;
                     }
                     break;
@@ -246,8 +236,8 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Hypervisor"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"Hypervisor列表"}/>
                             </div>;
                     }
@@ -256,8 +246,8 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置VMS"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
                             </div>;
                     }
@@ -266,8 +256,8 @@ var Operator = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID){
                         case 3:
                             btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"配置"} icon={1} tip={"配置Docker"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
                             </div>;
                     }
