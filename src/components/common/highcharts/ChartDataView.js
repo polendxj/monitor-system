@@ -3,63 +3,68 @@
  */
 var React = require("react");
 var Jquery = require("jquery");
-var Tabs = require("react-bootstrap/lib/Tabs");
-var Tab = require("react-bootstrap/lib/Tab");
-var Table = require("react-bootstrap/lib/Table");
+var Table = require('material-ui/lib/table/table');
+var TableHeader = require('material-ui/lib/table/table-header');
+var TableRow = require('material-ui/lib/table/table-row');
+var TableHeaderColumn = require('material-ui/lib/table/table-header-column');
+var TableBody = require('material-ui/lib/table/table-body');
+var TableRowColumn = require('material-ui/lib/table/table-row-column');
 
 var ChartDataView = React.createClass({
-    render: function () {
-        return (
-            <div className="col-sm-6 col-md-4 col-lg-3" style={{backgroundColor:"white"}}>
-                <div>
-                    <Content />
-                </div>
-            </div>
-        )
-    }
-});
-
-var Content = React.createClass({
-    componentDidMount: function () {
-        $(".tab-content").css("padding", 0);
-        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
-        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
-        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
-        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
-        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    getInitialState: function () {
+        return ({
+            fixedHeader: true,
+            fixedFooter: true,
+            stripedRows: false,
+            showRowHover: false,
+            selectable: false,
+            multiSelectable: false,
+            enableSelectAll: false,
+            deselectOnClickaway: false,
+            showCheckboxes: false,
+            height: ''
+        })
     },
     render: function () {
+        var dataTitle=this.props.dataTitle;
+        console.log(this.props.dataTitle);
         return (
-            <div>
-                <Table responsive style={{margin:"0"}}>
-                    <thead>
-                    <tr>
-                        <th style={{textAlign:"center",fontWeight:"bold"}}></th>
-                        <th style={{textAlign:"center",fontWeight:"bold"}}>最小值</th>
-                        <th style={{textAlign:"center",fontWeight:"bold"}}>平均值</th>
-                        <th style={{textAlign:"center",fontWeight:"bold"}}>最大值</th>
-                    </tr>
-                    </thead>
-                    <tbody style={{textAlign:"center"}}>
-                    <tr>
-                        <td>CPU Usage</td>
-                        <td>5.0</td>
-                        <td>12.7</td>
-                        <td>44.3</td>
-                    </tr>
-                    <tr>
-                        <td>Disk Usage</td>
-                        <td>3.2</td>
-                        <td>10.7</td>
-                        <td>33.2</td>
-                    </tr>
-                    <tr>
-                        <td>Memory Usage</td>
-                        <td>6.7</td>
-                        <td>13.1</td>
-                        <td>39.8</td>
-                    </tr>
-                    </tbody>
+            <div id="monitorItemsPanel" className="col-sm-6 col-md-5 col-lg-4" style={{padding:"10px 0 0 5px"}}>
+                <Table
+                    height={this.state.height}
+                    fixedHeader={this.state.fixedHeader}
+                    fixedFooter={this.state.fixedFooter}
+                    selectable={this.state.selectable}
+                    multiSelectable={this.state.multiSelectable}
+                    >
+                    <TableHeader
+                        displaySelectAll={this.state.showCheckboxes}
+                        adjustForCheckbox={this.state.showCheckboxes}
+                        enableSelectAll={this.state.enableSelectAll}
+                        >
+                        <TableRow style={{height:"30px"}}>
+                            <TableHeaderColumn colSpan="5" style={{textAlign: 'center',height:"30px"}}>
+                                {dataTitle.text}
+                            </TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={this.state.showCheckboxes}
+                        deselectOnClickaway={this.state.deselectOnClickaway}
+                        showRowHover={this.state.showRowHover}
+                        stripedRows={this.state.stripedRows}
+                        >
+                        {this.props.viewData.map((row, index) => (
+                            <TableRow key={index} selected={row.selected}>
+                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.name}</TableRowColumn>
+                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.last}</TableRowColumn>
+                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.avg}</TableRowColumn>
+                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.max}</TableRowColumn>
+                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.min}</TableRowColumn>
+
+                            </TableRow>
+                        ))}
+                    </TableBody>
                 </Table>
             </div>
         )

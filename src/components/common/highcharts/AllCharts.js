@@ -68,7 +68,6 @@ var lineChartsData = [
             type: 'spline',
             animation: Highcharts.svg, // don't animate in old IE
             marginRight: 10,
-            height:330,
             events: {
                 load: function () {
                     // set up the updating of the chart each second
@@ -247,7 +246,7 @@ var lineChartsData = [
         }]
     }
 ];
-var tableData = tableData = [
+var tableData = [
     {
         name: 'John Smith',
         status: 'Employed',
@@ -279,6 +278,36 @@ var tableData = tableData = [
         status: 'Employed',
     },
 ];
+var chartViewData = [
+    {
+        name: '',
+        last: '最近',
+        min: '最小值',
+        avg: '平均值',
+        max: '最大值'
+    },
+    {
+        name: 'CPU Usage',
+        last: '12.2',
+        min: '4.7',
+        avg: '11.6',
+        max: '33.6'
+    },
+    {
+        name: 'Disk Usage',
+        last: '14.2',
+        min: '6.2',
+        avg: '14.6',
+        max: '35.2'
+    },
+    {
+        name: 'Memory Usage',
+        last: '11.2',
+        min: '5.4',
+        avg: '9.6',
+        max: '28.6'
+    }
+];
 var AllCharts = React.createClass({
     render: function () {
         var showChart="";
@@ -292,11 +321,11 @@ var AllCharts = React.createClass({
                 chart:[]
             }
         ];
-        charts[0].chart.push(<LineCharts data={lineChartsData[0]} title={"localhost:127.0.0.1"}/>);
-        charts[0].chart.push(<PieCharts data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />);
-        charts[0].chart.push(<PieCharts data={pieChartsData[0]} title={"hypervisor:184.2.10.11"} />);
-        charts[0].chart.push(<LineCharts data={lineChartsData[1]} title={"mysql:127.0.0.1"}/>);
-        charts[1].chart.push(<LineCharts data={lineChartsData[2]} title={"vm:127.0.0.1"}/>);
+        charts[0].chart.push(<LineCharts key={1} data={lineChartsData[0]} title={"localhost:127.0.0.1"} dataTitle={lineChartsData[0].yAxis.title} viewData={chartViewData}/>);
+        charts[0].chart.push(<PieCharts key={2} data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />);
+        charts[0].chart.push(<PieCharts key={3} data={pieChartsData[0]} title={"hypervisor:184.2.10.11"} />);
+        charts[0].chart.push(<LineCharts key={4} data={lineChartsData[1]} title={"mysql:127.0.0.1"} dataTitle={lineChartsData[1].yAxis.title} viewData={chartViewData}/>);
+        charts[1].chart.push(<LineCharts key={5} data={lineChartsData[2]} title={"vm:127.0.0.1"} dataTitle={lineChartsData[2].yAxis.title} viewData={chartViewData}/>);
         charts.forEach(function (chart) {
             if(chart.name==this.props.name){
                 showChart=chart.chart;
