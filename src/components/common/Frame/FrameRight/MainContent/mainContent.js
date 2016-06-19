@@ -261,7 +261,7 @@ var Content = React.createClass({
     getInitialState: function () {
         return ({
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
-            viewData: "",
+            viewData: MenuStore.getViewData(),
             flag: false
         })
     },

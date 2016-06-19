@@ -371,16 +371,6 @@ var HypervisorList = React.createClass({
                                 <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
                             </td>
                         </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>酷睿i7</td>
-                            <td style={{textAlign:"center"}}>100</td>
-                            <td style={{textAlign:"center"}}>5.0</td>
-                            <td style={{textAlign:"center"}}>4</td>
-                            <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
-                            </td>
-                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -570,6 +560,46 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
                             <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
                         </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                            <td style={{textAlign:"center"}}>50(byte/秒) / 100(byte/秒) / 120次</td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -585,6 +615,62 @@ var HypervisorList = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>2048</td>
+                        </tr>
                         <tr>
                             <td>VCenter:10.9.0.170</td>
                             <td style={{textAlign:"center"}}>1024</td>
@@ -782,6 +868,70 @@ var VMSList = React.createClass({
                                 <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
                             </td>
                         </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -802,21 +952,110 @@ var VMSList = React.createClass({
                         <tbody>
                         <tr>
                             <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                1024
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
                             </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                1024
-                            </td >
-                            <td style={{textAlign:"center"}}>
-                                1024
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
                             </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                1024
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
                             </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                1024
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
                             </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td >
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
                                 <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
                             </td>
@@ -847,6 +1086,54 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>50</td>
                             <td style={{textAlign:"center"}}>50</td>
                         </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -862,6 +1149,62 @@ var VMSList = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.170</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                            <td style={{textAlign:"center"}}>50</td>
+                        </tr>
                         <tr>
                             <td>vms:10.9.0.170</td>
                             <td style={{textAlign:"center"}}>100</td>
@@ -932,6 +1275,62 @@ var MysqlList = React.createClass({
                             <td>正常</td>
                             <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>mysql:10.9.0.96</td>
+                            <td>5.0</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -973,6 +1372,94 @@ var MysqlList = React.createClass({
                             <td style={{textAlign:"center"}}>5</td>
                             <td style={{textAlign:"center"}}>5</td>
                         </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>是</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                            <td style={{textAlign:"center"}}>5</td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -986,6 +1473,46 @@ var MysqlList = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
+                        <tr>
+                            <td>Mysql:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                            <td style={{textAlign:"center"}}>1024</td>
+                        </tr>
                         <tr>
                             <td>Mysql:10.9.0.96</td>
                             <td style={{textAlign:"center"}}>1024</td>
@@ -1053,6 +1580,78 @@ var HypervisorConfig=React.createClass({
                                 <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
                             </td>
                         </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -1077,7 +1676,6 @@ var HypervisorConfig=React.createClass({
                                 <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button>
                             </td>
-
                         </tr>
                         <tr>
                             <td>cpu使用率</td>
@@ -1091,7 +1689,110 @@ var HypervisorConfig=React.createClass({
                                 <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
-
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>cpu使用率</td>
+                            <td>
+                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
                         </tr>
                         </tbody>
                     </Table>

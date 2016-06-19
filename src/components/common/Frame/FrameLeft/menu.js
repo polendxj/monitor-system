@@ -69,7 +69,7 @@ var Menus = React.createClass({
             if(this.state.viewCreate.length>0){
                 setTimeout(function () {
                     this._clickViewMenu(this.state.viewCreate[0]);
-                }.bind(this), 10);
+                }.bind(this), 1);
             }else{
                 setTimeout(function () {
                     MenuAction.changeViews("");
