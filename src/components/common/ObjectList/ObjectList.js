@@ -1045,9 +1045,27 @@ var HypervisorConfig=React.createClass({
                             </td>
                         </tr>
                         <tr>
-                            <td>cpu使用率</td>
+                            <td>磁盘使用率</td>
                             <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                                <ToolBar.TextOfNoTips tip={"磁盘使用率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>IO吞吐率</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"IO吞吐率"}/>
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>网络负载</td>
+                            <td>
+                                <ToolBar.TextOfNoTips tip={"网络负载监控"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
                                 <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
@@ -1080,9 +1098,37 @@ var HypervisorConfig=React.createClass({
 
                         </tr>
                         <tr>
-                            <td>cpu使用率</td>
+                            <td>磁盘使用率</td>
                             <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
+                                当磁盘使用率大于<ToolBar.TextOfNoTips />%,小于<ToolBar.TextOfNoTips />%的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>IO吞吐率</td>
+                            <td>
+                                当IO吞吐率大于<ToolBar.TextOfNoTips /> bpms/s,小于<ToolBar.TextOfNoTips />bpms/s的时候进行告警
+                            </td>
+                            <td style={{textAlign:"center",color:"gray"}}>
+                                未监控
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>网络负载</td>
+                            <td>
+                                当网络负载大于<ToolBar.TextOfNoTips />%,小于<ToolBar.TextOfNoTips />%的时候进行告警
                             </td>
                             <td style={{textAlign:"center",color:"gray"}}>
                                 未监控

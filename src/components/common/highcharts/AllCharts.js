@@ -250,35 +250,31 @@ var lineChartsData = [
 ];
 var tableData = [
     {
-        name: 'John Smith',
+        name: 'cpu使用率( 平均)',
         status: 'Employed',
         selected: true,
     },
     {
-        name: 'Randal White',
+        name: '磁盘使用空间',
         status: 'Unemployed',
     },
     {
-        name: 'Stephanie Sanders',
+        name: 'I/O吞吐率',
         status: 'Employed',
         selected: true,
     },
     {
-        name: 'Steve Brown',
+        name: '负载情况',
         status: 'Employed',
     },
     {
-        name: 'Joyce Whitten',
+        name: '并发线程数',
         status: 'Employed',
     },
     {
-        name: 'Samuel Roberts',
+        name: '流量监控',
         status: 'Employed',
-    },
-    {
-        name: 'Adam Moore',
-        status: 'Employed',
-    },
+    }
 ];
 var chartViewData = [
     {
