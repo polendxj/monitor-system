@@ -52,6 +52,54 @@ var VCenterList = React.createClass({
                             <td style={{textAlign:"center"}}><a href="#">20</a></td>
                             <td style={{textAlign:"center"}}><a href="#">36</a></td>
                         </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
+                        <tr>
+                            <td>VCenter:10.9.0.171</td>
+                            <td>1.0.0</td>
+                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
+                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -119,6 +167,94 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
                             <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
                         </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>1.0.0</td>
+                            <td>IBeats</td>
+                            <td>New Washton</td>
+                            <td>SK II</td>
+                            <td>387987654</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
                         </tbody>
                     </Table>
                 </Tab>
@@ -152,7 +288,97 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
                                 <ProgressBar active bsStyle="danger" now={92} label={`${92}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td>酷睿i7</td>
+                            <td style={{textAlign:"center"}}>100</td>
+                            <td style={{textAlign:"center"}}>5.0</td>
+                            <td style={{textAlign:"center"}}>4</td>
+                            <td>
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
                             </td>
                         </tr>
                         </tbody>
@@ -171,6 +397,141 @@ var HypervisorList = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hypervisor:10.9.0.96</td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td >
+                            <td style={{textAlign:"center"}}>
+                                1024
+                            </td>
+                            <td style={{textAlign:"center"}}>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                        </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
                             <td style={{textAlign:"center"}}>
@@ -281,6 +642,94 @@ var VMSList = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
+                        <tr>
+                            <td>vms:10.9.0.96</td>
+                            <td>hypervisor:10.1.1.1</td>
+                            <td>
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                            </td>
+                            <td>New Washton</td>
+                            <td>正常</td>
+                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
+                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                        </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
