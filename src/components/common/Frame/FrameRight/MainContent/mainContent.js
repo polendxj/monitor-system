@@ -13,6 +13,7 @@ var MenuItem = require("react-bootstrap/lib/MenuItem");
 var Button = require("react-bootstrap/lib/Button");
 var ObjectList = require("../../../ObjectList/ObjectList");
 var GlobalUtils = require("../../../../../utils/GlobalUtils");
+var Pagination = require("../../../Paganation");
 
 var MenuAction = require('../../../../../actions/MenuAction');
 var MenuStore = require('../../../../../stores/MenuStore');
@@ -49,7 +50,8 @@ var MainContent = React.createClass({
                 <div style={{height:"47px"}}>
                     <MenuTool />
                 </div>
-                <div style={{height:"47px",display:this.state.breadcrumbDataList.length==4&&this.state.viewData==""?"none":"block"}}>
+                <div
+                    style={{height:"47px",display:this.state.breadcrumbDataList.length==4&&this.state.viewData==""?"none":"block"}}>
                     <Timestamp />
                     <Form />
                 </div>
@@ -236,7 +238,7 @@ var Timestamp = React.createClass({
     },
     render: function () {
         var result = "";
-        if ((this.state.breadcrumbData.length == 4 || this.state.breadcrumbData.length == 5) && this.state.breadcrumbData[3].breadcrumbID == 3){
+        if ((this.state.breadcrumbData.length == 4 || this.state.breadcrumbData.length == 5) && this.state.breadcrumbData[3].breadcrumbID == 3) {
             var display = "时间段 : " + this.state.oldSelectedItem + "(" + this.state.timeText[0].value + " 至 " + this.state.timeText[1].value + ")";
             if (this.state.visible) {
                 result = <div><ToolBar.DropdownList onChange={this.onChange} items={this.state.timeItems} noCaret={true}
@@ -291,21 +293,29 @@ var Content = React.createClass({
                 case 221:
                     div = <div>
                         <ObjectList.VCenterList />
+                        <Pagination />
+                        <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 222:
                     div = <div>
                         <ObjectList.HypervisorList />
+                        <Pagination />
+                        <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 223:
                     div = <div>
                         <ObjectList.VMSList />
+                        <Pagination />
+                        <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 232:
                     div = <div>
                         <ObjectList.MysqlList />
+                        <Pagination />
+                        <div style={{clear:"both"}}></div>
                     </div>;
                     break;
             }
@@ -323,10 +333,11 @@ var Content = React.createClass({
                     ;
                     <div style={{clear:"both"}}></div>
                 </div>
-            } else if (this.state.viewData!= "") {
+            } else if (this.state.viewData != "") {
                 console.log(this.state.viewData);
                 div = <div>
                     <AllCharts name={this.state.viewData}/>
+
                     <div style={{clear:"both"}}></div>
                 </div>;
             }

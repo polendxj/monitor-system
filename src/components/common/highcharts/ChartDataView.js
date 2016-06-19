@@ -37,17 +37,6 @@ var ChartDataView = React.createClass({
                     selectable={this.state.selectable}
                     multiSelectable={this.state.multiSelectable}
                     >
-                    <TableHeader
-                        displaySelectAll={this.state.showCheckboxes}
-                        adjustForCheckbox={this.state.showCheckboxes}
-                        enableSelectAll={this.state.enableSelectAll}
-                        >
-                        <TableRow style={{height:"30px"}}>
-                            <TableHeaderColumn colSpan="5" style={{textAlign: 'center',height:"30px"}}>
-                                {dataTitle.text}
-                            </TableHeaderColumn>
-                        </TableRow>
-                    </TableHeader>
                     <TableBody
                         displayRowCheckbox={this.state.showCheckboxes}
                         deselectOnClickaway={this.state.deselectOnClickaway}
@@ -55,12 +44,12 @@ var ChartDataView = React.createClass({
                         stripedRows={this.state.stripedRows}
                         >
                         {this.props.viewData.map((row, index) => (
-                            <TableRow key={index} selected={row.selected}>
-                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.name}</TableRowColumn>
-                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.last}</TableRowColumn>
-                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.avg}</TableRowColumn>
-                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.max}</TableRowColumn>
-                                <TableRowColumn style={{width:"20%",textAlign:"center",padding:"5px 0 5px 0"}}>{row.min}</TableRowColumn>
+                            <TableRow key={index} selected={row.selected} style={{border:"0 red solid",backgroundColor:"white"}}>
+                                <TableRowColumn  style={{width:"32%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid",fontSize:"10px"}}>{row.name}</TableRowColumn>
+                                <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.last}</TableRowColumn>
+                                <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.avg}</TableRowColumn>
+                                <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.max}</TableRowColumn>
+                                <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.min}</TableRowColumn>
 
                             </TableRow>
                         ))}

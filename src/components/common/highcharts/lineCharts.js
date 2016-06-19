@@ -22,7 +22,7 @@ var LineCharts = React.createClass({
             <div className="col-sm-12 col-md-12 col-lg-12" style={{border:"thin lightgray solid",padding:"3px",marginTop:"5px",marginLeft:"-1px"}}>
                 <ChartsTitle title={this.props.title} _trashClick={this._trashClick} _detailClick={this._detailClick} />
                 <ReactHighcharts className="col-sm-6 col-md-7 col-lg-8" config={this.props.data}
-                                 style={{paddingLeft:"0",paddingTop:"5px"}}>
+                                 style={{paddingLeft:"0",paddingTop:"5px",borderRight:"thin lightgray solid"}}>
                 </ReactHighcharts>
                 <ChartDataView viewData={this.props.viewData} dataTitle={this.props.dataTitle}/>
             </div>
