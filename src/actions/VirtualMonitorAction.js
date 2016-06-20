@@ -7,6 +7,16 @@ var VirtualMonitorAction = {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.GetVCenterList
         })
+    },
+    getHypervisorList: function () {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetHypervisorList
+        })
+    },
+    getVmList: function () {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetVmList
+        })
     }
 };
 

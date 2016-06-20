@@ -10,8 +10,8 @@ var ToolBar = require("../ToolBar/ToolBar");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 var Pagination = require("../Paganation");
-var Loading=require("../CommonComponent").Loading;
-var GlobalUtils=require("../../../utils/GlobalUtils");
+var Loading = require("../CommonComponent").Loading;
+var GlobalUtils = require("../../../utils/GlobalUtils");
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -52,7 +52,7 @@ var VCenterList = React.createClass({
             var title = [<th key={"th-1"}>监控项目</th>];
             var result = [];
             this.state.listData[0].items.forEach(function (val, key) {
-                var transferItemid=GlobalUtils.en2Cn_item(val.itemid);
+                var transferItemid = GlobalUtils.en2Cn_item(val.itemid);
                 title.push(<th key={"th"+key} style={{textAlign:transferItemid.position}}>{transferItemid.name_cn}</th>)
             });
             var tbody = [];
@@ -61,8 +61,9 @@ var VCenterList = React.createClass({
                 var td = [];
                 td.push(<td key={"td"+key} style={{textAlign:"left"}}>{val.name + ":" + val.host}</td>);
                 val.items.forEach(function (subVal, subKey) {
-                    var transferItemid=GlobalUtils.en2Cn_item(subVal.itemid);
-                    td.push(<td style={{textAlign:transferItemid.position}} key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
+                    var transferItemid = GlobalUtils.en2Cn_item(subVal.itemid);
+                    td.push(<td style={{textAlign:transferItemid.position}}
+                                key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
                 });
                 tr.push(<tr key={"tr"+key}>{td}</tr>);
             });
@@ -95,19 +96,32 @@ var VCenterList = React.createClass({
 var HypervisorList = React.createClass({
     getInitialState: function () {
         return {
-            key: 1
+            key: 1,
+            isLoading: true,
+            listData: []
         };
     },
     handleSelect(key) {
         this.setState({key});
     },
     componentDidMount: function () {
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHypervisiorList, this._changeListData);
+        VirtualMonitorAction.getHypervisorList();
+    },
+    componentWillUnmount: function () {
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHypervisiorList, this._changeListData);
+    },
+    componentDidUpdate: function () {
         $(".tab-content").css("padding", 0);
         $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
         $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
         $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
         $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
         $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    },
+    _changeListData: function () {
+        this.setState({listData: VirtualMonitorStore.getHypervisorListData()});
+        this.setState({isLoading: false});
     },
     render: function () {
         return (
@@ -129,123 +143,6 @@ var HypervisorList = React.createClass({
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Hypervisor:10.9.0.96</td>
-                            <td>1.0.0</td>
-                            <td>IBeats</td>
-                            <td>New Washton</td>
-                            <td>SK II</td>
-                            <td>387987654</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
                             <td>1.0.0</td>

@@ -7,7 +7,9 @@ var MonitorConstants = keyMirror({
     SaveOperator:null,
     ChangeBreadcrumb:null,
     ChangeViews:null,
-    GetVCenterList:null
+    GetVCenterList:null,
+    GetHypervisorList:null,
+    GetVmList:null
 });
 
 module.exports = MonitorConstants;
