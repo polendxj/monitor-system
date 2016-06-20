@@ -5,6 +5,7 @@ var MofaAPIEndpoints = {
     VCENTER_LIST: "/oms/vcenters",
     HYPERVISOR_LIST:"/oms/hypervisors",
     VM_LIST:"/oms/vms",
+    VCENTER_CREATE:"/oms/vcenter",
 };
 
 var MomaAPIRoot = config.URL.AUTH;

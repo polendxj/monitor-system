@@ -2,6 +2,7 @@
  * Created by Captain on 2016/6/5.
  */
 var React = require("react");
+var ReactDOM = require("react-dom");
 require("jquery");
 var browserHistory = require('react-router').browserHistory;
 var Modal = require("react-bootstrap").Modal;
@@ -15,14 +16,14 @@ var Macro = require("./macros");
 var Breadcrumb = require("react-bootstrap").Breadcrumb;
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 var leftList = ["192.168.0.106", "Linux servers", "HyperVisors", "Templates", "Zabbix servers"];
 var rightList = ["VCenter"];
 var CreateVCenterModal = React.createClass({
     getInitialState: function () {
         return ({
-            leftList: leftList,
-            rightList: rightList,
             breadcrumbDataList: MenuStore.getBreadcrumbData()
         })
     },
@@ -33,10 +34,9 @@ var CreateVCenterModal = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     _changeBreadcrumbData: function () {
-        this.setState({succTip: false});
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
-    _moveListItem: function (direction) {
+ /*   _moveListItem: function (direction) {
         if (direction == "left") {
             $(".leftSelect option:selected").each(function () {
                 var index = rightList.indexOf($(this).val());
@@ -54,9 +54,31 @@ var CreateVCenterModal = React.createClass({
             });
             this.setState({rightList: rightList});
         }
-    },
-    _onHide: function (param) {
-        this.props.onHide(param);
+    },*/
+    _click: function () {
+        var vcenter={};
+        var hostName=ReactDOM.findDOMNode(this.refs.hostName).value;
+        var ip=ReactDOM.findDOMNode(this.refs.ip).value;
+        var macro1=ReactDOM.findDOMNode(this.refs.macro1).value;
+        var macro2=ReactDOM.findDOMNode(this.refs.macro2).value;
+        var macro3=ReactDOM.findDOMNode(this.refs.macro3).value;
+        var macroValue1=ReactDOM.findDOMNode(this.refs.macroValue1).value;
+        var macroValue2=ReactDOM.findDOMNode(this.refs.macroValue2).value;
+        var macroValue3=ReactDOM.findDOMNode(this.refs.macroValue3).value;
+        vcenter['name']=hostName;
+        vcenter['ip']=ip;
+        vcenter['macros']=[];
+        if(macro1!=""&&macroValue1!=""){
+            vcenter['macros'].push({"macro": macro1, "value": macroValue1});
+        }
+        if(macro2!=""&&macroValue2!=""){
+            vcenter['macros'].push({"macro": macro2, "value": macroValue2})
+        }
+        if(macro3!=""&&macroValue3!=""){
+            vcenter['macros'].push({"macro": macro3, "value": macroValue3})
+        }
+        console.log(vcenter);
+        VirtualMonitorAction.createVCenter(vcenter);
     },
     _redirect: function (idx) {
         if (idx == 0 || idx == 1) {
@@ -68,8 +90,6 @@ var CreateVCenterModal = React.createClass({
         }
     },
     render: function () {
-        var leftOptions = [];
-        var rightOptions = [];
         var breadcrumbs = [];
         var length = this.state.breadcrumbDataList.length - 1;
         this.state.breadcrumbDataList.forEach(function (breadcrumbData, idx) {
@@ -88,7 +108,7 @@ var CreateVCenterModal = React.createClass({
                 )
             }
         }.bind(this));
-        if (this.state.leftList.length > 0) {
+       /* if (this.state.leftList.length > 0) {
             leftOptions = this.state.leftList.map(function (leftItem) {
                 return (
                     <option key={leftItem} value={leftItem}>{leftItem}</option>
@@ -101,7 +121,7 @@ var CreateVCenterModal = React.createClass({
                     <option key={rightItem} value={rightItem}>{rightItem}</option>
                 )
             })
-        }
+        }*/
         return (
             <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
                 <div style={{height:"47px"}}>
@@ -115,28 +135,20 @@ var CreateVCenterModal = React.createClass({
                     </div>
                 </div>
                 <Form horizontal>
-                    <FormGroup controlId="formHostName">
+                    <FormGroup>
                         <Col componentClass={ControlLabel} sm={2}>
                             主机名
                         </Col>
                         <Col sm={4}>
-                            <FormControl controlId="hostName"/>
+                            <FormControl ref="hostName" controlId="hostName"/>
                         </Col>
                     </FormGroup>
-                    <FormGroup controlId="formVisibleName">
-                        <Col componentClass={ControlLabel} sm={2}>
-                            Visible name
-                        </Col>
-                        <Col sm={4}>
-                            <FormControl controlId="visibleName"/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="formControlsSelectMultiple">
+                    {/*<FormGroup controlId="formControlsSelectMultiple">
                         <Col componentClass={ControlLabel} sm={3}>
                             Groups In groups
                         </Col>
-                    </FormGroup>
-                    <FormGroup controlId="formControlsSelectMultiple">
+                    </FormGroup>*/
+                    /*<FormGroup controlId="formControlsSelectMultiple">
                         <Col sm={2}>
                         </Col>
                         <Col sm={3}>
@@ -159,24 +171,16 @@ var CreateVCenterModal = React.createClass({
                                 {rightOptions}
                             </FormControl>
                         </Col>
-                    </FormGroup>
-                    <FormGroup controlId="formNewGroup">
-                        <Col componentClass={ControlLabel} sm={2}>
-                            新建group
-                        </Col>
-                        <Col sm={4}>
-                            <FormControl controlId="newGroup"/>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup controlId="formIPAddress">
+                    </FormGroup>*/}
+                    <FormGroup>
                         <Col componentClass={ControlLabel} sm={2}>
                             IP地址
                         </Col>
                         <Col sm={4}>
-                            <FormControl controlId="ipAddress"/>
+                            <FormControl ref="ip" controlId="ipAddress"/>
                         </Col>
                     </FormGroup>
-                    <FormGroup controlId="formIPAddress">
+                    <FormGroup>
                         <Col sm={2}>
                         </Col>
                         <Col componentClass={ControlLabel} sm={3} style={{textAlign:"left"}}>
@@ -186,14 +190,50 @@ var CreateVCenterModal = React.createClass({
                             值
                         </Col>
                     </FormGroup>
-                    <Macro macroControlId="macro1" valueControlId="macroValue1"/>
-                    <Macro macroControlId="macro2" valueControlId="macroValue2"/>
-                    <Macro macroControlId="macro3" valueControlId="macroValue2"/>
-                    <FormGroup controlId="formIPAddress">
+                    <FormGroup>
+                        <Col sm={2}>
+                        </Col>
+                        <Col sm={3}>
+                            <FormControl ref="macro1" controlId="macro1" placeholder="{$MACRO}"/>
+                        </Col>
+                        <Col componentClass={ControlLabel} style={{width: "12px",float: "left"}}>
+                            {"⇒"}
+                        </Col>
+                        <Col sm={3}>
+                            <FormControl  ref="macroValue1" controlId="macroValue1" placeholder="value"/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Col sm={2}>
+                        </Col>
+                        <Col sm={3}>
+                            <FormControl ref="macro2" controlId="macro2" placeholder="{$MACRO}"/>
+                        </Col>
+                        <Col componentClass={ControlLabel} style={{width: "12px",float: "left"}}>
+                            {"⇒"}
+                        </Col>
+                        <Col sm={3}>
+                            <FormControl  ref="macroValue2" controlId="macroValue2" placeholder="value"/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Col sm={2}>
+                        </Col>
+                        <Col sm={3}>
+                            <FormControl ref="macro3" controlId="macro3" placeholder="{$MACRO}"/>
+                        </Col>
+                        <Col componentClass={ControlLabel} style={{width: "12px",float: "left"}}>
+                            {"⇒"}
+                        </Col>
+                        <Col sm={3}>
+                            <FormControl  ref="macroValue3" controlId="macroValue3" placeholder="value"/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
                         <Col sm={5}>
                         </Col>
-                        <Col sm={3}style={{marginLeft:"26px"}}>
-                            <Button onClick={this._onHide} style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>保存</Button>
+                        <Col sm={3} style={{paddingRight:"4px"}}>
+                            <Button onClick={this._click} style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>保存</Button>
                         </Col>
                     </FormGroup>
                 </Form>

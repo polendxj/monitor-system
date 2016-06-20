@@ -2,6 +2,7 @@
  * Created by jingpeng on 16/6/20.
  */
 var React = require("react");
+var browserHistory = require('react-router').browserHistory;
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 var AntiFraudDispatcher = require('../dispatcher/AntiFraudDispatcher');
@@ -9,6 +10,8 @@ var MonitorConstants = require('../constants/MonitorConstants');
 var ResourceUtils = require('./ResourceUtils.js');
 var store = require('store2');
 var jQuery = require('jquery');
+
+var MenuAction = require('../actions/MenuAction');
 
 var vcenterList = [];
 var hypervisorList = [];
@@ -30,6 +33,19 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ResourceUtils.VM_LIST.GET("", function (json) {
             vmList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVmList);
+        });
+    },
+    createVCenter: function (obj) {
+        ResourceUtils.VCENTER_CREATE.POST(obj,"", function () {
+
+        },function(resp){
+            console.log(resp);
+            if(resp.status==200){
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
+            }else if(resp.status>=300){
+                alert(resp.responseJSON.message);
+            }
         });
     },
     getVCenterListData: function () {
@@ -64,6 +80,9 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.GetHypervisorList:
             VirtualMonitorStore.getHypervisorList();
+            break;
+        case MonitorConstants.CreateVCenter:
+            VirtualMonitorStore.createVCenter(action.jsonObject);
             break;
         default:
             break;

@@ -17,6 +17,12 @@ var VirtualMonitorAction = {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.GetVmList
         })
+    },
+    createVCenter: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateVCenter,
+            jsonObject:obj
+        })
     }
 };
 
