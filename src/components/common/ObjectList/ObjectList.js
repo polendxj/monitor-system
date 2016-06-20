@@ -11,6 +11,7 @@ var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 var Pagination = require("../Paganation");
 var Loading=require("../CommonComponent").Loading;
+var GlobalUtils=require("../../../utils/GlobalUtils");
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -51,17 +52,19 @@ var VCenterList = React.createClass({
             var title = [<th key={"th-1"}>监控项目</th>];
             var result = [];
             this.state.listData[0].items.forEach(function (val, key) {
-                title.push(<th key={"th"+key} style={{textAlign:"center"}}>{val.name}</th>)
+                var transferItemid=GlobalUtils.en2Cn_item(val.itemid);
+                title.push(<th key={"th"+key} style={{textAlign:transferItemid.position}}>{transferItemid.name_cn}</th>)
             });
             var tbody = [];
             var tr = [];
             this.state.listData.forEach(function (val, key) {
                 var td = [];
-                td.push(<td key={"td"+key}>{val.name + ":" + val.host}</td>);
+                td.push(<td key={"td"+key} style={{textAlign:"left"}}>{val.name + ":" + val.host}</td>);
                 val.items.forEach(function (subVal, subKey) {
-                    td.push(<td key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
+                    var transferItemid=GlobalUtils.en2Cn_item(subVal.itemid);
+                    td.push(<td style={{textAlign:transferItemid.position}} key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
                 });
-                tr.push(<tr style={{textAlign:"center"}} key={"tr"+key}>{td}</tr>);
+                tr.push(<tr key={"tr"+key}>{td}</tr>);
             });
             tbody.push(<tbody>{tr}</tbody>);
             return (

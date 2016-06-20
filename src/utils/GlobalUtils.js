@@ -64,7 +64,7 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
             console.log(enToCn_data[text]);
             return enToCn_data[text];
         }else{
-            return text;
+            return enToCn_data.empty;
         }
     }
 });
