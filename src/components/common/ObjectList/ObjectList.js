@@ -10,8 +10,8 @@ var ToolBar = require("../ToolBar/ToolBar");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 var Pagination = require("../Paganation");
-var Loading=require("../CommonComponent").Loading;
-var GlobalUtils=require("../../../utils/GlobalUtils");
+var Loading = require("../CommonComponent").Loading;
+var GlobalUtils = require("../../../utils/GlobalUtils");
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -49,40 +49,49 @@ var VCenterList = React.createClass({
                 <Loading />
             )
         } else {
-            var analysisData=GlobalUtils.en2Cn_item(this.state.listData[0].items);
-            var tabs=[];
-            for(tab in analysisData){
-                var title = [<th key={"th-1"}>监控项目</th>];
-                analysisData[tab].forEach(function (val, key) {
-                    title.push(<th key={"th"+key} style={{textAlign:val.position}}>{val.name_cn}</th>)
+            var analysisData = GlobalUtils.en2Cn_item(this.state.listData[0].items);
+            var thead = [];
+            console.log(analysisData);
+            var tabs = [];
+            var that = this;
+            var tabIndex = 1;
+            for (tab in analysisData) {
+                /*生成了title*/
+                var thead = [];
+                analysisData[tab].forEach(function (val1, key1) {
+                    thead.push(<th key={tab+"thead"+"key1"}>{val1.name_cn}</th>);
                 });
-                var tbody = [];
-                var tr = [];
-                this.state.listData.forEach(function (val, key) {
-                    var td = [];
-                    td.push(<td key={"td"+key} style={{textAlign:"left"}}>{val.name + ":" + val.host}</td>);
-                    val.items.forEach(function (subVal, subKey) {
-                        td.push(<td style={{textAlign:transferItemid.position}} key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
+                /*生成了title*/
+                var tr=[];
+                analysisData[tab].forEach(function (val1, key1) {
+                    that.state.listData.forEach(function (val2,key2) {
+                        val2.items.forEach(function (val3,key3) {
+                            
+                        });
                     });
-                    tr.push(<tr key={"tr"+key}>{td}</tr>);
+                    if(val1.key==1){
+                        
+                    }
                 });
-                tbody.push(<tbody>{tr}</tbody>);
+                tabs.push(
+                    <Tab key={"tab"+tabIndex} eventKey={tabIndex} title={tab} style={{padding:"0"}}>
+                        <Table responsive style={{margin:"0"}}>
+                            <thead>
+                            <tr>
+                                {thead}
+                            </tr>
+                            </thead>
+                        </Table>
+                    </Tab>);
+                tabIndex++;
             }
+
 
             return (
                 <div>
                     <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
                           style={{padding:"0"}}>
-                        <Tab eventKey={1} title="常规状态" style={{padding:"0"}}>
-                            <Table responsive style={{margin:"0"}}>
-                                <thead>
-                                <tr>
-                                    {title}
-                                </tr>
-                                </thead>
-                                {tbody}
-                            </Table>
-                        </Tab>
+                        {tabs}
                     </Tabs>
                     <Pagination />
 

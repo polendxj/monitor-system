@@ -67,7 +67,7 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
         for(key in json){
             for (t in  enToCn_data) {
                 for(item in enToCn_data[t]){
-                    if(item==json[key].itemid){
+                    if(item==json[key].key_){
                         if(typeof (result[t]) == "undefined"){
                             result[t]=[enToCn_data[t][item]];
                         }else{

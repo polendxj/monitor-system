@@ -4,6 +4,7 @@
 enToCn_data = {
     normal_status: {
         "vmware.eventlog[{$URL}]": {
+            key: "vmware.eventlog[{$URL}]",
             name: "Event log",
             name_cn: "事件日志",
             position: "center",
