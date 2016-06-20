@@ -3,6 +3,7 @@
  */
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
+require('./item_enToCn');
 
 var GlobalUtils = assign({}, EventEmitter.prototype, {
     text2Time: function (text) {
@@ -57,6 +58,14 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
         }
         console.log(times);
         return times;
+    },
+    en2Cn_item: function (text) {
+        if(typeof (enToCn_data[text])!="undefined"){
+            console.log(enToCn_data[text]);
+            return enToCn_data[text];
+        }else{
+            return text;
+        }
     }
 });
 
