@@ -25,7 +25,7 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                 break;
             case "昨日":
                 var date = new Date();
-                date.setDate(date.getDate()-1);
+                date.setDate(date.getDate() - 1);
                 var year = date.getFullYear();
                 var month = date.getMonth() + 1;
                 var day = date.getDate();
@@ -46,10 +46,13 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                 var hour = date.getHours();
                 var mins = date.getMinutes();
                 var time2 = {key: date.getTime(), value: year + "-" + month + "-" + day + " " + hour + ":" + mins};
-                date.setDate(date.getDate()-6);
+                date.setDate(date.getDate() - 6);
                 date.setHours(0);
                 date.setMinutes(0);
-                var time1 = {key: date.getTime(), value: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + "00:00"};
+                var time1 = {
+                    key: date.getTime(),
+                    value: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + "00:00"
+                };
                 times.push(time1);
                 times.push(time2);
                 break;
@@ -59,13 +62,22 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
         console.log(times);
         return times;
     },
-    en2Cn_item: function (text) {
-        if(typeof (enToCn_data[text])!="undefined"){
-            console.log(enToCn_data[text]);
-            return enToCn_data[text];
-        }else{
-            return enToCn_data.empty;
+    en2Cn_item: function (json) {
+        var result={};
+        for(key in json){
+            for (t in  enToCn_data) {
+                for(item in enToCn_data[t]){
+                    if(item==json[key].itemid){
+                        if(typeof (result[t]) == "undefined"){
+                            result[t]=[enToCn_data[t][item]];
+                        }else{
+                            result[t].push(enToCn_data[t][item]);
+                        }
+                    }
+                }
+            }
         }
+        return result;
     }
 });
 

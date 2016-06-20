@@ -49,24 +49,26 @@ var VCenterList = React.createClass({
                 <Loading />
             )
         } else {
-            var title = [<th key={"th-1"}>监控项目</th>];
-            var result = [];
-            this.state.listData[0].items.forEach(function (val, key) {
-                var transferItemid=GlobalUtils.en2Cn_item(val.itemid);
-                title.push(<th key={"th"+key} style={{textAlign:transferItemid.position}}>{transferItemid.name_cn}</th>)
-            });
-            var tbody = [];
-            var tr = [];
-            this.state.listData.forEach(function (val, key) {
-                var td = [];
-                td.push(<td key={"td"+key} style={{textAlign:"left"}}>{val.name + ":" + val.host}</td>);
-                val.items.forEach(function (subVal, subKey) {
-                    var transferItemid=GlobalUtils.en2Cn_item(subVal.itemid);
-                    td.push(<td style={{textAlign:transferItemid.position}} key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
+            var analysisData=GlobalUtils.en2Cn_item(this.state.listData[0].items);
+            var tabs=[];
+            for(tab in analysisData){
+                var title = [<th key={"th-1"}>监控项目</th>];
+                analysisData[tab].forEach(function (val, key) {
+                    title.push(<th key={"th"+key} style={{textAlign:val.position}}>{val.name_cn}</th>)
                 });
-                tr.push(<tr key={"tr"+key}>{td}</tr>);
-            });
-            tbody.push(<tbody>{tr}</tbody>);
+                var tbody = [];
+                var tr = [];
+                this.state.listData.forEach(function (val, key) {
+                    var td = [];
+                    td.push(<td key={"td"+key} style={{textAlign:"left"}}>{val.name + ":" + val.host}</td>);
+                    val.items.forEach(function (subVal, subKey) {
+                        td.push(<td style={{textAlign:transferItemid.position}} key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
+                    });
+                    tr.push(<tr key={"tr"+key}>{td}</tr>);
+                });
+                tbody.push(<tbody>{tr}</tbody>);
+            }
+
             return (
                 <div>
                     <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
