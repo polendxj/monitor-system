@@ -7,17 +7,30 @@ var Tab = require("react-bootstrap/lib/Tab");
 var ProgressBar = require("react-bootstrap/lib/ProgressBar");
 var Table = require("react-bootstrap/lib/Table");
 var ToolBar = require("../ToolBar/ToolBar");
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
+var Pagination = require("../Paganation");
+var Loading=require("../CommonComponent").Loading;
 
 var VCenterList = React.createClass({
     getInitialState: function () {
         return {
-            key: 1
+            key: 1,
+            isLoading: true,
+            listData: []
         };
     },
     handleSelect(key) {
         this.setState({key});
     },
     componentDidMount: function () {
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterList, this._changeListData);
+        VirtualMonitorAction.getVCenterList();
+    },
+    componentWillUnmount: function () {
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVCenterList, this._changeListData);
+    },
+    componentDidUpdate: function () {
         $(".tab-content").css("padding", 0);
         $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
         $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
@@ -25,86 +38,54 @@ var VCenterList = React.createClass({
         $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
         $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
     },
+    _changeListData: function () {
+        this.setState({listData: VirtualMonitorStore.getVCenterListData()});
+        this.setState({isLoading: false});
+    },
     render: function () {
-        return (
-            <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
-                  style={{padding:"0"}}>
-                <Tab eventKey={1} title="常规状态" style={{padding:"0"}}>
-                    <Table responsive style={{margin:"0"}}>
-                        <thead>
-                        <tr>
-                            <th>监控项目</th>
-                            <th>版本</th>
-                            <th style={{textAlign:"center"}}>Hypervisor数量 (单位:个)</th>
-                            <th style={{textAlign:"center"}}>VMS数量 (单位:个)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>VCenter:10.9.0.170</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">47</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        <tr>
-                            <td>VCenter:10.9.0.171</td>
-                            <td>1.0.0</td>
-                            <td style={{textAlign:"center"}}><a href="#">20</a></td>
-                            <td style={{textAlign:"center"}}><a href="#">36</a></td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Tab>
-            </Tabs>
-        )
+        if (this.state.isLoading) {
+            return (
+                <Loading />
+            )
+        } else {
+            var title = [<th key={"th-1"}>监控项目</th>];
+            var result = [];
+            this.state.listData[0].items.forEach(function (val, key) {
+                title.push(<th key={"th"+key} style={{textAlign:"center"}}>{val.name}</th>)
+            });
+            var tbody = [];
+            var tr = [];
+            this.state.listData.forEach(function (val, key) {
+                var td = [];
+                td.push(<td key={"td"+key}>{val.name + ":" + val.host}</td>);
+                val.items.forEach(function (subVal, subKey) {
+                    td.push(<td key={"td"+key+"sub"+subKey}>{subVal.lastvalue}</td>);
+                });
+                tr.push(<tr style={{textAlign:"center"}} key={"tr"+key}>{td}</tr>);
+            });
+            tbody.push(<tbody>{tr}</tbody>);
+            return (
+                <div>
+                    <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                          style={{padding:"0"}}>
+                        <Tab eventKey={1} title="常规状态" style={{padding:"0"}}>
+                            <Table responsive style={{margin:"0"}}>
+                                <thead>
+                                <tr>
+                                    {title}
+                                </tr>
+                                </thead>
+                                {tbody}
+                            </Table>
+                        </Tab>
+                    </Tabs>
+                    <Pagination />
+
+                </div>
+
+            )
+        }
+
     }
 });
 
@@ -154,7 +135,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -165,7 +148,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -176,7 +161,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -187,7 +174,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -198,7 +187,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -209,7 +200,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -220,7 +213,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -231,7 +226,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -242,7 +239,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Hypervisor:10.9.0.96</td>
@@ -253,7 +252,9 @@ var HypervisorList = React.createClass({
                             <td>387987654</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td style={{textAlign:"center"}}><a href="#">24</a></td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         </tbody>
                     </Table>
@@ -278,7 +279,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -288,7 +289,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -298,7 +299,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -308,7 +309,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -318,7 +319,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -328,7 +329,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -338,7 +339,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -348,7 +349,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="danger" now={92} label={`${92}%`} />
+                                <ProgressBar active bsStyle="danger" now={92} label={`${92}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -358,7 +359,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -368,7 +369,7 @@ var HypervisorList = React.createClass({
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td style={{textAlign:"center"}}>4</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         </tbody>
@@ -399,7 +400,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -414,7 +415,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -429,7 +430,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -444,7 +445,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -459,7 +460,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -474,7 +475,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -489,7 +490,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -504,7 +505,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -519,7 +520,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -534,7 +535,7 @@ var HypervisorList = React.createClass({
                                 1024
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         </tbody>
@@ -732,111 +733,131 @@ var VMSList = React.createClass({
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>vms:10.9.0.96</td>
                             <td>hypervisor:10.1.1.1</td>
                             <td>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                             <td>New Washton</td>
                             <td>正常</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         </tbody>
                     </Table>
@@ -857,7 +878,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -865,7 +886,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -873,7 +894,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -881,7 +902,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -889,7 +910,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -897,7 +918,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -905,7 +926,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -913,7 +934,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -921,7 +942,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -929,7 +950,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>4</td>
                             <td style={{textAlign:"center"}}>5.0</td>
                             <td>
-                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`} />
+                                <ProgressBar active bsStyle="warning" now={80} label={`${80}%`}/>
                             </td>
                         </tr>
                         </tbody>
@@ -958,7 +979,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -969,7 +990,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -980,7 +1001,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -991,7 +1012,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -1002,7 +1023,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -1013,7 +1034,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -1024,7 +1045,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -1035,7 +1056,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -1046,7 +1067,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         <tr>
@@ -1057,7 +1078,7 @@ var VMSList = React.createClass({
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>1024</td>
                             <td style={{textAlign:"center"}}>
-                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`} />
+                                <ProgressBar active bsStyle="info" now={40} label={`${40}%`}/>
                             </td>
                         </tr>
                         </tbody>
@@ -1265,7 +1286,9 @@ var MysqlList = React.createClass({
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
 
                         </tr>
                         <tr>
@@ -1273,63 +1296,81 @@ var MysqlList = React.createClass({
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         <tr>
                             <td>mysql:10.9.0.96</td>
                             <td>5.0</td>
                             <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
                             <td>正常</td>
-                            <td style={{textAlign:"center"}}><button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button></td>
+                            <td style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
+                            </td>
                         </tr>
                         </tbody>
                     </Table>
@@ -1531,7 +1572,7 @@ var MysqlList = React.createClass({
     }
 });
 
-var HypervisorConfig=React.createClass({
+var HypervisorConfig = React.createClass({
     getInitialState: function () {
         return {
             key: 1
@@ -1568,7 +1609,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1577,7 +1620,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"磁盘使用率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1586,7 +1631,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"IO吞吐率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1595,7 +1642,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"网络负载监控"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1604,7 +1653,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1613,7 +1664,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1622,7 +1675,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1631,7 +1686,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1640,7 +1697,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1649,7 +1708,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1658,7 +1719,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -1667,7 +1730,9 @@ var HypervisorConfig=React.createClass({
                                 <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -1691,7 +1756,9 @@ var HypervisorConfig=React.createClass({
                             </td>
                             <td style={{textAlign:"center",color:"green"}}>监控中</td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={false}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={false}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button>
                             </td>
                         </tr>
@@ -1704,7 +1771,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
 
@@ -1718,7 +1787,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
 
@@ -1732,7 +1803,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1745,7 +1818,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1758,7 +1833,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1771,7 +1848,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1784,7 +1863,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1797,7 +1878,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1810,7 +1893,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1823,7 +1908,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>
@@ -1836,7 +1923,9 @@ var HypervisorConfig=React.createClass({
                                 未监控
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans" disabled={true}>保存</button>
+                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                        disabled={true}>保存
+                                </button>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
                             </td>
                         </tr>

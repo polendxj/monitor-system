@@ -293,7 +293,6 @@ var Content = React.createClass({
                 case 221:
                     div = <div>
                         <ObjectList.VCenterList />
-                        <Pagination />
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;

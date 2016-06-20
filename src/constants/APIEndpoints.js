@@ -2,24 +2,7 @@ var assign = require('object-assign');
 
 var MofaAPIRoot = config.URL.API;
 var MofaAPIEndpoints = {
-    SEARCH: "/search/search/",
-    USERS: "/search/search/",
-    SCENE: "",
-    FEATURES: "/features/",
-    LABEL: "/label/",
-    ENTITY: "/entity/",
-    ATTRIBUTES: "/userlistconfig/",
-    LIST: "/applications/default/saved_lists/",
-    LISTGEN: "/listgenerate/",
-    STAT: "/search/_analyze/",
-    LIST_DEFINES: "/applications/default/saved_lists/",
-    SINGLE_FEATURE: "/features/",
-    CRITERIA: "/listdefine/",
-    SEARCH_DATA: "/details/",
-    EVENTS: "/event/",
-    REMARK: "/remark/",
-    SEARCH_IP_PROXY: "",
-    SEARCH_FINANCE: ""
+    VCENTER_LIST: "/oms/vcenters",
 };
 
 var MomaAPIRoot = config.URL.AUTH;

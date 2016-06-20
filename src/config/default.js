@@ -1,6 +1,6 @@
 config = {
     URL: {
-        API: 'http://maxcd03-dev01.chinacloudapp.cn:8081',
+        API: 'http://120.26.233.223:8081',
         AUTH: 'http://maxcd01-dev11.chinacloudapp.cn:8088',
         NEO4J: 'http://10.10.0.213:7474',
         TRACK: 'http://maxcd01-dev03.chinacloudapp.cn/jta/event/',
