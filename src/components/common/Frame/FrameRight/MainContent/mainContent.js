@@ -330,10 +330,8 @@ var Content = React.createClass({
                     <div style={{clear:"both"}}></div>
                 </div>
             } else if (this.state.viewData != "") {
-                console.log(this.state.viewData);
                 div = <div>
                     <AllCharts name={this.state.viewData}/>
-
                     <div style={{clear:"both"}}></div>
                 </div>;
             }

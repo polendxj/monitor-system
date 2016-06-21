@@ -55,7 +55,17 @@ for(var endpoint in APIEndpoints) {
                 });
                 return jQuery.ajax(ajaxOpt).then(callback).then(null, failed);
             },
-            DELETE: function(id, callback, params) {
+            PUT2: function(id, payload, params, callback, error) {
+                var url = urlBuilder(APIEndpoints[endpoint], params);
+                if (id) url += id + "/";
+                var ajaxOpt = assign({}, this.ajaxOpt, {
+                    url: url,
+                    type: "PUT",
+                    data: JSON.stringify(payload)
+                });
+                return jQuery.ajax(ajaxOpt).then(callback).then(null, failed).then(null, error);
+            },
+            /*DELETE: function(id, callback, params) {
                 var url = urlBuilder(APIEndpoints[endpoint], params);
                 if (id) url += id + "/";
                 var ajaxOpt = assign({}, this.ajaxOpt, {
@@ -63,6 +73,15 @@ for(var endpoint in APIEndpoints) {
                     type: "DELETE"
                 });
                 return jQuery.ajax(ajaxOpt).then(callback).then(null, failed);
+            }*/
+            DELETE: function(id, callback, params,error) {
+                var url = urlBuilder(APIEndpoints[endpoint], params);
+                if (id) url += id + "/";
+                var ajaxOpt = assign({}, this.ajaxOpt, {
+                    url: url,
+                    type: "DELETE"
+                });
+                return jQuery.ajax(ajaxOpt).then(callback).then(null, failed).then(null, error);
             }
         };
     })(endpoint);

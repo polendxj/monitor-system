@@ -17,6 +17,7 @@ var CreateVCenterModal = require('./components/common/VCenter/createVCenterModal
 var UserList = require('./components/common/SystemConfig/UserConfig/UserList');
 var CreateUser = require('./components/common/SystemConfig/UserConfig/CreateUser');
 var UpdatePwd = require('./components/common/SystemConfig/UserConfig/UpdatePwd');
+var UpdateVCenter = require('./components/common/VCenter/EditVCenter');
 
 require('../static/maxent.min.js');
 
@@ -48,6 +49,7 @@ ReactDOM.render((
             <Route path="userList" component={UserList} />
             <Route path="createUser" component={CreateUser} />
             <Route path="updatePwd" component={UpdatePwd} />
+            <Route path="updateVCenter" component={UpdateVCenter} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));

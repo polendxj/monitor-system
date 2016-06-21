@@ -2,6 +2,7 @@
  * Created by jingpeng on 16/6/11.
  */
 var React = require("react");
+var browserHistory = require('react-router').browserHistory;
 var Tabs = require("react-bootstrap/lib/Tabs");
 var Jquery = require('jquery');
 var Tab = require("react-bootstrap/lib/Tab");
@@ -13,6 +14,9 @@ var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 var Pagination = require("../Paganation");
 var Loading = require("../CommonComponent").Loading;
 var GlobalUtils = require("../../../utils/GlobalUtils");
+
+var MenuStore = require('../../../stores/MenuStore');
+var MenuAction = require('../../../actions/MenuAction');
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -43,6 +47,15 @@ var VCenterList = React.createClass({
     _changeListData: function () {
         this.setState({listData: VirtualMonitorStore.getVCenterListData()});
         this.setState({isLoading: false});
+    },
+    _delete: function (index) {
+        var id=this.state.listData[index].hostid;
+        VirtualMonitorAction.deleteVCenter(id);
+    },
+    _edit: function (index) {
+        MenuAction.changeBreadcrumb(4, {id:30001,name:"编辑"});
+        VirtualMonitorStore.setEditVcenterData(this.state.listData[index]);
+        browserHistory.push("/updateVCenter");
     },
     render: function () {
         if (this.state.isLoading) {
@@ -93,10 +106,11 @@ var VCenterList = React.createClass({
                     </td>);
                     tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                  style={{textAlign:"center"}}>
-                        <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">编辑</button>
+                        <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={this._edit.bind(this,key1)}>编辑</button>
+                        <button type="button" className="btn btn-xs btn-info btn-rad btn-danger" onClick={this._delete.bind(this,key1)}>删除</button>
                     </td>);
                     tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
-                });
+                }.bind(this));
                 tbody = <tbody key={tab+"tbody"}>{tr}</tbody>;
                 tabs.push(
                     <Tab key={"tab"+tabIndex} eventKey={tabIndex} title={tab} style={{padding:"0"}}>

@@ -11,36 +11,38 @@ var ControlLabel = require("react-bootstrap").ControlLabel;
 var Col = require("react-bootstrap").Col;
 var HelpBlock = require("react-bootstrap").HelpBlock;
 var Breadcrumb = require("react-bootstrap").Breadcrumb;
+var MenuTool = require("../Frame/FrameRight/headNav/menuTool");
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 var CreateView = React.createClass({
+    render: function () {
+        return (
+            <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
+                <div style={{height:"47px"}}>
+                    <MenuTool />
+                </div>
+                <div>
+                    <Content />
+                </div>
+            </div>
+        )
+    }
+});
+var Content = React.createClass({
     getInitialState: function () {
         return ({
             helpState: false,
             succTip: false,
             viewName: "",
-            viewDesc: "",
-            breadcrumbDataList: MenuStore.getBreadcrumbData()
+            viewType: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()
         })
-    },
-    componentDidMount: function () {
-        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-    },
-    componentWillUnmount: function () {
-        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-    },
-    _changeBreadcrumbData: function () {
-        this.setState({succTip: false});
-        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _handleViewName: function (e) {
         var value = e.target.value;
         this.setState({viewName: value});
-    },
-    _handleViewDesc: function (e) {
-        var value = e.target.value;
-        this.setState({viewDesc: value});
     },
     _blur: function (e) {
         var value = e.target.value;
@@ -52,62 +54,24 @@ var CreateView = React.createClass({
         }
     },
     _createView: function () {
-        if (this.state.viewName == "") {
-            this.setState({helpState: true});
-        } else {
-            this.setState({helpState: false});
+        var viewTemplate={name:this.state.viewName,type:this.state.viewType};
+        if(!this.state.helpState){
+            VirtualMonitorAction.createGraphTemplate(viewTemplate);
             this.setState({succTip: true});
         }
     },
-    _redirect: function (idx) {
-        console.log(idx);
-        if(idx==0||idx==1){
-            MenuAction.changeBreadcrumb(4,"");
-            browserHistory.push("/list");
-        }else if(idx==3||idx==2) {
-            MenuAction.changeBreadcrumb(idx+2,"");
-            browserHistory.push("/list");
-        }
-    },
     render: function () {
-        var breadcrumbs = [];
-        var length=this.state.breadcrumbDataList.length-1;
         var succTipStyle = {
             display: this.state.succTip ? "block" : "none",
             padding: "30px 0 30px 80px",
             border: "1px solid #95DD95",
             fontSize: "14px",
             lineHeight: "20px",
-            fontWeight:"bold",
+            fontWeight: "bold",
             background: "#EEFFEE 15px 15px no-repeat"
         };
-        this.state.breadcrumbDataList.forEach(function (breadcrumbData, idx) {
-            if (idx < length) {
-                breadcrumbs.push (
-                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#">
-                        {breadcrumbData.breadcrumbName}
-                    </Breadcrumb.Item>
-                )
-            } else {
-                breadcrumbs.push (
-                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
-                        {breadcrumbData.breadcrumbName}
-                    </Breadcrumb.Item>
-                )
-            }
-        }.bind(this));
         return (
-            <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
-                <div style={{height:"47px"}}>
-                    <div className="col-sm-7 col-md-7 col-lg-7"
-                         style={{height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}>
-                        <div style={{display:"inline-block",paddingRight:"20px"}}>
-                            <Breadcrumb>
-                                {breadcrumbs}
-                            </Breadcrumb>
-                        </div>
-                    </div>
-                </div>
+            <div>
                 <div>
                     <div style={{display:this.state.succTip?"none":"block"}}>
                         <Form horizontal>
@@ -120,30 +84,33 @@ var CreateView = React.createClass({
                                                  onChange={this._handleViewName} onBlur={this._blur}/>
                                 </Col>
                                 <Col sm={3}>
-                                    <HelpBlock style={{display:this.state.helpState?"block":"none"}}>请填写自定义视图名称</HelpBlock>
+                                    <HelpBlock
+                                        style={{display:this.state.helpState?"block":"none"}}>请填写自定义视图名称</HelpBlock>
                                 </Col>
                             </FormGroup>
-                            <FormGroup controlId="formVisibleName">
+                            <FormGroup>
                                 <Col sm={1}>
                                 </Col>
                                 <Col sm={4}>
                                     <div style={{color:"#888888",lineHeight:"24px",clear:"both",marginTop:"-10px"}}><i
-                                        className="fa fa-info-circle" style={{fontSize:"14px"}}></i>&nbsp;给自定义视图起一个名字，随后您可以将
+                                        className="fa fa-info-circle" style={{fontSize:"14px"}}></i>&nbsp;
+                                        给自定义视图起一个名字，随后您可以将
                                         widget
                                         加入这个视图。
                                     </div>
                                 </Col>
                             </FormGroup>
-                            <FormGroup controlId="formVisibleName">
+                            <FormGroup>
                                 <Col componentClass={ControlLabel} sm={1}>
-                                    描述
+                                    类型
                                 </Col>
                                 <Col sm={2}>
-                                    <FormControl componentClass="textarea" controlId="viewDesc" value={this.state.viewDesc}
-                                                 onChange={this._handleViewDesc}/>
+                                    <FormControl controlId="viewType"
+                                                 value={this.state.viewType}
+                                                 readOnly/>
                                 </Col>
                             </FormGroup>
-                            <FormGroup controlId="formVisibleName">
+                            <FormGroup>
                                 <Col sm={1}>
                                 </Col>
                                 <Col sm={2}>

@@ -14,47 +14,48 @@ var Breadcrumb = require("react-bootstrap").Breadcrumb;
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
 var MenuTool = require("../Frame/FrameRight/headNav/menuTool");
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 var EditView = React.createClass({
+    render: function () {
+        return (
+            <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
+                <div style={{height:"47px"}}>
+                    <MenuTool />
+                </div>
+                <div>
+                    <Content />
+                </div>
+            </div>
+        )
+    }
+});
+var Content = React.createClass({
     getInitialState: function () {
         return ({
             helpState: false,
             succTip: false,
             succTipText: "",
-            viewName: "VCenter",
-            viewDesc: "version 5.5",
-            breadcrumbDataList: MenuStore.getBreadcrumbData()
+            viewName: MenuStore.getEditGraphData().name,
+            editGraphData:MenuStore.getEditGraphData()
         })
-    },
-    componentDidMount: function () {
-        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-    },
-    componentWillUnmount: function () {
-        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-    },
-    _changeBreadcrumbData: function () {
-        this.setState({succTip: false});
-        this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _handleViewName: function (e) {
         var value = e.target.value;
         this.setState({viewName: value});
     },
-    _handleViewDesc: function (e) {
-        var value = e.target.value;
-        this.setState({viewDesc: value});
-    },
     _editView: function () {
-        if (this.state.viewName == "") {
-            this.setState({helpState: true});
-        } else {
-            this.setState({helpState: false});
+        var id=this.state.editGraphData.id;
+        var viewData={name:this.state.viewName,type:this.state.editGraphData.type};
+        if(this.state.viewName!=""){
+            VirtualMonitorAction.updateGraphTemplate(id,viewData);
+            this.setState({succTipText: "自定义视图修改成功！"});
+            this.setState({succTip: true});
         }
-        this.setState({succTipText: "自定义视图修改成功！"});
-        this.setState({succTip: true});
-        console.log(this.state.viewName);
     },
     _deleteView: function () {
+        VirtualMonitorAction.deleteGraphTemplate(this.state.editGraphData.id);
         this.setState({succTipText: "自定义视图删除成功！"});
         this.setState({succTip: true});
     },
@@ -67,18 +68,7 @@ var EditView = React.createClass({
             this.setState({helpState: false});
         }
     },
-    _redirect: function (idx) {
-        if(idx==0||idx==1){
-            MenuAction.changeBreadcrumb(4,"");
-            browserHistory.push("/list");
-        }else if(idx==3||idx==2) {
-            MenuAction.changeBreadcrumb(idx+2,"");
-            browserHistory.push("/list");
-        }
-    },
     render: function () {
-        var breadcrumbs=[];
-        var length=this.state.breadcrumbDataList.length-1;
         var succTipStyle = {
             display: this.state.succTip ? "block" : "none",
             padding: "30px 0 30px 80px",
@@ -88,33 +78,8 @@ var EditView = React.createClass({
             fontWeight:"bold",
             background: "#EEFFEE 15px 15px no-repeat"
         };
-        this.state.breadcrumbDataList.forEach(function (breadcrumbData, idx) {
-            if (idx < length) {
-                breadcrumbs.push (
-                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#">
-                        {breadcrumbData.breadcrumbName}
-                    </Breadcrumb.Item>
-                )
-            } else {
-                breadcrumbs.push (
-                    <Breadcrumb.Item key={breadcrumbData.breadcrumbID} onClick={this._redirect.bind(this,idx)} href="#" active>
-                        {breadcrumbData.breadcrumbName}
-                    </Breadcrumb.Item>
-                )
-            }
-        }.bind(this));
         return (
-            <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
-                <div style={{height:"47px"}}>
-                    <div className="col-sm-7 col-md-7 col-lg-7"
-                         style={{height:"30px",marginTop:"2px",fontSize:"12px",padding:"2px 0 0 6px"}}>
-                        <div style={{display:"inline-block",paddingRight:"20px"}}>
-                            <Breadcrumb>
-                                {breadcrumbs}
-                            </Breadcrumb>
-                        </div>
-                    </div>
-                </div>
+            <div>
                 <div>
                     <div style={{display:this.state.succTip?"none":"block"}}>
                         <Form horizontal>
@@ -143,11 +108,11 @@ var EditView = React.createClass({
                             </FormGroup>
                             <FormGroup controlId="formVisibleName">
                                 <Col componentClass={ControlLabel} sm={1}>
-                                    描述
+                                    类型
                                 </Col>
                                 <Col sm={2}>
-                                    <FormControl componentClass="textarea" controlId="viewDesc" value={this.state.viewDesc}
-                                                 onChange={this._handleViewDesc}/>
+                                    <FormControl controlId="viewDesc" value={this.state.editGraphData.type}
+                                                 readOnly/>
                                 </Col>
                             </FormGroup>
                             <FormGroup controlId="formVisibleName">

@@ -10,6 +10,8 @@ var Button = require("react-bootstrap").Button;
 
 var MenuStore = require('../../../../stores/MenuStore');
 var MenuAction = require('../../../../actions/MenuAction');
+var VirtualMonitorAction = require("../../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../../stores/VirtualMonitorStore");
 
 require('jquery');
 
@@ -21,24 +23,28 @@ var Menus = React.createClass({
         return ({
             subMenus: [],
             subSecondMenus: [],
-            viewCreate:[
-                {id: 20001, name: "VCenter"},
-                {id: 20002, name: "vcModel"}
-            ],
+            listData:[],
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
             hoverParentIndex: -1,
             selectedParentIndex: -1,
             hoverIndex: -1,
-            selectedIndex: 0
+            selectedIndex: 0,
+            isLoading: true
         })
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphTemplateList, this._changeListData);
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_firstMenus, this._changeFirstMenu);
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphTemplateList, this._changeListData);
+    },
+    _changeListData: function () {
+        this.setState({listData: VirtualMonitorStore.getGraphTemplateListData()});
+        this.setState({isLoading: false});
     },
     _changeFirstMenu: function () {
         this.setState({selectedIndex: 0});
@@ -66,10 +72,10 @@ var Menus = React.createClass({
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
         if(this.state.breadcrumbDataList.length==4&&this.state.breadcrumbDataList[3].breadcrumbID==3){
-            if(this.state.viewCreate.length>0){
+            if(this.state.listData.length>0){
                 setTimeout(function () {
-                    this._clickViewMenu(this.state.viewCreate[0]);
-                }.bind(this), 1);
+                    this._clickViewMenu(this.state.listData[0]);
+                }.bind(this), 5);
             }else{
                 setTimeout(function () {
                     MenuAction.changeViews("");
@@ -120,8 +126,9 @@ var Menus = React.createClass({
         MenuAction.changeBreadcrumb(5, obj);
         browserHistory.push("/createView");
     },
-    _editView: function (viewName, viewDesc, obj) {
-        var o = {id: obj.id, name: "编辑自定义视图"};
+    _editView: function (obj) {
+        var o = {id: 10002, name: "编辑自定义视图"};
+        MenuStore.setEditGraphData(obj);
         MenuAction.changeBreadcrumb(5, o);
         browserHistory.push("/editView");
     },
@@ -183,14 +190,14 @@ var Menus = React.createClass({
         }
         if (this.state.breadcrumbDataList.length >= 4) {
             var viewList = [];
-            if(this.state.viewCreate.length>0){
-                this.state.viewCreate.forEach(function (view, idx) {
+            if(this.state.listData.length>0){
+                this.state.listData.forEach(function (view, idx) {
                     viewList.push(
                         <li className="views" key={view.id}
                             style={{marginBottom:"4px",padding:"7px 25px",backgroundColor:"white"}}
                             ><span onClick={this._clickViewMenu.bind(this,view)}
                                    style={{cursor:"pointer"}}>{view.name}
-                                </span><i onClick={this._editView.bind(this,"VCenter","version 5.5",view)}
+                                </span><i onClick={this._editView.bind(this,view)}
                                           className="fa fa-edit fa-lg" title="编辑"
                                           style={{float:"right",lineHeight:"22px",cursor:"pointer"}}></i>
                         </li>

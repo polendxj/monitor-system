@@ -5,8 +5,14 @@ var MofaAPIEndpoints = {
     VCENTER_LIST: "/oms/vcenters",
     HYPERVISOR_LIST:"/oms/hypervisors",
     VM_LIST:"/oms/vms",
+    GRAPHTEMPLATE_LIST:"/oms/graphTemplates",
     VCENTER_CREATE:"/oms/vcenter",
     MYSQL_CREATE:"/oms/mysql",
+    GRAPHTEMPLATE_CREATE:"/oms/graphTemplate",
+    VCENTER_DELETE:"/oms/vcenter/",
+    GRAPHTEMPLATE_DELETE:"/oms/graphTemplate/",
+    VCENTER_UPDATE:"/oms/vcenter/",
+    GRAPHTEMPLATE_UPDATE:"/oms/graphTemplate/"
 };
 
 var MomaAPIRoot = config.URL.AUTH;

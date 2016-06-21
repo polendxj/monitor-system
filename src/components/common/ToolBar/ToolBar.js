@@ -239,12 +239,7 @@ var Button = React.createClass({
         AppAction.saveOperator(type, text);
         var curTool = "";
         if (type == 3) {
-            if (type == 3) {
-/*                setTimeout(function () {
-                    MenuAction.changeViews("");
-                }, 1);*/
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
-            }
+            MenuAction.changeBreadcrumb(4, AppStore.getOperator());
         } else if (type == 4) {
             MenuAction.changeBreadcrumb(4, "");
         } else if (type == 1) {
@@ -269,7 +264,7 @@ var Button = React.createClass({
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createUser");
             }
-        }else if(type==5){
+        } else if (type == 5) {
             $("#monitorItemsPanel").slideToggle();
         }
     },

@@ -11,6 +11,7 @@ var TableRow = require('material-ui/lib/table/table-row');
 var TableHeaderColumn = require('material-ui/lib/table/table-header-column');
 var TableBody = require('material-ui/lib/table/table-body');
 var TableRowColumn = require('material-ui/lib/table/table-row-column');
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 var percent = 30;
 var pieChartsData = [
@@ -311,19 +312,19 @@ var AllCharts = React.createClass({
         var showChart="";
         var charts=[
             {
-                name:"VCenter",
+                name:"vcModel",
                 chart:[]
             },
             {
-                name:"vcModel",
+                name:"vcModel2",
                 chart:[]
             }
         ];
-        charts[0].chart.push(<LineCharts key={1} data={lineChartsData[0]} title={"localhost:127.0.0.1"} dataTitle={lineChartsData[0].yAxis.title} viewData={chartViewData}/>);
-        charts[0].chart.push(<PieCharts key={2} data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />);
-        charts[0].chart.push(<PieCharts key={3} data={pieChartsData[0]} title={"hypervisor:184.2.10.11"} />);
-        charts[0].chart.push(<LineCharts key={4} data={lineChartsData[1]} title={"mysql:127.0.0.1"} dataTitle={lineChartsData[1].yAxis.title} viewData={chartViewData}/>);
-        charts[1].chart.push(<LineCharts key={5} data={lineChartsData[2]} title={"vm:127.0.0.1"} dataTitle={lineChartsData[2].yAxis.title} viewData={chartViewData}/>);
+        charts[0].chart.push(<LineCharts key={5} data={lineChartsData[2]} title={"vm:127.0.0.1"} dataTitle={lineChartsData[2].yAxis.title} viewData={chartViewData}/>);
+        charts[1].chart.push(<LineCharts key={1} data={lineChartsData[0]} title={"localhost:127.0.0.1"} dataTitle={lineChartsData[0].yAxis.title} viewData={chartViewData}/>);
+        charts[1].chart.push(<PieCharts key={2} data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />);
+        charts[1].chart.push(<PieCharts key={3} data={pieChartsData[0]} title={"hypervisor:184.2.10.11"} />);
+        charts[1].chart.push(<LineCharts key={4} data={lineChartsData[1]} title={"mysql:127.0.0.1"} dataTitle={lineChartsData[1].yAxis.title} viewData={chartViewData}/>);
         charts.forEach(function (chart) {
             if(chart.name==this.props.name){
                 showChart=chart.chart;
