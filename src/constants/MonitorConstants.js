@@ -8,6 +8,7 @@ var MonitorConstants = keyMirror({
     ChangeBreadcrumb:null,
     ChangeViews:null,
     GetVCenterList:null,
+    GetVCenterTip:null,
     GetHypervisorList:null,
     GetVmList:null,
     CreateVCenter:null,

@@ -8,14 +8,25 @@ var VirtualMonitorAction = {
             actionType: MonitorConstants.GetVCenterList
         })
     },
-    getHypervisorList: function () {
+    getVCenterTip: function () {
         AntiFraudDispatcher.dispatch({
-            actionType: MonitorConstants.GetHypervisorList
+            actionType: MonitorConstants.GetVCenterTip
         })
     },
-    getVmList: function () {
+    getHypervisorList: function (page, interfaceIp, ip) {
         AntiFraudDispatcher.dispatch({
-            actionType: MonitorConstants.GetVmList
+            actionType: MonitorConstants.GetHypervisorList,
+            page: page,
+            interfaceIp: interfaceIp,
+            ip: ip
+        })
+    },
+    getVmList: function (page, interfaceIp, ip) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetVmList,
+            page: page,
+            interfaceIp: interfaceIp,
+            ip: ip
         })
     },
     getGraphTemplateList: function (type) {
@@ -27,7 +38,7 @@ var VirtualMonitorAction = {
     createVCenter: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateVCenter,
-            jsonObject:obj
+            jsonObject: obj
         })
     },
     createMySql: function (obj) {

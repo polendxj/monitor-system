@@ -17,26 +17,64 @@ var AppStore = require('../stores/AppStore');
 var vcenterList = [];
 var hypervisorList = [];
 var vmList = [];
+var vcenterTips = [];
+
+var vcenterFilter = "";
+var hypervisorFilter = "";
+var vmsFilter = "";
 var graphTemplateList = [];
 var editVcenter={};
 var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVCenterList: function () {
         ResourceUtils.VCENTER_LIST.GET("", function (json) {
             vcenterList = json;
+            json.forEach(function (item) {
+                vcenterTips.push(item.name);
+            });
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterTip);
+
         });
     },
-    getHypervisorList: function () {
-        ResourceUtils.HYPERVISOR_LIST.GET({interfaceIp:"",ip:""}, function (json) {
+    getVCenterTip: function () {
+
+    },
+    getVCenterTipData: function () {
+        return vcenterTips;
+    },
+    getHypervisorList: function (page, interfaceIp, ip) {
+        vcenterFilter = interfaceIp;
+        hypervisorFilter = ip;
+        var vmsFilter = "";
+        ResourceUtils.HYPERVISOR_LIST.GET({
+            page: page,
+            pageSize: 10,
+            interfaceIp: interfaceIp,
+            ip: ip
+        }, function (json) {
             hypervisorList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisiorList);
         });
     },
-    getVmList: function () {
-        ResourceUtils.VM_LIST.GET("", function (json) {
+    getVmList: function (page, interfaceIp, ip) {
+        hypervisorFilter = interfaceIp;
+        vmsFilter = ip;
+        ResourceUtils.VM_LIST.GET({
+            page: page,
+            pageSize: 10,
+            interfaceIp: interfaceIp,
+            ip: ip
+        }, function (json) {
             vmList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVmList);
         });
+    },
+    getFilter: function () {
+        return {
+            vcenterFilter: vcenterFilter,
+            hypervisorFilter: hypervisorFilter,
+            vmsFilter: vmsFilter
+        }
     },
     getGraphTemplateList: function (type) {
         ResourceUtils.GRAPHTEMPLATE_LIST.GET(type, function (json) {
@@ -45,14 +83,14 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     createVCenter: function (obj) {
-        ResourceUtils.VCENTER_CREATE.POST(obj,"", function () {
+        ResourceUtils.VCENTER_CREATE.POST(obj, "", function () {
 
-        },function(resp){
+        }, function (resp) {
             console.log(resp);
-            if(resp.status==200){
+            if (resp.status == 200) {
                 MenuAction.changeBreadcrumb(4, "");
                 browserHistory.push("/list");
-            }else if(resp.status>=300){
+            } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         });
@@ -161,7 +199,8 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     events: {
         ChangeVCenterList: "ChangeVCenterList",
         ChangeHypervisiorList: "ChangeHypervisiorList",
-        ChangeVmList:"ChangeVmList",
+        ChangeVmList: "ChangeVmList",
+        ChangeVCenterTip: "ChangeVCenterTip",
         ChangeGraphTemplateList:"ChangeGraphTemplateList"
     }
 });
@@ -172,10 +211,13 @@ AntiFraudDispatcher.register(function (action) {
             VirtualMonitorStore.getVCenterList();
             break;
         case MonitorConstants.GetHypervisorList:
-            VirtualMonitorStore.getHypervisorList();
+            VirtualMonitorStore.getHypervisorList(action.page, action.interfaceIp, action.ip);
             break;
         case MonitorConstants.GetGraphTemplateList:
             VirtualMonitorStore.getGraphTemplateList(action.type);
+            break;
+        case MonitorConstants.GetVmList:
+            VirtualMonitorStore.getVmList(action.page, action.interfaceIp, action.ip);
             break;
         case MonitorConstants.CreateVCenter:
             VirtualMonitorStore.createVCenter(action.jsonObject);
@@ -194,6 +236,9 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.UpdateGraphTemplate:
             VirtualMonitorStore.updateGraphTemplate(action.id,action.jsonObject);
+            break;
+        case MonitorConstants.GetVCenterTip:
+            VirtualMonitorStore.getVCenterTip();
             break;
         default:
             break;

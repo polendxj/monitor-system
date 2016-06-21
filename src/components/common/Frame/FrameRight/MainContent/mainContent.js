@@ -16,7 +16,9 @@ var GlobalUtils = require("../../../../../utils/GlobalUtils");
 var Pagination = require("../../../Paganation");
 
 var MenuAction = require('../../../../../actions/MenuAction');
+var VirtualMonitorAction = require('../../../../../actions/VirtualMonitorAction');
 var MenuStore = require('../../../../../stores/MenuStore');
+var VirtualMonitorStore = require('../../../../../stores/VirtualMonitorStore');
 
 var AllCharts = require('../../../highcharts/AllCharts');
 
@@ -31,7 +33,6 @@ var MainContent = React.createClass({
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
-
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
@@ -44,7 +45,6 @@ var MainContent = React.createClass({
         this.setState({viewData: MenuStore.getViewData()});
     },
     render: function () {
-
         return (
             <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
                 <div style={{height:"47px"}}>
@@ -68,20 +68,77 @@ var Form = React.createClass({
         return ({
             groupItems: [{id: 1, text: "cpu使用率"}, {id: 2, text: "内存使用率"}, {id: 3, text: "磁盘使用率"}], // TODO 此处要替换成根据面包屑获取监控项
             serviceItems: [{id: 1, text: "vcenter"}, {id: 2, text: "hypervisor"}],
-            breadcrumbData: MenuStore.getBreadcrumbData()
+            breadcrumbData: MenuStore.getBreadcrumbData(),
+            VCenterDataSource: [],
+            HyperVisorDataSource: [],
+            VMSDataSource: [],
+            vcenterFilter: "",
+            hypervisorFilter: "",
+            vmsFilter: ""
         })
     },
-    onChange: function (key, value) {
-
+    onChange: function () {
+        if (this.state.breadcrumbData.length == 3) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    break;
+                case 222:
+                    VirtualMonitorAction.getHypervisorList(0, this.state.vcenterFilter, this.state.hypervisorFilter);
+                    break;
+                case 223:
+                    VirtualMonitorAction.getVmList(0, this.state.hypervisorFilter, this.state.vmsFilter);
+                    break;
+                case 224:
+                    break;
+            }
+        } else if (this.state.breadcrumbData.length == 4) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    break;
+                case 222:
+                    break;
+                case 223:
+                    break;
+                case 224:
+                    break;
+            }
+        } else if (this.state.breadcrumbData.length == 5) {
+            switch (this.state.breadcrumbData[2].breadcrumbID) {
+                case 221:
+                    break;
+                case 222:
+                    break;
+                case 223:
+                    break;
+                case 224:
+                    break;
+            }
+        }
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbData: MenuStore.getBreadcrumbData()});
     },
+    _vcenterTipChange: function () {
+        this.setState({VCenterDataSource: VirtualMonitorStore.getVCenterTipData()});
+    },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
+        VirtualMonitorAction.getVCenterTip();
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
+
+    },
+    _vcenterTextFieldText: function (text) {
+        this.setState({vcenterFilter: text});
+    },
+    _hypervisorTextFieldText: function (text) {
+        this.setState({hypervisorFilter: text});
+    },
+    _vmsTextFieldText: function (text) {
+        this.setState({vmsFilter: text});
     },
     render: function () {
         var formGroup = "";
@@ -89,25 +146,31 @@ var Form = React.createClass({
             switch (this.state.breadcrumbData[2].breadcrumbID) {
                 case 221:
                     formGroup = <div>
-                        <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"VCenter IP或别名"}
-                                      tip={"请输入VCenter IP或名称"} appendText={""}/>
                     </div>;
                     break;
                 case 222:
                     formGroup = <div>
-                        <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"Hypervisor IP或别名"}
-                                      tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                        <ToolBar.Text key={"bar1"} placeholder={"VCenter IP"}
+                                      openOnFocus={true} dataSource={this.state.VCenterDataSource}
+                                      getText={this._vcenterTextFieldText} onChange={this.onChange}/>
+                        <ToolBar.Text key={"bar2"} placeholder={"Hypervisor IP"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 223:
                     formGroup = <div>
-                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"VM IP或别名"}
-                                      tip={"请输入VM IP或名称"} appendText={""}/>
+                        <ToolBar.Text key={"bar2"} placeholder={"Hypervisor IP"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"VM IP"}
+                                      openOnFocus={false} dataSource={this.state.VMSDataSource}
+                                      getText={this._vmsTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 224:
                     formGroup = <div>
-                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Docker IP或别名"}
+                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Docker IP"}
                                       tip={"请输入Docker IP或名称"} appendText={""}/>
                     </div>;
                     break;
@@ -293,24 +356,28 @@ var Content = React.createClass({
                 case 221:
                     div = <div>
                         <ObjectList.VCenterList />
+
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 222:
                     div = <div>
                         <ObjectList.HypervisorList />
+
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 223:
                     div = <div>
                         <ObjectList.VMSList />
+
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 232:
                     div = <div>
                         <ObjectList.MysqlList />
+
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
