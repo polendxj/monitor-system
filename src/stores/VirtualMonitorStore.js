@@ -24,7 +24,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getHypervisorList: function () {
-        ResourceUtils.HYPERVISOR_LIST.GET("", function (json) {
+        ResourceUtils.HYPERVISOR_LIST.GET({interfaceIp:"",ip:""}, function (json) {
             hypervisorList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisiorList);
         });

@@ -5,6 +5,7 @@ var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 require('./item_enToCn');
 
+var oldPriority = [];
 var GlobalUtils = assign({}, EventEmitter.prototype, {
     text2Time: function (text) {
         var times = [];
@@ -63,22 +64,77 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
         return times;
     },
     en2Cn_item: function (json) {
-        var result={};
-        for(key in json){
+        oldPriority.splice(0);
+        var result = {};
+        for (key in json) {
             for (t in  enToCn_data) {
-                for(item in enToCn_data[t]){
-                    if(item==json[key].itemid){
-                        if(typeof (result[t]) == "undefined"){
-                            result[t]=[enToCn_data[t][item]];
-                        }else{
-                            result[t].push(enToCn_data[t][item]);
+                for (item in enToCn_data[t]) {
+                    if (item == json[key].key_) {
+                        if (typeof (result[t]) == "undefined") {
+                            result[t] = {data: [enToCn_data[t][item]], index: enToCn_data[t].internalPriority};
+                        } else {
+                            result[t]["data"].push(enToCn_data[t][item]);
                         }
                     }
                 }
             }
         }
+        for (rs in result) {
+            result[rs].data.sort(this.arrSort("priority"));
+        }
+        var final = this.objSort(result);
+        return final;
+    },
+    getOldPriority: function () {
+        return oldPriority;
+    },
+    arrSort: function (name) {
+        return function (o, p) {
+            var a, b;
+            if (typeof o === "object" && typeof p === "object" && o && p) {
+                a = o[name];
+                b = p[name];
+                if (a === b) {
+                    return 0;
+                }
+                if (typeof a === typeof b) {
+                    return a < b ? -1 : 1;
+                }
+                return typeof a < typeof b ? -1 : 1;
+            }
+            else {
+                throw ("error");
+            }
+
+        }
+
+    },
+    objSort: function (object) {
+        var dest = $.extend({}, object);
+        var result = {};
+        var c = 0;
+        while (!$.isEmptyObject(dest)) {
+            var count = 0;
+            var min = "";
+            var key = "";
+            for (item in dest) {
+                if (count == 0) {
+                    key = item;
+                    min = dest[item].index;
+                }
+                if (min > dest[item].index) {
+                    key = item;
+                    min = dest[item].index;
+                }
+                count++;
+            }
+            result[key] = dest[key].data;
+            delete dest[key];
+        }
         return result;
+
     }
+
 });
 
 module.exports = GlobalUtils;

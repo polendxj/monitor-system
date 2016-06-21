@@ -2,13 +2,14 @@
  * Created by Captain on 2016/6/20.
  */
 enToCn_data = {
-    normal_status: {
+    "常规状态": {
         "vmware.eventlog[{$URL}]": {
             key:"vmware.eventlog[{$URL}]",
             name: "Event log",
             name_cn: "事件日志",
             position: "center",
-            priority: 3
+            priority: 3,
+            showMethod:"scroll"
         },
         "vmware.fullname[{$URL}]": {
             key:"vmware.fullname[{$URL}]",
@@ -41,7 +42,7 @@ enToCn_data = {
         "vmware.hv.vm.num[{$URL},{HOST.HOST}]": {
             key:"vmware.hv.vm.num[{$URL},{HOST.HOST}]",
             name: "Number of guest VMs",
-            name_cn: "VM数量 (单位:个)",
+            name_cn: "VM数量",
             position: "center",
             priority: 9
         },
@@ -55,14 +56,14 @@ enToCn_data = {
         "vmware.hv.cluster.name[{$URL},{HOST.HOST}]": {
             key:"vmware.hv.cluster.name[{$URL},{HOST.HOST}]",
             name: "Cluster name",
-            name_cn: "集群名称",
+            name_cn: "集群名",
             position: "center",
             priority: 6
         },
         "vmware.hv.hw.uuid[{$URL},{HOST.HOST}]": {
             key:"vmware.hv.hw.uuid[{$URL},{HOST.HOST}]",
             name: "Bios UUID",
-            name_cn: "BIOS编号",
+            name_cn: "BIOS号",
             position: "center",
             priority: 7
         },
@@ -72,9 +73,17 @@ enToCn_data = {
             name_cn: "总体状态",
             position: "center",
             priority: 10
-        }
+        },
+        "vmware.hv.version[{$URL},{HOST.HOST}]": {
+            key:"vmware.hv.version[{$URL},{HOST.HOST}]",
+            name: "Version",
+            name_cn: "版本",
+            position: "center",
+            priority: 10
+        },
+        internalPriority:1
     },
-    cpu: {
+    CPU: {
         "vmware.hv.hw.cpu.num[{$URL},{HOST.HOST}]": {
             key:"vmware.hv.hw.cpu.num[{$URL},{HOST.HOST}]",
             name: "CPU cores",
@@ -110,9 +119,10 @@ enToCn_data = {
             position: "center",
             show_method: "scroll",
             priority: 5
-        }
+        },
+        internalPriority:2
     },
-    dataStore:{
+    DataStore:{
         "vmware.hv.datastore.read[{$URL},{HOST.HOST},datastore1,latency]": {
             key:"vmware.hv.datastore.read[{$URL},{HOST.HOST},datastore1,latency]",
             name: "Average read latency of the datastore $3",
@@ -126,9 +136,10 @@ enToCn_data = {
             name_cn: "写延迟",
             position: "center",
             priority: 2
-        }
+        },
+        internalPriority:4
     },
-    networkFlow:{
+    "网络流量":{
         "vmware.hv.network.in[{$URL},{HOST.HOST},bps]": {
             key:"vmware.hv.network.in[{$URL},{HOST.HOST},bps]",
             name: "Number of bytes received",
@@ -142,9 +153,10 @@ enToCn_data = {
             name_cn: "流出字节速率(单位: byte/秒)",
             position: "center",
             priority: 2
-        }
+        },
+        internalPriority:5
     },
-    memory:{
+    "内存":{
         "vmware.hv.hw.memory[{$URL},{HOST.HOST}]": {
             key:"vmware.hv.hw.memory[{$URL},{HOST.HOST}]",
             name: "Total memory",
@@ -165,7 +177,8 @@ enToCn_data = {
             name_cn: "使用内存 (单位:M)",
             position: "center",
             priority: 3
-        }
+        },
+        internalPriority:3
     },
     noTab: {
         empty: {

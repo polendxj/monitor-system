@@ -299,21 +299,18 @@ var Content = React.createClass({
                 case 222:
                     div = <div>
                         <ObjectList.HypervisorList />
-                        <Pagination />
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 223:
                     div = <div>
                         <ObjectList.VMSList />
-                        <Pagination />
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
                 case 232:
                     div = <div>
                         <ObjectList.MysqlList />
-                        <Pagination />
                         <div style={{clear:"both"}}></div>
                     </div>;
                     break;
