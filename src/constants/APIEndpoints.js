@@ -3,6 +3,8 @@ var assign = require('object-assign');
 var MofaAPIRoot = config.URL.API;
 var MofaAPIEndpoints = {
     VCENTER_LIST: "/oms/vcenters",
+    HYPERVISOR_LIST:"/oms/hypervisors",
+    VM_LIST:"/oms/vms",
 };
 
 var MomaAPIRoot = config.URL.AUTH;
