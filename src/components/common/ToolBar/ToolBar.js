@@ -130,17 +130,19 @@ var Text = React.createClass({
         return ({
             dataSource: [],
             tipHover: -1,
-            selectedItem: ""
+            selectedItem: "",
+            searchText:""
         })
     },
     handleUpdateInput: function (value) {
-        this.setState({
-            dataSource: [
-                value,
-                value + value,
-                value + value + value,
-            ],
-        });
+        this.props.getText(value);
+        //this.setState({
+        //    dataSource: [
+        //        value,
+        //        value + value,
+        //        value + value + value,
+        //    ]
+        //});
     },
     tipHover: function (index) {
         this.setState({tipHover: index});
@@ -148,10 +150,25 @@ var Text = React.createClass({
     itemSelected: function (value) {
         this.setState({selectedItem: value, tipItems: []});
     },
+    onNewRequest: function (e) {
+        if (e.keyCode == 13) {
+            this.props.onChange();
+        }
+
+    },
     formBlur: function () {
         setTimeout(function () {
             this.setState({tipItems: []});
         }.bind(this), 100);
+    },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+    },
+    _changeBreadcrumbData: function () {
+        this.setState({searchText:""});
     },
     render: function () {
         var tips = [];
@@ -159,11 +176,22 @@ var Text = React.createClass({
             <Form inline style={{marginTop:"-20px",height:"47px",display:"inline-block",position:"relative"}}>
                 <AutoComplete
                     hintText=""
-                    dataSource={this.state.dataSource}
+                    dataSource={this.props.dataSource?this.props.dataSource:[]}
                     onUpdateInput={this.handleUpdateInput}
                     floatingLabelText={this.props.placeholder}
                     fullWidth={false}
-                    style={{fontSize:"14px",color:"blue",width:"160px"}}
+                    onKeyDown={this.onNewRequest}
+                    openOnFocus={this.props.openOnFocus}
+                    style={{fontSize: "14px", color: "blue", width: "160px"}}
+                    animated={true}
+                    autoComplete={"off"}
+                    searchText={this.state.searchText}
+                    />
+                <AutoComplete
+                    hintText="Type anything"
+                    dataSource={[]}
+                    onUpdateInput={this.handleUpdateInput}
+                    style={{"display":"none"}}
                     />
             </Form>
 
@@ -240,9 +268,9 @@ var Button = React.createClass({
         var curTool = "";
         if (type == 3) {
             if (type == 3) {
-/*                setTimeout(function () {
-                    MenuAction.changeViews("");
-                }, 1);*/
+                /*                setTimeout(function () {
+                 MenuAction.changeViews("");
+                 }, 1);*/
                 MenuAction.changeBreadcrumb(4, AppStore.getOperator());
             }
         } else if (type == 4) {
@@ -269,7 +297,7 @@ var Button = React.createClass({
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createUser");
             }
-        }else if(type==5){
+        } else if (type == 5) {
             $("#monitorItemsPanel").slideToggle();
         }
     },

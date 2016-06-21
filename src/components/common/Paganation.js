@@ -14,6 +14,7 @@ var Pagination=React.createClass({
         this.setState({
             activePage: eventKey
         });
+        this.props._changePage(eventKey-1);
     },
     render: function () {
         return(
@@ -24,7 +25,7 @@ var Pagination=React.createClass({
                 last
                 ellipsis
                 boundaryLinks
-                items={20}
+                items={this.props.pages}
                 maxButtons={5}
                 activePage={this.state.activePage}
                 onSelect={this.handleSelect}

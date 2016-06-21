@@ -133,6 +133,54 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
         }
         return result;
 
+    },
+    type2Style: function (type, value) {
+        var rs = value;
+        switch (type) {
+            case "timestamp":
+                if (parseInt(value / 24 / 3600) > 0) {
+                    rs = parseInt(value / 24 / 3600) + "天" + parseInt((value % (3600 * 24)) / 3600) + "时" + parseInt(((value % (3600 * 24)) % 3600) / 60) + "分" + ((value % (3600 * 24)) % 3600) % 60 + "秒";
+                } else {
+                    if (parseInt(value / 3600) > 0) {
+                        rs = value / 3600 + "时" + (value % 3600) / 60 + "分" + (value % 3600) % 60 + "秒";
+                    } else {
+                        if (parseInt(value / 60) > 0) {
+                            rs = value / 60 + "分" + value % 60 + "秒";
+                        } else {
+                            rs = value + "秒";
+                        }
+                    }
+                }
+                break;
+            case "percent":
+                break;
+            case "memory":
+                if (parseInt(value / 1024 / 1024 / 1024) > 0) {
+                    rs = (value / 1024 / 1024 / 1024).toFixed(2) + "G";
+                }else if(parseInt(value / 1024 / 1024) > 0){
+                    rs = (value / 1024 / 1024).toFixed(2) + "M";
+                }else if(parseInt(value / 1024) > 0){
+                    rs = (value / 1024).toFixed(2) + "K";
+                }else{
+                    rs = (value / 1024).toFixed(2) + "B";
+                }
+                break;
+            case "hz":
+                if (parseInt(value / 1000 / 1000 / 1000) > 0) {
+                    rs = (value / 1000 / 1000 / 1000).toFixed(1) + "GHz";
+                }else if(parseInt(value / 1000 / 1000) > 0){
+                    rs = (value / 1000 / 1000).toFixed(1) + "MHz";
+                }else if(parseInt(value / 1000) > 0){
+                    rs = (value / 1000).toFixed(1) + "KHz";
+                }else{
+                    rs = (value) + "Hz";
+                }
+                break;
+            default :
+                rs = value;
+                break;
+        }
+        return rs;
     }
 
 });
