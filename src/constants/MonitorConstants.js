@@ -10,7 +10,8 @@ var MonitorConstants = keyMirror({
     GetVCenterList:null,
     GetHypervisorList:null,
     GetVmList:null,
-    CreateVCenter:null
+    CreateVCenter:null,
+    CreateMySql:null
 });
 
 module.exports = MonitorConstants;

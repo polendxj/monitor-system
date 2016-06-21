@@ -48,6 +48,19 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             }
         });
     },
+    createMySql: function (obj) {
+        ResourceUtils.MYSQL_CREATE.POST(obj,"", function () {
+
+        },function(resp){
+            console.log(resp);
+            if(resp.status==200){
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/dbList");
+            }else if(resp.status>=300){
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
     getVCenterListData: function () {
         return vcenterList;
     },

@@ -23,6 +23,12 @@ var VirtualMonitorAction = {
             actionType: MonitorConstants.CreateVCenter,
             jsonObject:obj
         })
+    },
+    createMySql: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateMySql,
+            jsonObject:obj
+        })
     }
 };
 
