@@ -36,7 +36,6 @@ var Content = React.createClass({
         return ({
             helpState: false,
             succTip: false,
-            succTipText: "",
             viewName: MenuStore.getEditGraphData().name,
             editGraphData:MenuStore.getEditGraphData()
         })
@@ -50,13 +49,10 @@ var Content = React.createClass({
         var viewData={name:this.state.viewName,type:this.state.editGraphData.type};
         if(this.state.viewName!=""){
             VirtualMonitorAction.updateGraphTemplate(id,viewData);
-            this.setState({succTipText: "自定义视图修改成功！"});
-            this.setState({succTip: true});
         }
     },
     _deleteView: function () {
         VirtualMonitorAction.deleteGraphTemplate(this.state.editGraphData.id);
-        this.setState({succTipText: "自定义视图删除成功！"});
         this.setState({succTip: true});
     },
     _blur: function (e) {
@@ -126,7 +122,7 @@ var Content = React.createClass({
                             </FormGroup>
                         </Form>
                     </div>
-                    <div style={succTipStyle}>{this.state.succTipText}</div>
+                    <div style={succTipStyle}>自定义视图删除成功!</div>
                 </div>
             </div>
         )

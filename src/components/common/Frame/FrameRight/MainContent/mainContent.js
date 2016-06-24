@@ -327,23 +327,29 @@ var Content = React.createClass({
         return ({
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
             viewData: MenuStore.getViewData(),
-            flag: false
+            flag: false,
+            graphItemList:[]
         })
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
 
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         MenuStore.removeChangeListener(MenuStore.events.change_views, this._changeViews);
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _changeViews(){
         this.setState({viewData: MenuStore.getViewData()});
+    },
+    _changeListData: function () {
+        this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
     },
     _jumpToCreateView: function () {
         MenuAction.changeBreadcrumb(5, viewBtn[0]);
@@ -384,7 +390,7 @@ var Content = React.createClass({
             }
 
         } else if (this.state.breadcrumbDataList.length >= 4) {
-            if (this.state.breadcrumbDataList[3].breadcrumbID == 3 && !this.state.viewData) {
+            if (this.state.breadcrumbDataList[3].breadcrumbID == 3 && !this.state.viewData.id) {
                 div = <div>
                     <div className="col-sm-12 col-md-12 col-lg-12"
                          style={{height:"200px",textAlign:"center",backgroundColor:"white"}}>
@@ -392,13 +398,12 @@ var Content = React.createClass({
                         </div>
                         您目前没有自定义视图，立即
                         <a href="#" onClick={this._jumpToCreateView}>&nbsp;创建自定义视图</a>
-                    </div>
-                    ;
+                    </div>;
                     <div style={{clear:"both"}}></div>
                 </div>
-            } else if (this.state.viewData != "") {
+            } else if (this.state.viewData.id != "") {
                 div = <div>
-                    <AllCharts name={this.state.viewData}/>
+                    <AllCharts viewData={this.state.viewData} listData={this.state.graphItemList}/>
                     <div style={{clear:"both"}}></div>
                 </div>;
             }

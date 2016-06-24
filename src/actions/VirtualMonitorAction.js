@@ -35,6 +35,19 @@ var VirtualMonitorAction = {
             type:type
         })
     },
+    getGraphItemList: function (idString) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetGraphItemList,
+            idString:idString
+        })
+    },
+    getHistoryDataList: function (id,obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetHistoryDataList,
+            id:id,
+            obj:obj
+        })
+    },
     createVCenter: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateVCenter,
@@ -50,6 +63,12 @@ var VirtualMonitorAction = {
     createGraphTemplate: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateGraphTemplate,
+            jsonObject:obj
+        })
+    },
+    createGraphItem: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateGraphItem,
             jsonObject:obj
         })
     },
@@ -72,7 +91,13 @@ var VirtualMonitorAction = {
             id:id
         })
     },
-
+    deleteGraphItem: function (id,templateId) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.DeleteGraphItem,
+            id:id,
+            templateId:templateId
+        })
+    },
     updateGraphTemplate: function (id,obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.UpdateGraphTemplate,

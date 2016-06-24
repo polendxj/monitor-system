@@ -17,13 +17,16 @@ var AppStore = require('../stores/AppStore');
 var vcenterList = [];
 var hypervisorList = [];
 var vmList = [];
+var graphItemList = [];
 var vcenterTips = [];
 
 var vcenterFilter = "";
 var hypervisorFilter = "";
 var vmsFilter = "";
 var graphTemplateList = [];
-var editVcenter={};
+var historyDataList = [];
+var editVcenter = {};
+createFlag = false;
 var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVCenterList: function () {
         ResourceUtils.VCENTER_LIST.GET("", function (json) {
@@ -82,6 +85,30 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphTemplateList);
         });
     },
+    getGraphItemList: function (idString) {
+        ResourceUtils.GRAPHITEM_LIST.GET2(idString,"", function (json) {
+            graphItemList = json;
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphItemList);
+        });
+    },
+    getHistoryDataList: function (id,objArr) {
+        historyDataList=new Array();
+        for(var i=0;i<objArr.length;i++){
+            (function (arg) {
+                ResourceUtils.HISTORYDATA_LIST.POST2(id, objArr[arg], "", function (json) {
+                    historyDataList[arg]=json;
+                    VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
+                }, function (resp) {
+                    console.log(resp);
+                    if (resp.status == 200) {
+
+                    } else if (resp.status >= 300) {
+                        alert(resp.responseJSON.message);
+                    }
+                });
+            })(i)
+        }
+    },
     createVCenter: function (obj) {
         ResourceUtils.VCENTER_CREATE.POST(obj, "", function () {
 
@@ -96,26 +123,40 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     createMySql: function (obj) {
-        ResourceUtils.MYSQL_CREATE.POST(obj,"", function () {
+        ResourceUtils.MYSQL_CREATE.POST(obj, "", function () {
 
-        },function(resp){
+        }, function (resp) {
             console.log(resp);
-            if(resp.status==200){
-                MenuAction.changeBreadcrumb(4, "");
-                browserHistory.push("/dbList");
-            }else if(resp.status>=300){
+            if (resp.status == 200) {
+
+            } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         });
     },
     createGraphTemplate: function (obj) {
-        ResourceUtils.GRAPHTEMPLATE_CREATE.POST(obj,"", function () {
+        ResourceUtils.GRAPHTEMPLATE_CREATE.POST(obj, "", function () {
 
-        },function(resp){
+        }, function (resp) {
             console.log(resp);
-            if(resp.status==200){
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
-            }else if(resp.status>=300){
+            if (resp.status == 200) {
+                createFlag = true;
+                /*MenuAction.changeBreadcrumb(4, AppStore.getOperator());*/
+                VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphTemplateList);
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
+    createGraphItem: function (obj) {
+        ResourceUtils.GRAPHITEM_CREATE.POST(obj, "", function () {
+
+        }, function (resp) {
+            console.log(resp);
+            if (resp.status == 200) {
+                createFlag = true;
+                VirtualMonitorStore.getGraphItemList(obj.templateId+ "/graphs");
+            } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         });
@@ -124,46 +165,56 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ResourceUtils.VCENTER_DELETE.DELETE(id, function (resp) {
             console.log("aa");
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
-        },"",function (resp) {
-                if(resp.status==200){
-                    VirtualMonitorStore.getVCenterList();
-                    VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
-                }else if(resp.status>=300){
-                    alert(resp.responseJSON.message);
-                }
+        }, "", function (resp) {
+            if (resp.status == 200) {
+                VirtualMonitorStore.getVCenterList();
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
         })
     },
     deleteGraphTemplate: function (id) {
         ResourceUtils.GRAPHTEMPLATE_DELETE.DELETE(id, function (resp) {
             console.log("aa");
-        },"",function (resp) {
-            if(resp.status==200){
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
-            }else if(resp.status>=300){
+        }, "", function (resp) {
+            if (resp.status == 200) {
+
+            } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         })
     },
-    updateVCenter: function (id,obj) {
+    deleteGraphItem: function (id,templateId) {
+        ResourceUtils.GRAPHITEM_DELETE.DELETE(id, function (resp) {
+            console.log("aa");
+        }, "", function (resp) {
+            if (resp.status == 200) {
+                VirtualMonitorStore.getGraphItemList(templateId+ "/graphs");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    updateVCenter: function (id, obj) {
         ResourceUtils.VCENTER_UPDATE.PUT(id, obj, function (resp) {
             console.log("aa");
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
-        },function (resp) {
-            if(resp.status==200){
+        }, function (resp) {
+            if (resp.status == 200) {
                 VirtualMonitorStore.getVCenterList();
                 VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
-            }else if(resp.status>=300){
+            } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         })
     },
-    updateGraphTemplate: function (id,obj) {
-        ResourceUtils.GRAPHTEMPLATE_UPDATE.PUT2(id, obj,"", function (resp) {
+    updateGraphTemplate: function (id, obj) {
+        ResourceUtils.GRAPHTEMPLATE_UPDATE.PUT2(id, obj, "", function (resp) {
             console.log("aa");
-        },function (resp) {
-            if(resp.status==200){
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
-            }else if(resp.status>=300){
+        }, function (resp) {
+            if (resp.status == 200) {
+
+            } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         })
@@ -172,8 +223,8 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         return editVcenter;
     },
     setEditVcenterData: function (obj) {
-        editVcenter['id']=obj.hostid;
-        editVcenter['name']=obj.name;
+        editVcenter['id'] = obj.hostid;
+        editVcenter['name'] = obj.name;
     },
     getVCenterListData: function () {
         return vcenterList;
@@ -184,8 +235,14 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVmData: function () {
         return vmList;
     },
+    getHistoryData: function () {
+        return historyDataList;
+    },
     getGraphTemplateListData: function () {
         return graphTemplateList;
+    },
+    getGraphItemListData: function () {
+        return graphItemList;
     },
     emitChange: function (eventType) {
         this.emit(eventType);
@@ -201,7 +258,9 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeHypervisiorList: "ChangeHypervisiorList",
         ChangeVmList: "ChangeVmList",
         ChangeVCenterTip: "ChangeVCenterTip",
-        ChangeGraphTemplateList:"ChangeGraphTemplateList"
+        ChangeGraphTemplateList: "ChangeGraphTemplateList",
+        ChangeGraphItemList: "ChangeGraphItemList",
+        ChangeHistoryDataList: "ChangeHistoryDataList"
     }
 });
 
@@ -219,11 +278,20 @@ AntiFraudDispatcher.register(function (action) {
         case MonitorConstants.GetVmList:
             VirtualMonitorStore.getVmList(action.page, action.interfaceIp, action.ip);
             break;
+        case MonitorConstants.GetGraphItemList:
+            VirtualMonitorStore.getGraphItemList(action.idString);
+            break;
+        case MonitorConstants.GetHistoryDataList:
+            VirtualMonitorStore.getHistoryDataList(action.id, action.obj);
+            break;
         case MonitorConstants.CreateVCenter:
             VirtualMonitorStore.createVCenter(action.jsonObject);
             break;
         case MonitorConstants.CreateGraphTemplate:
             VirtualMonitorStore.createGraphTemplate(action.jsonObject);
+            break;
+        case MonitorConstants.CreateGraphItem:
+            VirtualMonitorStore.createGraphItem(action.jsonObject);
             break;
         case MonitorConstants.DeleteVCenter:
             VirtualMonitorStore.deleteVCenter(action.id);
@@ -231,11 +299,14 @@ AntiFraudDispatcher.register(function (action) {
         case MonitorConstants.DeleteGraphTemplate:
             VirtualMonitorStore.deleteGraphTemplate(action.id);
             break;
+        case MonitorConstants.DeleteGraphItem:
+            VirtualMonitorStore.deleteGraphItem(action.id, action.templateId);
+            break;
         case MonitorConstants.UpdateVCenter:
-            VirtualMonitorStore.updateVCenter(action.id,action.jsonObject);
+            VirtualMonitorStore.updateVCenter(action.id, action.jsonObject);
             break;
         case MonitorConstants.UpdateGraphTemplate:
-            VirtualMonitorStore.updateGraphTemplate(action.id,action.jsonObject);
+            VirtualMonitorStore.updateGraphTemplate(action.id, action.jsonObject);
             break;
         case MonitorConstants.GetVCenterTip:
             VirtualMonitorStore.getVCenterTip();

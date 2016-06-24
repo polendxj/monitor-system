@@ -11,7 +11,12 @@ var TableRow = require('material-ui/lib/table/table-row');
 var TableHeaderColumn = require('material-ui/lib/table/table-header-column');
 var TableBody = require('material-ui/lib/table/table-body');
 var TableRowColumn = require('material-ui/lib/table/table-row-column');
+var MenuStore = require("../../../stores/MenuStore");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var GlobalUtils = require("../../../utils/GlobalUtils");
+
+require("../../../utils/monitor_item");
 
 var percent = 30;
 var pieChartsData = [
@@ -20,7 +25,7 @@ var pieChartsData = [
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false,
-            height:330
+            height: 330
         },
         credits: {
             enabled: false
@@ -69,7 +74,7 @@ var lineChartsData = [
             type: 'spline',
             animation: Highcharts.svg, // don't animate in old IE
             marginRight: 10,
-            height:330,
+            height: 330,
             events: {
                 load: function () {
                     // set up the updating of the chart each second
@@ -144,7 +149,7 @@ var lineChartsData = [
     {
         chart: {
             animation: Highcharts.svg, // don't animate in old IE
-            height:330,
+            height: 330,
             events: {
                 load: function () {
                     // set up the updating of the chart each second
@@ -205,7 +210,7 @@ var lineChartsData = [
                 var data = [],
                     time = (new Date()).getTime(),
                     i;
-                for (i = -19; i <= 0; i++) {
+                for (i = 0; i <= 19; i++) {
                     data.push({
                         x: time + i * 1000,
                         y: Math.random()
@@ -215,124 +220,212 @@ var lineChartsData = [
             })()
         }]
     },
-    {
-        chart:{
-            height:330
-        },
+
+];
+/*var chartViewData = [
+ {
+ name: '',
+ last: '最近',
+ min: '最小值',
+ avg: '平均值',
+ max: '最大值'
+ }
+ ];*/
+var lineChartData = {
+    chart: {
+        height: 330,
+        events: {}
+    },
+    title: {
+        text: '',
+        x: -20 //center
+    },
+    plotOptions: {
+        series: {
+            marker: {
+                enabled: true
+            }
+        }
+    },
+    xAxis: {
+        type: 'datetime',
+        tickInterval: 1000 * 30,
+        dateTimeLabelFormats: {
+            day: '%Y-%m-%d',
+            week: '%Y-%m-%d',
+            month: '%Y-%m-%d',
+            year: '%Y-%m-%d',
+            hour: '%H:%M',
+            minute: '%H:%M',
+            second: '%H:%M:%S'
+        }
+    },
+    yAxis: {
         title: {
-            text: '服务器使用率',
-            x: -20 //center
+            text: ""
         },
-        xAxis: {
-            categories: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00',
-                '12:00', '14:00', '16:00', '18:00', '20:00', '22:00']
-        },
-        yAxis: {
-            title: {
-                text: "使用率（%）"
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
-        },
-        series: [{
-            name: 'CPU Usage',
-            data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-        }, {
-            name: 'Disk Usage',
-            data: [22, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-        }, {
-            name: 'Memory Usage',
-            data: [0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
         }]
-    }
-];
-var tableData = [
-    {
-        name: 'cpu使用率( 平均)',
-        status: 'Employed',
-        selected: true,
     },
-    {
-        name: '磁盘使用空间',
-        status: 'Unemployed',
+    tooltip: {
+        formatter: function () {
+            return '<b>'
+                + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',
+                    this.x) + '</b><br/>'
+                + this.series.name + ': ' + this.y
+        }
     },
-    {
-        name: 'I/O吞吐率',
-        status: 'Employed',
-        selected: true,
-    },
-    {
-        name: '负载情况',
-        status: 'Employed',
-    },
-    {
-        name: '并发线程数',
-        status: 'Employed',
-    },
-    {
-        name: '流量监控',
-        status: 'Employed',
-    }
-];
-var chartViewData = [
-    {
-        name: '',
-        last: '最近',
-        min: '最小值',
-        avg: '平均值',
-        max: '最大值'
-    },
-    {
-        name: 'CPU Usage',
-        last: '12.2',
-        min: '4.7',
-        avg: '11.6',
-        max: '33.6'
-    },
-    {
-        name: 'Disk Usage',
-        last: '14.2',
-        min: '6.2',
-        avg: '14.6',
-        max: '35.2'
-    },
-    {
-        name: 'Memory Usage',
-        last: '11.2',
-        min: '5.4',
-        avg: '9.6',
-        max: '28.6'
-    }
-];
+    series: []
+};
 var AllCharts = React.createClass({
+    getInitialState: function () {
+        return ({
+            graphItemList: [],
+            historyDataList: []
+        })
+    },
+    componentDidMount: function () {
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
+        VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
+    },
+    componentWillUnmount: function () {
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
+    },
+    componentDidUpdate: function () {
+
+    },
+    _changeListData: function () {
+        this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
+        setTimeout(function () {
+            var bodyArr = [];
+            var id = 10163;
+            var startTime = 1466431457;
+            var endTime = 1466641498;
+            this.state.graphItemList.forEach(function (graphItem) {
+                var obj = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
+                bodyArr.push(obj);
+            });
+            VirtualMonitorAction.getHistoryDataList(id, bodyArr);
+        }.bind(this), 1000);
+    },
+    _changeHistoryListData: function () {
+        this.setState({historyDataList: VirtualMonitorStore.getHistoryData()});
+    },
+    _clickAddItems: function () {
+        $("#monitorItemsPanel").slideToggle();
+    },
+    _checkBoxClick: function (index) {
+        console.log($("#checkBox" + index).is(':checked'));
+        if ($("#checkBox" + index).is(':checked')) {
+            var bodyArr = [];
+            var id = 10163;
+            var startTime = 1466431457;
+            var endTime = 1466641498;
+            this.state.graphItemList.forEach(function (graphItem, idx) {
+                var obj;
+                if (index == idx) {
+                    var date = new Date();
+                    var endTime1 = parseInt(date.getTime() / 1000);
+                    var startTime1 = endTime1 - 3600;
+                    console.log(startTime1);
+                    obj = {keys: JSON.parse(graphItem.items), startTime: startTime1, endTime: endTime1, type: 3};
+                    bodyArr.push(obj);
+                } else {
+                    obj = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
+                    bodyArr.push(obj);
+                }
+            });
+            VirtualMonitorAction.getHistoryDataList(id, bodyArr);
+        }
+    },
+    _addItems: function (obj) {
+        var graph = {
+            templateId: this.props.viewData.id,
+            name: obj.name,
+            items: JSON.stringify(obj.items),
+            graphType: obj.graphType,
+            dataType: 3
+        };
+        VirtualMonitorAction.createGraphItem(graph);
+    },
     render: function () {
-        var showChart="";
-        var charts=[
-            {
-                name:"vcModel",
-                chart:[]
-            },
-            {
-                name:"vcModel2",
-                chart:[]
-            }
-        ];
-        charts[0].chart.push(<LineCharts key={5} data={lineChartsData[2]} title={"vm:127.0.0.1"} dataTitle={lineChartsData[2].yAxis.title} viewData={chartViewData}/>);
-        charts[1].chart.push(<LineCharts key={1} data={lineChartsData[0]} title={"localhost:127.0.0.1"} dataTitle={lineChartsData[0].yAxis.title} viewData={chartViewData}/>);
-        charts[1].chart.push(<PieCharts key={2} data={pieChartsData[0]} title={"hypervisor:184.2.10.16"} />);
-        charts[1].chart.push(<PieCharts key={3} data={pieChartsData[0]} title={"hypervisor:184.2.10.11"} />);
-        charts[1].chart.push(<LineCharts key={4} data={lineChartsData[1]} title={"mysql:127.0.0.1"} dataTitle={lineChartsData[1].yAxis.title} viewData={chartViewData}/>);
-        charts.forEach(function (chart) {
-            if(chart.name==this.props.name){
-                showChart=chart.chart;
-            }
-        }.bind(this));
+        var that = this;
+        var showChart = "";
+        var lineChartsGraph = [];
+        var lineChartList = new Array();
+        var pieCharts = [];
+        console.log(this.state.historyDataList);
+        if (this.state.graphItemList.length > 0) {
+            this.state.graphItemList.forEach(function (graphItem, index) {
+                switch (graphItem.graphType) {
+                    case 0://pie
+                        pieCharts.push(<PieCharts key={index} data={pieChartsData[0]}
+                                                  title={"hypervisor:184.2.10.16"}/>);
+                        break;
+                    case 1://line
+                        //var convertDataType=monitorItems[that.props.viewData.type][graphItem.name].convertDataType;
+                        //console.log(convertDataType);
+                        var chartViewData = new Array();
+                        chartViewData[0] = {name: '', min: '最小值', avg: '平均值', max: '最大值'};
+                        if (that.state.historyDataList.length > 0 && that.state.historyDataList.length == that.state.graphItemList.length) {
+                            if(typeof (that.state.historyDataList[index])!="undefined"){
+                                for (var i = 0; i < that.state.historyDataList[index].length; i++) {
+                                    var dataList = that.state.historyDataList[index][i]['data'];
+                                    lineChartData.series = new Array();
+                                    var dataArr = new Array();
+                                    if (typeof (dataList[0].clock) == "number" && typeof (dataList[dataList.length - 1].clock) == "number") {
+                                        var timeDifference = Math.round((dataList[dataList.length - 1].clock - dataList[0].clock));
+                                        lineChartData.xAxis.tickInterval = GlobalUtils.getTickInterval(timeDifference);
+                                    }
+                                    for (var j = 0; j < dataList.length; j++) {
+                                        dataList[j].clock = GlobalUtils.toDateUTC(dataList[j].clock);
+                                        dataList[j].value = GlobalUtils.convertGraphData("memory", dataList[j].value);
+                                        var data = [dataList[j].clock, dataList[j].value];
+                                        dataArr[j] = data;
+                                    }
+                                    lineChartData.series[i] = $.extend({},{name: graphItem.name, data: dataArr});
+                                    chartViewData[i + 1] = {
+                                        name: graphItem.name,
+                                        min: GlobalUtils.convertGraphData("memory", that.state.historyDataList[index][i]['metricData'].min),
+                                        avg: GlobalUtils.convertGraphData("memory", that.state.historyDataList[index][i]['metricData'].avg),
+                                        max: GlobalUtils.convertGraphData("memory", that.state.historyDataList[index][i]['metricData'].max)
+                                    };
+                                }
+                            }
+                            lineChartData.title.text = graphItem.name;
+                            lineChartList[index] = $.extend({},lineChartData);
+                            lineChartsGraph.push(<LineCharts index={index} _checkBoxClick={that._checkBoxClick}
+                                                             key={index}
+                                                             data={lineChartList[index]} title={"vm:127.0.0.1"}
+                                                             dataTitle={graphItem.name} viewData={chartViewData}
+                                                             items={graphItem.items}/>);
+                        }
+                        break;
+                }
+            });
+            console.log(lineChartList);
+        }
+        if (this.state.graphItemList.length == 0) {
+            showChart = <div className="col-sm-12 col-md-12 col-lg-12"
+                             style={{height:"200px",textAlign:"center",backgroundColor:"white"}}>
+                <div style={{height:"47px"}}>
+                </div>
+                您没有添加监控项，请在右上角点击
+                <a href="#" onClick={this._clickAddItems}>&nbsp;增减视图</a>&nbsp;按钮添加监控项
+            </div>
+        } else {
+            showChart = <div>
+                {lineChartsGraph}
+                {pieCharts}
+            </div>;
+        }
         return (
             <div style={{marginTop:"10px"}}>
-                <MonitorItemsEdit />
+                <MonitorItemsEdit addItem={this._addItems} graphItemList={this.state.graphItemList}/>
                 {showChart}
             </div>
         )
@@ -354,7 +447,42 @@ var MonitorItemsEdit = React.createClass({
             height: ''
         })
     },
+    _addItems: function (row) {
+        this.props.addItem(row);
+    },
+    _deleteItems: function (row) {
+        var id = "";
+        var templateId = "";
+        this.props.graphItemList.forEach(function (graphItem) {
+            if (row.name == graphItem.name) {
+                id = graphItem.id;
+                templateId = graphItem.templateId;
+                return;
+            }
+        });
+        VirtualMonitorAction.deleteGraphItem(id, templateId);
+    },
+    _isExist: function (row) {
+        this.props.graphItemList.forEach(function (graphItem) {
+            if (row.name == graphItem.name) {
+                return true;
+            }
+        });
+        return false;
+    },
     render: function () {
+        var that = this;
+        var graphType = MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase();
+        var tableData = [];
+        var i = 0;
+        for (var key in monitorItems[graphType]) {
+            tableData[i] = {
+                name: key,
+                graphType: monitorItems[graphType][key].graphType,
+                items: monitorItems[graphType][key].items
+            };
+            i++;
+        }
         return (
             <div id="monitorItemsPanel" style={{display:"none"}}>
                 <Table
@@ -383,10 +511,16 @@ var MonitorItemsEdit = React.createClass({
                         >
                         {tableData.map((row, index) => (
                             <TableRow key={index} selected={row.selected}>
-                                <TableRowColumn style={{width:"5%"}}>{index+1}</TableRowColumn>
+                                <TableRowColumn style={{width:"5%"}}>{index + 1}</TableRowColumn>
                                 <TableRowColumn style={{width:"80%"}}>{row.name}</TableRowColumn>
                                 <TableRowColumn style={{width:"15%",textAlign:"center"}}>
-                                    <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button>
+                                    {that._isExist(row) ?
+                                        <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                                onClick={that._deleteItems.bind(that,row)}>禁用
+                                        </button> :
+                                        <button type="button" className="btn btn-xs btn-info btn-rad btn-trans"
+                                                onClick={that._addItems.bind(that,row)}>添加
+                                        </button>}
                                 </TableRowColumn>
                             </TableRow>
                         ))}

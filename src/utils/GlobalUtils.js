@@ -132,7 +132,83 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
             delete dest[key];
         }
         return result;
-
+    },
+    convertGraphData: function (type, value) {
+        var rs = value;
+        switch (type) {
+            case "timestamp":
+                if (typeof (value) == "number") {
+                    var date = new Date(rs);
+                    var Y = date.getFullYear() + '-';
+                    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                    var D = date.getDate() + ' ';
+                    var h = date.getHours() + ':';
+                    var m = date.getMinutes() + ':';
+                    var s = date.getSeconds();
+                    rs = Y + M + D + h + m + s;
+                }
+                break;
+            case "memory":
+                if(rs>1024*1024){
+                    rs = (value / 1024 / 1024 / 1024).toFixed(2)*1;
+                }
+                break;
+        }
+        return rs;
+    },
+    getTickInterval: function (value) {
+        var rs=1000*30;
+        var t=value/12;
+        if(t<1){
+            rs=1000;
+        }else if(t<20&&t>2){
+            rs=1000*5;
+        }else if(t<30&&t>20){
+            rs=1000*30;
+        }else if(t<60&&t>30){
+            rs=1000*60;
+        }else if(t>60&&t<120){
+            rs=1000*60*2;
+        }else if(t>120&&t<600){
+            rs=1000*60*5;
+        }else if(t>600&&t<1200){
+            rs=1000*60*10;
+        }else if(t>1200&&t<2400){
+            rs=1000*60*30;
+        }else if(t>2400&&t<3600){
+            rs=1000*3600;
+        }else if(t>3600&&t<7200){
+            rs=1000*3600*2;
+        }else if(t>7200&&t<3600*5){
+            rs=1000*3600*5;
+        }else if(t>3600*5&&t<3600*12){
+            rs=1000*3600*12;
+        }else if(t>3600*12&&t<3600*24){
+            rs=1000*3600*24;
+        }
+        return rs;
+    },
+    toDateUTC: function (value) {
+        var rs=value;
+        if (typeof (value) == "number"){
+            if(value.toString().length==10){
+                value=value*1000;
+            }
+            var date=new Date(value);
+            var year=date.getFullYear();
+            var month=date.getMonth();
+            var day=date.getDate();
+            var hours=date.getHours();
+            var minutes=date.getMinutes();
+            var seconds=date.getSeconds();
+            rs=Date.UTC(year,month,day,hours,minutes,seconds);
+        }
+        return rs;
+    },
+    convertMemory: function (value) {
+        var rs = value;
+        rs = (value / 1024 / 1024 / 1024).toFixed(2);
+        return rs;
     },
     type2Style: function (type, value) {
         var rs = value;
@@ -157,22 +233,22 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
             case "memory":
                 if (parseInt(value / 1024 / 1024 / 1024) > 0) {
                     rs = (value / 1024 / 1024 / 1024).toFixed(2) + "G";
-                }else if(parseInt(value / 1024 / 1024) > 0){
+                } else if (parseInt(value / 1024 / 1024) > 0) {
                     rs = (value / 1024 / 1024).toFixed(2) + "M";
-                }else if(parseInt(value / 1024) > 0){
+                } else if (parseInt(value / 1024) > 0) {
                     rs = (value / 1024).toFixed(2) + "K";
-                }else{
+                } else {
                     rs = (value / 1024).toFixed(2) + "B";
                 }
                 break;
             case "hz":
                 if (parseInt(value / 1000 / 1000 / 1000) > 0) {
                     rs = (value / 1000 / 1000 / 1000).toFixed(1) + "GHz";
-                }else if(parseInt(value / 1000 / 1000) > 0){
+                } else if (parseInt(value / 1000 / 1000) > 0) {
                     rs = (value / 1000 / 1000).toFixed(1) + "MHz";
-                }else if(parseInt(value / 1000) > 0){
+                } else if (parseInt(value / 1000) > 0) {
                     rs = (value / 1000).toFixed(1) + "KHz";
-                }else{
+                } else {
                     rs = (value) + "Hz";
                 }
                 break;

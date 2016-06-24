@@ -14,6 +14,8 @@ var Pagination = require("../Paganation");
 var Loading = require("../CommonComponent").Loading;
 var GlobalUtils = require("../../../utils/GlobalUtils");
 var NoData = require("../CommonComponent").NoData;
+var MenuStore = require('../../../stores/MenuStore');
+var MenuAction = require('../../../actions/MenuAction');
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -47,7 +49,9 @@ var VCenterList = React.createClass({
     },
     _delete: function (index) {
         var id=this.state.listData[index].hostid;
-        VirtualMonitorAction.deleteVCenter(id);
+        if(confirm("确定要删除该数据吗?")){
+            VirtualMonitorAction.deleteVCenter(id);
+        }
     },
     _edit: function (index) {
         MenuAction.changeBreadcrumb(4, {id:30001,name:"编辑"});
@@ -106,7 +110,7 @@ var VCenterList = React.createClass({
                         tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                      style={{textAlign:"center"}}>
                             <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that._edit.bind(that,key1)}>编辑</button>
-                            <button type="button" className="btn btn-xs btn-info btn-rad btn-danger" onClick={that._delete.bind(that,key1)}>删除</button>
+                            <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans" onClick={that._delete.bind(that,key1)}>删除</button>
                         </td>);
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
                     });

@@ -24,7 +24,8 @@ var MenuAction = require('../../../actions/MenuAction');
 var MenuStore = require('../../../stores/MenuStore');
 
 var CreateVCenterModal = require("../VCenter/createVCenterModal");
-
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 require('jquery');
 
@@ -267,7 +268,9 @@ var Button = React.createClass({
         AppAction.saveOperator(type, text);
         var curTool = "";
         if (type == 3) {
+            var graphType={type:MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
             MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+            VirtualMonitorStore.getGraphTemplateList(graphType);
         } else if (type == 4) {
             MenuAction.changeBreadcrumb(4, "");
         } else if (type == 1) {

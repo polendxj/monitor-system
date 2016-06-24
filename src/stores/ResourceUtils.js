@@ -37,8 +37,27 @@ for(var endpoint in APIEndpoints) {
                 });
                 return jQuery.ajax(ajaxOpt).then(callback).then(null, failed);
             },
+            GET2: function(idString,params, callback) {
+                var url = urlBuilder(APIEndpoints[endpoint], params);
+                if (idString) url += idString + "/";
+                var ajaxOpt = assign({}, this.ajaxOpt, {
+                    url: url,
+                    type: "GET"
+                });
+                return jQuery.ajax(ajaxOpt).then(callback).then(null, failed);
+            },
             POST: function(payload, params, callback, error) {
                 var url = urlBuilder(APIEndpoints[endpoint], params);
+                var ajaxOpt = assign({}, this.ajaxOpt, {
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify(payload)
+                });
+                return jQuery.ajax(ajaxOpt).then(callback).then(null, failed).then(null, error);
+            },
+            POST2: function(id, payload, params, callback, error) {
+                var url = urlBuilder(APIEndpoints[endpoint], params);
+                if (id) url += id + "/";
                 var ajaxOpt = assign({}, this.ajaxOpt, {
                     url: url,
                     type: "POST",

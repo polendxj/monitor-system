@@ -12,7 +12,7 @@ var LineCharts = React.createClass({
         console.log("trash");
     },
     _detailClick: function () {
-        console.log("detail");
+        console.log(this.props._checkBoxClick);
     },
     componentDidMount: function () {
         $(".highcharts-container").css("marginLeft", "-2px");
@@ -20,7 +20,7 @@ var LineCharts = React.createClass({
     render: function () {
         return (
             <div className="col-sm-12 col-md-12 col-lg-12" style={{border:"thin lightgray solid",padding:"3px",marginTop:"5px",marginLeft:"-1px"}}>
-                <ChartsTitle title={this.props.title} _trashClick={this._trashClick} _detailClick={this._detailClick} />
+                <ChartsTitle index={this.props.index} title={this.props.title} _trashClick={this._trashClick} _detailClick={this._detailClick} _checkBoxClick={this.props._checkBoxClick} checkBox={true}/>
                 <ReactHighcharts className="col-sm-6 col-md-7 col-lg-8" config={this.props.data}
                                  style={{paddingLeft:"0",paddingTop:"5px",borderRight:"thin lightgray solid"}}>
                 </ReactHighcharts>
