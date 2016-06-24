@@ -18,7 +18,8 @@ var MonitorConstants = keyMirror({
     UpdateVCenter:null,
     UpdateGraphTemplate:null,
     DeleteGraphTemplate:null,
-    GetGraphTemplateList:null
+    GetGraphTemplateList:null,
+    GetConfigData:null
 });
 
 module.exports = MonitorConstants;

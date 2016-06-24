@@ -14,22 +14,68 @@ var Breadcrumb = require("react-bootstrap").Breadcrumb;
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
 var ObjectList = require("../ObjectList/ObjectList");
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 
 var ConfigurationPage = React.createClass({
     getInitialState: function () {
         return ({
-            breadcrumbDataList: MenuStore.getBreadcrumbData()
+            breadcrumbDataList: MenuStore.getBreadcrumbData(),
+            configData:[]
         })
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeConfigData,this._changeConfigData);
+        var breads = MenuStore.getBreadcrumbData();
+        if (breads.length == 3) {
+            switch (breads[2].breadcrumbID) {
+                case 221:
+                    break;
+                case 222:
+                    break;
+                case 223:
+
+                    break;
+                case 224:
+                    break;
+            }
+        } else if (breads.length == 4) {
+            switch (breads[2].breadcrumbID) {
+                case 221:
+                    break;
+                case 222:
+                    VirtualMonitorAction.getConfigData("hypervisor");
+                    break;
+                case 223:
+                    VirtualMonitorAction.getConfigData("vms");
+                    break;
+                case 224:
+                    break;
+            }
+        } else if (breads.length == 5) {
+            switch (breads[2].breadcrumbID) {
+                case 221:
+                    break;
+                case 222:
+                    break;
+                case 223:
+                    break;
+                case 224:
+                    break;
+            }
+        }
+
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
+    },
+    _changeConfigData: function () {
+        this.setState({configData:VirtualMonitorStore.getConfigData()});
     },
     _redirect: function (idx) {
         if(idx==0||idx==1){
@@ -58,6 +104,8 @@ var ConfigurationPage = React.createClass({
                 )
             }
         }.bind(this));
+
+
         return (
             <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
                 <div style={{height:"47px"}}>
@@ -71,7 +119,7 @@ var ConfigurationPage = React.createClass({
                     </div>
                 </div>
                 <div style={{padding:"0 10px 0 10px"}}>
-                    <ObjectList.HypervisorConfig />
+                    <ObjectList.HypervisorConfig configData={this.state.configData}/>
                 </div>
             </div>
 

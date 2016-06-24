@@ -79,6 +79,12 @@ var VirtualMonitorAction = {
             id:id,
             jsonObject:obj
         })
+    },
+    getConfigData:function(type){
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetConfigData,
+            type:type
+        })
     }
 };
 

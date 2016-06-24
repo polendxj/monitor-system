@@ -12,7 +12,9 @@ var MofaAPIEndpoints = {
     VCENTER_DELETE:"/oms/vcenter/",
     GRAPHTEMPLATE_DELETE:"/oms/graphTemplate/",
     VCENTER_UPDATE:"/oms/vcenter/",
-    GRAPHTEMPLATE_UPDATE:"/oms/graphTemplate/"
+    TRIGGERS_LIST:"/oms/trigger/",
+    MONITOR_ITEMS_LIST:"/oms/template/"
+
 };
 
 var MomaAPIRoot = config.URL.AUTH;
