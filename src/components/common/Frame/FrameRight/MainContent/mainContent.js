@@ -199,6 +199,12 @@ var Form = React.createClass({
                                       openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
                                       getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                     </div>;
+                case 233:
+                    formGroup = <div>
+                        <ToolBar.Text key={"bar2"} placeholder={"Sqlserver 名称"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                    </div>;
                     break;
             }
         } else if (this.state.breadcrumbData.length == 4) {
@@ -252,6 +258,16 @@ var Form = React.createClass({
                             break;
                     }
                     break;
+                case 233:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Sqlserver 名称"}
+                                              tip={"请输入Sqlserver 名称"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
             }
         } else if (this.state.breadcrumbData.length == 5) {
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -300,6 +316,16 @@ var Form = React.createClass({
                             formGroup = <div>
                                 <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Mysql 名称"}
                                               tip={"请输入Mysql 名称"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 233:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Sqlserver 名称"}
+                                              tip={"请输入Sqlserver 名称"} appendText={""}/>
                             </div>;
                             break;
                     }
@@ -430,6 +456,13 @@ var Content = React.createClass({
                 case 232:
                     div = <div>
                         <ObjectList.MysqlList />
+
+                        <div style={{clear:"both"}}></div>
+                    </div>;
+                    break;
+                case 233:
+                    div = <div>
+                        <ObjectList.SqlserverList />
 
                         <div style={{clear:"both"}}></div>
                     </div>;

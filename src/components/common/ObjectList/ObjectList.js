@@ -431,7 +431,7 @@ var MysqlList = React.createClass({
         DatabasesAction.getMysqlList("mysql", 0);
     },
     componentWillUnmount: function () {
-        VirtualMonitorStore.removeChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
+        DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
     },
     componentDidUpdate: function () {
         $(".tab-content").css("padding", 0);
@@ -535,7 +535,134 @@ var MysqlList = React.createClass({
                 )
             } else {
                 return (
-                    <NoData text={"未查找到任何VMS信息"}/>
+                    <NoData text={"未查找到任何Mysql信息"}/>
+                )
+            }
+        }
+    }
+});
+
+var SqlserverList = React.createClass({
+    getInitialState: function () {
+        return {
+            key: 1,
+            isLoading: true,
+            listData: [],
+            pages: 0
+        };
+    },
+    handleSelect(key) {
+        this.setState({key});
+    },
+    componentDidMount: function () {
+        DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
+        DatabasesAction.getSqlserverList("sqlserver", 0);
+    },
+    componentWillUnmount: function () {
+        DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
+    },
+    componentDidUpdate: function () {
+        $(".tab-content").css("padding", 0);
+        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    },
+    _changeListData: function () {
+        this.setState({listData: DatabaseStore.getSqlserverListData(), pages: this.state.listData.totalPages});
+        this.setState({isLoading: false});
+    },
+    _changePage: function (page) {
+        DatabasesAction.getSqlserverList("sqlserver", page);
+    },
+    render: function () {
+        if (this.state.isLoading) {
+            return (
+                <Loading />
+            )
+        } else {
+            if (this.state.listData.content.length > 0) {
+                var analysisData = GlobalUtils.en2Cn_item(this.state.listData.content[0].items);
+                var tabs = [];
+                var that = this;
+                var tabIndex = 1;
+                for (tab in analysisData) {
+                    /*生成了title*/
+                    var thead = [];
+                    thead.push(<th key={tab+"thead"+"-1"} style={{textAlign:"left"}}>{"监控项目"}</th>);   //生成项目监控title
+                    analysisData[tab].forEach(function (val1, key1) {
+                        thead.push(<th key={tab+"thead"+key1} style={{textAlign:val1.position}}>{val1.name_cn}</th>);
+                    });
+                    if (tabIndex == 1) {
+                        thead.push(<th key={tab+"thead"+"-3"} style={{textAlign:"center"}}>{"状态"}</th>);   //生成状态title
+                        thead.push(<th key={tab+"thead"+"-2"} style={{textAlign:"center"}}>{"操作"}</th>);   //生成操作title
+                    }
+                    /*生成了tr*/
+                    //
+                    var tr = [];
+                    var tbody = "";
+                    that.state.listData.content.forEach(function (val1, key1) {
+                        var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
+                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                        var tempTds = [];
+                        val1.items.forEach(function (val2, key2) {
+                            analysisData[tab].forEach(function (val3, key3) {
+                                if (val2.key_ == val3.key) {
+                                    tempTds.push({
+                                        data: <td key={tab+"tr"+key1+"td"+key2}
+                                                  style={{textAlign:val3.position}}>{GlobalUtils.type2Style(val3.type, val2.lastvalue)}</td>,
+                                        priority: key3
+                                    });
+
+                                }
+                            });
+                        });
+                        tempTds.sort(GlobalUtils.arrSort("priority"));
+                        tempTds.forEach(function (o, k) {
+                            tds.push(o.data);
+                        });
+                        if (tabIndex == 1) {
+                            tds.push(<td key={tab+"tr"+key1+"td"+"-3"}
+                                         style={{textAlign:"center",color:val1.status==0?"red":"green"}}>
+                                {val1.status == 0 ? "已停用" : "运行中"}
+                            </td>);
+                            tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
+                                         style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                            </td>);
+                        }
+                        tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
+                    });
+                    tbody = <tbody key={tab+"tbody"}>{tr}</tbody>;
+                    tabs.push(
+                        <Tab key={"tab"+tabIndex} eventKey={tabIndex} title={tab} style={{padding:"0"}}>
+                            <Table responsive style={{margin:"0"}}>
+                                <thead>
+                                <tr>
+                                    {thead}
+                                </tr>
+                                </thead>
+                                {tbody}
+                            </Table>
+                        </Tab>);
+                    tabIndex++;
+                }
+
+                return (
+                    <div>
+                        <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                              style={{padding:"0"}}>
+                            {tabs}
+                        </Tabs>
+                        <Pagination pages={this.state.pages} _changePage={this._changePage}/>
+
+                    </div>
+
+                )
+            } else {
+                return (
+                    <NoData text={"未查找到任何Sqlserver信息"}/>
                 )
             }
         }
@@ -685,5 +812,6 @@ module.exports = {
     HypervisorList,
     VMSList,
     MysqlList,
+    SqlserverList,
     HypervisorConfig
 };

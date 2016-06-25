@@ -16,6 +16,7 @@ var MenuAction = require('../actions/MenuAction');
 var AppStore = require('../stores/AppStore');
 
 var mysqlList = [];
+var sqlserverList = [];
 var DatabasesStore = assign({}, EventEmitter.prototype, {
     getMysqlList: function (type, page) {
         ResourceUtils.DATABASE_LIST.GET({
@@ -30,6 +31,19 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
     getMysqListData: function () {
         return mysqlList;
     },
+    getSqlserverList: function (type, page) {
+        ResourceUtils.DATABASE_LIST.GET({
+            type: type,
+            page: page,
+            pageSize: 10
+        }, function (json) {
+            sqlserverList = json;
+            DatabasesStore.emitChange(DatabasesStore.events.ChangeSqlserverList);
+        });
+    },
+    getSqlserverListData: function () {
+        return sqlserverList;
+    },
     emitChange: function (eventType) {
         this.emit(eventType);
     },
@@ -40,7 +54,8 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
         this.removeListener(event, callback);
     },
     events: {
-        ChangeMysqlList: "ChangeMysqlList"
+        ChangeMysqlList: "ChangeMysqlList",
+        ChangeSqlserverList: "ChangeSqlserverList"
     }
 });
 
@@ -48,6 +63,9 @@ AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeMysqlList:
             DatabasesStore.getMysqlList(action.type,action.page);
+            break;
+        case MonitorConstants.ChangeSqlserverList:
+            DatabasesStore.getSqlserverList(action.type,action.page);
             break;
         default:
             break;

@@ -9,6 +9,13 @@ var DatabasesAction = {
             type: type,
             page: page
         })
+    },
+    getSqlserverList: function (type, page) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.ChangeSqlserverList,
+            type: type,
+            page: page
+        })
     }
 };
 
