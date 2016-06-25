@@ -59,6 +59,9 @@ var ConfigurationPage = React.createClass({
                 case 241:
                     VirtualMonitorAction.getConfigData("apache");
                     break;
+                case 243:
+                    VirtualMonitorAction.getConfigData("nginx");
+                    break;
                 case 224:
                     break;
             }

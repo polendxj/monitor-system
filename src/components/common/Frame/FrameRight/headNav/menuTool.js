@@ -189,6 +189,14 @@ var Operator = React.createClass({
                         <ToolBar.Button label={"创建"} icon={0} tip={"创建Apache"}/>
                     </div>;
                     break;
+                case 243:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                        <ToolBar.Button label={"配置"} icon={1} tip={"配置Apache"}/>
+                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
+                        <ToolBar.Button label={"创建"} icon={0} tip={"创建Nginx"}/>
+                    </div>;
+                    break;
                 case 224:
                     btnGroup =<div>
                         <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
@@ -271,6 +279,16 @@ var Operator = React.createClass({
                             </div>;
                     }
                     break;
+                case 243:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Nginx列表"}/>
+                            </div>;
+                    }
+                    break;
                 case 612:
                     btnGroup =<div>
                         <ToolBar.Button label={"创建"} icon={0} tip={"创建用户"}/>
@@ -343,6 +361,16 @@ var Operator = React.createClass({
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"Apache列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 243:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Nginx列表"}/>
                             </div>;
                     }
                     break;
