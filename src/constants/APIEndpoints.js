@@ -18,7 +18,8 @@ var MofaAPIEndpoints = {
     VCENTER_UPDATE:"/oms/vcenter/",
     TRIGGERS_LIST:"/oms/trigger/",
     MONITOR_ITEMS_LIST:"/oms/template/",
-    UPDATE_MONITOR_ITEMS:"/oms/items/"
+    UPDATE_MONITOR_ITEMS:"/oms/items/",
+    DATABASE_LIST:"/oms/databases/"
 
 };
 

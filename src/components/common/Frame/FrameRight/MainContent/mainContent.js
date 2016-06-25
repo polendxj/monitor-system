@@ -193,6 +193,13 @@ var Form = React.createClass({
                                       tip={"请输入Docker IP或名称"} appendText={""}/>
                     </div>;
                     break;
+                case 232:
+                    formGroup = <div>
+                        <ToolBar.Text key={"bar2"} placeholder={"Mysql 名称"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                    </div>;
+                    break;
             }
         } else if (this.state.breadcrumbData.length == 4) {
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -235,6 +242,16 @@ var Form = React.createClass({
                             break;
                     }
                     break;
+                case 232:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Mysql 名称"}
+                                              tip={"请输入Mysql 名称"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
             }
         } else if (this.state.breadcrumbData.length == 5) {
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -273,6 +290,16 @@ var Form = React.createClass({
                             formGroup = <div>
                                 <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Docker IP或别名"}
                                               tip={"请输入Docker IP或名称"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 232:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Mysql 名称"}
+                                              tip={"请输入Mysql 名称"} appendText={""}/>
                             </div>;
                             break;
                     }

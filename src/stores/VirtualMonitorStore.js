@@ -331,7 +331,8 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeHistoryDataList: "ChangeHistoryDataList",
         ChangeConfigData: "ChangeConfigData",
         ChangeHypervisorTip:"ChangeHypervisorTip",
-        StartChartsRender:"StartChartsRender"
+        StartChartsRender:"StartChartsRender",
+        ChangeMysqlList:"ChangeMysqlList"
     }
 });
 
