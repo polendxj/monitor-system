@@ -28,7 +28,8 @@ var MonitorConstants = keyMirror({
     AlarmLineSet: null,
     GetHypervisorTip: null,
     StartChartsRender:null,
-    ChangeMysqlList:null
+    ChangeMysqlList:null,
+    ChangeSqlserverList:null
 });
 
 module.exports = MonitorConstants;
