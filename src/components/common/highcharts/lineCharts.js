@@ -11,6 +11,7 @@ var MenuStore = require("../../../stores/MenuStore");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var GlobalUtils = require("../../../utils/GlobalUtils");
+require("../../../utils/monitor_item");
 
 
 var lineChartData = {
@@ -19,7 +20,7 @@ var lineChartData = {
         events: {}
     },
     credits: {
-        enable:false
+        enabled:false
     },
     title: {
         text: '',
@@ -28,7 +29,7 @@ var lineChartData = {
     plotOptions: {
         series: {
             marker: {
-                enabled: true
+                enabled: false
             }
         }
     },
@@ -49,6 +50,11 @@ var lineChartData = {
         title: {
             text: ""
         },
+        labels: {
+            formatter: function() {
+                return this.value+' ';
+            }
+        },
         plotLines: [{
             value: 0,
             width: 1,
@@ -60,7 +66,7 @@ var lineChartData = {
             return '<b>'
                 + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',
                     this.x) + '</b><br/>'
-                + this.series.name + ': ' + this.y
+                + this.series.name + ': ' + this.y+'M'
         }
     },
     series: []
@@ -75,61 +81,86 @@ var LineCharts = React.createClass({
         return ({
             historyDataList: [],
             chartViewData: [],
-            lineChartList:[]
+            lineChartList:[],
+            hypervisorID:"",
+            selectedTime:[]
         })
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
-        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
+
         $(".highcharts-container").css("marginLeft", "-2px");
         VirtualMonitorAction.getHistoryDataList(this.props.id, this.props.bodyArr);
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
-        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
-    },
-    _startChartsRender: function () {
 
     },
+/*    _startChartsRender: function () {
+        var hypervisorID=VirtualMonitorStore.getHypervisorID();
+        var selectedTime=GlobalUtils.getTimes();
+        this.setState({hypervisorID:hypervisorID});
+        this.setState({selectedTime:selectedTime});
+        for(var i=0;i<this.state.lineChartsArray.length;i++){
+            var startTime=selectedTime[0].key;
+            var endTime=selectedTime[1].key;
+        }
+        VirtualMonitorAction.getHistoryDataList(hypervisorID, this.props.bodyArr);
+    },*/
     _changeHistoryListData: function () {
         var i= this.props.lineChartsArray.indexOf(this.props.index);
         this.setState({historyDataList: VirtualMonitorStore.getHistoryData()[i]});
-
         var that = this;
-        if (this.state.historyDataList.length > 0) {
-            var charViewDataList = [];
-            var chartViewData = new Array();
-            var lineChartList = new Array();
-            chartViewData[0] = {name: '', min: '最小值', avg: '平均值', max: '最大值'};
-            this.state.historyDataList.forEach(function (historyData, index) {
-                //var convertDataType=monitorItems[that.props.viewData.type][graphItem.name].convertDataType;
-                //console.log(convertDataType);
-/*                for(var i=0;i<historyDataArr.length;i++){
-                    var historyData=historyDataArr[i];*/
+        console.log(that.state.historyDataList);
+        setTimeout(function () {
+            if (that.state.historyDataList.length > 0) {
+                var charViewDataList = [];
+                var chartViewData = new Array();
+                var lineChartList = new Array();
+                lineChartData.series = new Array();
+                var convertDataType=monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].convertDataType;
+                var unitName="单位:";
+                if(convertDataType.indexOf('M')>-1){
+                    unitName+='M';
+                    chartViewData[0] = {name: '', min: '最小值(M)', avg: '平均值(M)', max: '最大值(M)'};
+                }else if(convertDataType.indexOf('G')>-1){
+                    unitName+='G';
+                    chartViewData[0] = {name: '', min: '最小值(G)', avg: '平均值(G)', max: '最大值(G)'};
+                }
+                lineChartData.yAxis.title.text=unitName;
+                that.state.historyDataList.forEach(function (historyData, index) {
+                    //var convertDataType=monitorItems[that.props.viewData.type][graphItem.name].convertDataType;
+                    //console.log(convertDataType);
+                    /*                for(var i=0;i<historyDataArr.length;i++){
+                     var historyData=historyDataArr[i];*/
                     var dataList = historyData['data'];
-                    lineChartData.series = new Array();
                     var dataArr = new Array();
                     if (typeof (dataList[0].clock) == "number" && typeof (dataList[dataList.length - 1].clock) == "number") {
                         var timeDifference = Math.round((dataList[dataList.length - 1].clock - dataList[0].clock));
                         lineChartData.xAxis.tickInterval = GlobalUtils.getTickInterval(timeDifference);
                     }
                     for (var j = 0; j < dataList.length; j++) {
-                        dataList[j].clock = GlobalUtils.toDateUTC(dataList[j].clock);
-                        dataList[j].value = GlobalUtils.convertGraphData("memory", dataList[j].value);
-                        var data = [dataList[j].clock, dataList[j].value];
+                        var x = GlobalUtils.toDateUTC(dataList[j].clock);
+                        var y = GlobalUtils.convertGraphData(convertDataType, dataList[j].value);
+                        var data = [x, y];
                         dataArr[j] = data;
                     }
-                    lineChartData.series[index] = $.extend({}, {type: 'area',name: that.props.dataTitle, data: dataArr});
+                    console.log(MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase());
+                    var name=monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].name[index];
+                    var seriesType=monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].seriesType[index];
+                    lineChartData.series[index] = $.extend({}, {type:seriesType,zIndex:10-index,name: name, data: dataArr});
                     chartViewData[index + 1] = {
-                        name: that.props.dataTitle,
-                        min: GlobalUtils.convertGraphData("memory", historyData['metricData'].min),
-                        avg: GlobalUtils.convertGraphData("memory", historyData['metricData'].avg),
-                        max: GlobalUtils.convertGraphData("memory", historyData['metricData'].max)
+                        name: name,
+                        min: GlobalUtils.convertGraphData(convertDataType, historyData['metricData'].min),
+                        avg: GlobalUtils.convertGraphData(convertDataType, historyData['metricData'].avg),
+                        max: GlobalUtils.convertGraphData(convertDataType, historyData['metricData'].max)
                     };
                     lineChartData.title.text = that.props.dataTitle;
-            });
-            this.setState({chartViewData:chartViewData});
-        }
+                });
+                that.setState({chartViewData:chartViewData});
+            }
+        },10)
+        console.log(lineChartData);
     },
     _trashClick: function () {
         console.log("trash");

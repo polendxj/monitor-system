@@ -152,10 +152,13 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                     rs = Y + M + D + h + m + s;
                 }
                 break;
-            case "memory":
+            case "memoryG":
                 if (rs > 1024 * 1024) {
                     rs = (value / 1024 / 1024 / 1024).toFixed(2) * 1;
                 }
+                break;
+            case "memoryM":
+                rs = (value / 1024 / 1024).toFixed(2) * 1;
                 break;
         }
         return rs;

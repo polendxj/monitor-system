@@ -284,15 +284,38 @@ var AllCharts = React.createClass({
     getInitialState: function () {
         return ({
             graphItemList: [],
-            historyDataList: []
+            historyDataList: [],
+            hypervisorID:"",
+            selectedTime:[]
         })
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
         VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
+    },
+    _startChartsRender: function () {
+        var hypervisorID=VirtualMonitorStore.getHypervisorID();
+        var selectedTime=GlobalUtils.getTimes();
+        setTimeout(function () {
+            var bodyArr=new Array();
+            if(this.state.graphItemList.length>0){
+                for(var i=0;i<this.state.graphItemList.length;i++){
+                    var graphItem=this.state.graphItemList[i];
+                    var startTime=parseInt(selectedTime[0].key/1000);
+                    var endTime=parseInt(selectedTime[1].key/1000);
+                    var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
+                    bodyArr.push(body);
+                }
+                console.log(bodyArr);
+                VirtualMonitorAction.getHistoryDataList(hypervisorID, bodyArr);
+            }
+        }.bind(this),10)
+
     },
     _changeListData: function () {
         this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
@@ -357,8 +380,12 @@ var AllCharts = React.createClass({
             this.state.graphItemList.forEach(function (graphItem, index){
                 if(graphItem.graphType==1){
                     lineChartsArray.push(index);
-                    var startTime = 1466431457;
-                    var endTime = 1466641498;
+                    var startTime,endTime;
+                    var date = new Date();
+                    endTime = parseInt(date.getTime()/1000);
+                    date.setHours(0);
+                    date.setMinutes(0);
+                    startTime = parseInt(date.getTime()/1000);
                     var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                     bodyArr.push(body);
                 }
@@ -374,9 +401,6 @@ var AllCharts = React.createClass({
                         //console.log(convertDataType);
                         //var convertAndSeriesType=monitorItems[that.props.viewData.type][graphItem.name].seriesType;
                         var id = 10163;
-                        var startTime = 1466431457;
-                        var endTime = 1466641498;
-                        var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                             lineChartList[index] = $.extend({},lineChartData);
                             lineChartsGraph.push(<LineCharts index={index}
                                                              key={index}
@@ -443,13 +467,14 @@ var MonitorItemsEdit = React.createClass({
         VirtualMonitorAction.deleteGraphItem(id, templateId);
     },
     _isExist: function (row) {
+        var flag=false;
         this.props.graphItemList.forEach(function (graphItem) {
             if (row.name == graphItem.name) {
                 console.log(row.name==graphItem.name);
-                return true;
+                flag=true;
             }
         });
-        return false;
+        return flag;
     },
     render: function () {
         var that = this;

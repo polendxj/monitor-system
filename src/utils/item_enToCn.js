@@ -47,6 +47,14 @@ enToCn_data = {
             priority: 8,
             type: "timestamp"
         },
+        "mysql.status[Uptime]": {
+            key: "mysql.status[Uptime]",
+            name: "MySQL uptime",
+            name_cn: "运行时长",
+            position: "center",
+            priority: 8,
+            type: "timestamp"
+        },
         "vmware.hv.vm.num[{$URL},{HOST.HOST}]": {
             key: "vmware.hv.vm.num[{$URL},{HOST.HOST}]",
             name: "Number of guest VMs",
@@ -162,7 +170,7 @@ enToCn_data = {
             name: "CPU usage",
             name_cn: "cpu使用率",
             position: "center",
-            type:"hz",
+            type: "hz",
             priority: 5
         },
         "vmware.vm.cpu.num[{$URL},{HOST.HOST}]": {
@@ -234,6 +242,22 @@ enToCn_data = {
             position: "center",
             priority: 2
         },
+        "mysql.status[Bytes_received]": {
+            key: "mysql.status[Bytes_received]",
+            name: "MySQL bytes received per second",
+            name_cn: "接收字节",
+            position: "center",
+            type: "memory",
+            priority: 1,
+        },
+        "mysql.status[Bytes_sent]": {
+            key: "mysql.status[Bytes_sent]",
+            name: "MySQL bytes sent per second",
+            name_cn: "发送字节",
+            position: "center",
+            type: "memory",
+            priority: 2,
+        },
         internalPriority: 5
     },
     "内存": {
@@ -286,43 +310,43 @@ enToCn_data = {
             type: "memory"
         },
         "vmware.vm.memory.size.usage.guest[{$URL},{HOST.HOST}]": {
-            key:"vmware.vm.memory.size.usage.guest[{$URL},{HOST.HOST}]",
+            key: "vmware.vm.memory.size.usage.guest[{$URL},{HOST.HOST}]",
             name: "Guest memory usage",
             name_cn: "内存使用率",
             position: "center",
             priority: 5,
         },
         "vmware.vm.memory.size.usage.host[{$URL},{HOST.HOST}]": {
-            key:"vmware.vm.memory.size.usage.host[{$URL},{HOST.HOST}]",
+            key: "vmware.vm.memory.size.usage.host[{$URL},{HOST.HOST}]",
             name: "Host memory usage",
             name_cn: "宿主机内存使用率",
             position: "center",
             priority: 5,
-            type:"memory"
+            type: "memory"
         },
         "vmware.vm.memory.size.private[{$URL},{HOST.HOST}]": {
-            key:"vmware.vm.memory.size.private[{$URL},{HOST.HOST}]",
+            key: "vmware.vm.memory.size.private[{$URL},{HOST.HOST}]",
             name: "Private memory",
             name_cn: "私有内存",
             position: "center",
             priority: 5,
-            type:"memory"
+            type: "memory"
         },
         "vmware.vm.memory.size.shared[{$URL},{HOST.HOST}]": {
-            key:"vmware.vm.memory.size.shared[{$URL},{HOST.HOST}]",
+            key: "vmware.vm.memory.size.shared[{$URL},{HOST.HOST}]",
             name: "Shared memory",
             name_cn: "共享内存",
             position: "center",
             priority: 5,
-            type:"memory"
+            type: "memory"
         },
         "vmware.vm.memory.size.swapped[{$URL},{HOST.HOST}]": {
-            key:"vmware.vm.memory.size.swapped[{$URL},{HOST.HOST}]",
+            key: "vmware.vm.memory.size.swapped[{$URL},{HOST.HOST}]",
             name: "Swapped memory",
             name_cn: "交换内存",
             position: "center",
             priority: 5,
-            type:"memory"
+            type: "memory"
         },
         internalPriority: 3
     },
@@ -364,7 +388,7 @@ enToCn_data = {
             name: "Committed storage space",
             name_cn: "已提交存储空间",
             position: "center",
-            type:"memory",
+            type: "memory",
             priority: 1,
         },
         "vmware.vm.storage.uncommitted[{$URL},{HOST.HOST}]": {
@@ -372,7 +396,7 @@ enToCn_data = {
             name: "Uncommitted storage space",
             name_cn: "未提交存储空间",
             position: "center",
-            type:"memory",
+            type: "memory",
             priority: 1,
         },
         "vmware.vm.storage.unshared[{$URL},{HOST.HOST}]": {
@@ -380,10 +404,280 @@ enToCn_data = {
             name: "Unshared storage space",
             name_cn: "未共享存储空间",
             position: "center",
-            type:"memory",
+            type: "memory",
             priority: 1,
         },
         internalPriority: 3
+    },
+    "操作统计": {
+        "mysql.status[Slow_queries]": {
+            key: "mysql.status[Slow_queries]",
+            name: "MySQL slow queries",
+            name_cn: "慢查询",
+            position: "center",
+            priority: 1,
+        },
+        "mysql.status[Com_begin]": {
+            key: "mysql.status[Com_begin]",
+            name: "MySQL begin operations per second",
+            name_cn: "Begin",
+            position: "center",
+            priority: 2,
+        },
+        "mysql.status[Com_commit]": {
+            key: "mysql.status[Com_commit]",
+            name: "MySQL commit operations per second",
+            name_cn: "Commit",
+            position: "center",
+            priority: 3,
+        },
+        "mysql.status[Com_delete]": {
+            key: "mysql.status[Com_delete]",
+            name: "MySQL delete operations per second",
+            name_cn: "Delete",
+            position: "center",
+            priority: 4,
+        },
+        "mysql.status[Com_insert]": {
+            key: "mysql.status[Com_insert]",
+            name: "MySQL insert operations per second",
+            name_cn: "Insert",
+            position: "center",
+            priority: 5,
+        },
+        "mysql.status[Questions]": {
+            key: "mysql.status[Questions]",
+            name: "MySQL queries per second",
+            name_cn: "Query",
+            position: "center",
+            priority: 6,
+        },
+        "mysql.status[Com_update]": {
+            key: "mysql.status[Com_update]",
+            name: "MySQL update operations per second",
+            name_cn: "Update",
+            position: "center",
+            priority: 7,
+        },
+        "mysql.status[Com_rollback]": {
+            key: "mysql.status[Com_rollback]",
+            name: "MySQL rollback operations per second",
+            name_cn: "Rollback",
+            position: "center",
+            priority: 8,
+        },
+        "mysql.status[Com_select]": {
+            key: "mysql.status[Com_select]",
+            name: "MySQL select operations per second",
+            name_cn: "Select",
+            position: "center",
+            priority: 9,
+        },
+        "mysql.status[Innodb_rows_inserted]": {
+            key: "mysql.status[Innodb_rows_inserted]",
+            name: "MySQL innodb rows inserted per second",
+            name_cn: "Innodb Inserted",
+            position: "center",
+            priority: 10,
+        },
+        "mysql.status[Innodb_rows_read]": {
+            key: "mysql.status[Innodb_rows_read]",
+            name: "MySQL innodb rows read per second",
+            name_cn: "Innodb Read",
+            position: "center",
+            priority: 11,
+        },
+        "mysql.status[Innodb_rows_updated]": {
+            key: "mysql.status[Innodb_rows_updated]",
+            name: "MySQL innodb rows updated per second",
+            name_cn: "Innodb Update",
+            position: "center",
+            priority: 12,
+        },
+        "mysql.status[Innodb_rows_deleted]": {
+            key: "mysql.status[Innodb_rows_deleted]",
+            name: "MySQL innodb rows deleted per second",
+            name_cn: "Innodb Delete",
+            position: "center",
+            priority: 13,
+        },
+        internalPriority: 3
+    },
+    "Innodb缓冲池": {
+        "mysql.status[Innodb_buffer_pool_pages_total]": {
+            key: "mysql.status[Innodb_buffer_pool_pages_total]",
+            name: "MySQL-Innodb buffer pool pages total",
+            name_cn: "Total Pages",
+            position: "center",
+            priority: 1,
+        },
+        "mysql.status[Innodb_buffer_pool_pages_data]": {
+            key: "mysql.status[Innodb_buffer_pool_pages_data]",
+            name: "MySQL-Innodb buffer pool pages data",
+            name_cn: "Data Pages",
+            position: "center",
+            priority: 2,
+        },
+        "mysql.status[Innodb_buffer_pool_pages_flushed]": {
+            key: "mysql.status[Innodb_buffer_pool_pages_flushed]",
+            name: "MySQL-Innodb buffer pool pages flushed",
+            name_cn: "Flush Pages",
+            position: "center",
+            priority: 3,
+        },
+        "mysql.status[Innodb_buffer_pool_pages_free]": {
+            key: "mysql.status[Innodb_buffer_pool_pages_free]",
+            name: "MySQL-Innodb buffer pool pages free",
+            name_cn: "Free Pages",
+            position: "center",
+            priority: 4,
+        },
+        "mysql.status[Com_delete]": {
+            key: "mysql.status[Com_delete]",
+            name: "MySQL delete operations per second",
+            name_cn: "Delete",
+            position: "center",
+            priority: 5,
+        },
+        "mysql.status[Com_insert]": {
+            key: "MySQL-Innodb buffer pool pages misc",
+            name: "mysql.status[Innodb_buffer_pool_pages_misc]",
+            name_cn: "Misc Pages",
+            position: "center",
+            priority: 6,
+        },
+        "mysql.status[Innodb_buffer_pool_read_requests]": {
+            key: "mysql.status[Innodb_buffer_pool_read_requests]",
+            name: "MySQL-Innodb buffer pool read requests per second",
+            name_cn: "缓冲池读请求数",
+            position: "center",
+            priority: 7,
+        },
+        "mysql.status[Innodb_buffer_pool_write_requests]": {
+            key: "mysql.status[Innodb_buffer_pool_write_requests]",
+            name: "MySQL-Innodb buffer pool write requests per second",
+            name_cn: "缓冲池写请求数",
+            position: "center",
+            priority: 8,
+        },
+        internalPriority: 3
+    },
+    "连接数": {
+        "mysql.status[Threads_connected]": {
+            key: "mysql.status[Threads_connected]",
+            name: "MySQL-链接数",
+            name_cn: "链接数",
+            position: "center",
+            priority: 1,
+        },
+        "mysql.status[Threads_running]": {
+            key: "mysql.status[Threads_running]",
+            name: "MySQL-活跃链接数",
+            name_cn: "活跃链接数",
+            position: "center",
+            priority: 2,
+        },
+        internalPriority: 3
+    },
+    "存储": {
+        "perf_counter[\"\\SQLServer:Buffer Manager\\Database pages\"]": {
+            key: "perf_counter[\"\\SQLServer:Buffer Manager\\Database pages\"]",
+            name: "SQL Default Instance:Database Pages",
+            name_cn: "数据页",
+            position: "center",
+            priority: 1,
+        },
+        "perf_counter[\"\\SQLServer:Databases(_Total)\\Data File(s) Size (KB)\"]": {
+            key: "perf_counter[\"\\SQLServer:Databases(_Total)\\Data File(s) Size (KB)\"]",
+            name: "SQL Default Instance:Data File Size",
+            name_cn: "数据文件大小",
+            position: "center",
+            type: "memory",
+            priority: 2,
+        },
+        "perf_counter[\"\\SQLServer:Databases(_Total)\\Log File(s) Size (KB)\"]": {
+            key: "perf_counter[\"\\SQLServer:Databases(_Total)\\Log File(s) Size (KB)\"]",
+            name: "SQL Default Instance:Log File Size",
+            name_cn: "日志文件大小",
+            position: "center",
+            type: "memory",
+            priority: 3,
+        },
+        internalPriority: 3
+    },
+    "锁情况": {
+        "perf_counter[\"\\SQLServer:Locks(_Total)\\Average Wait Time (ms)\"]": {
+            key: "perf_counter[\"\\SQLServer:Locks(_Total)\\Average Wait Time (ms)\"]",
+            name: "SQL Default Instance:Locks:Average Wait Time",
+            name_cn: "平均等待时长",
+            position: "center",
+            type: "timestamp",
+            priority: 1,
+        },
+        "perf_counter[\"\\SQLServer:Locks(_Total)\\Number of Deadlocks/sec\"]": {
+            key: "perf_counter[\"\\SQLServer:Locks(_Total)\\Number of Deadlocks/sec\"]",
+            name: "SQL Default Instance:Locks:Number of Deadlocks per second",
+            name_cn: "死锁数",
+            position: "center",
+            priority: 2,
+        },
+        "perf_counter[\"\\SQLServer:Locks(_Total)\\Lock Waits/sec\"]": {
+            key: "perf_counter[\"\\SQLServer:Locks(_Total)\\Lock Waits/sec\"]",
+            name: "SQL Default Instance:Locks:Waits per second",
+            name_cn: "等待数",
+            position: "center",
+            priority: 3,
+        },
+        internalPriority: 3
+    },
+    "处理": {
+        "perf_counter[\"\\SQLServer:SQL Statistics\\Batch Requests/sec\"]": {
+            key: "perf_counter[\"\\SQLServer:SQL Statistics\\Batch Requests/sec\"]",
+            name: "SQL Default Instance:Batch Requests per second",
+            name_cn: "批处理请求数",
+            position: "center",
+            priority: 1,
+        },
+        "perf_counter[\"\\SQLServer:General Statistics\\Processes blocked\"]": {
+            key: "perf_counter[\"\\SQLServer:General Statistics\\Processes blocked\"]",
+            name: "SQL Default Instance:Blocked Processes",
+            name_cn: "阻塞进程数",
+            position: "center",
+            priority: 2,
+        },
+        "perf_counter[\"\\SQLServer:Buffer Manager\\Buffer cache hit ratio\"]": {
+            key: "perf_counter[\"\\SQLServer:Buffer Manager\\Buffer cache hit ratio\"]",
+            name: "SQL Default Instance:Buffer cache hit ratio",
+            name_cn: "缓存命中率",
+            position: "center",
+            priority: 3,
+        },
+        internalPriority: 3
+    },
+    "事务": {
+        "perf_counter[\"\\SQLServer:Databases(_Total)\\Transactions/sec\"]": {
+            key: "perf_counter[\"\\SQLServer:Databases(_Total)\\Transactions/sec\"]",
+            name: "SQL Default Instance:Transactions per second",
+            name_cn: "事务总数",
+            position: "center",
+            priority: 1,
+        },
+        "perf_counter[\"\\SQLServer:Transactions\\Longest Transaction Running Time\"]": {
+            key: "perf_counter[\"\\SQLServer:Transactions\\Longest Transaction Running Time\"]",
+            name: "SQL Default Instance:Longest Running Transaction",
+            name_cn: "最长事务处理",
+            position: "center",
+            type: "timestamp",
+            priority: 2,
+        },
+        "perf_counter[\"\\SQLAgent:Jobs(_Total)\\Failed jobs\"]": {
+            key: "perf_counter[\"\\SQLAgent:Jobs(_Total)\\Failed jobs\"]",
+            name: "SQL Default Instance:Number Failed Jobs",
+            name_cn: "失败Job数",
+            position: "center",
+            priority: 3,
+        },
+        internalPriority: 3,
     },
     noTab: {
         empty: {

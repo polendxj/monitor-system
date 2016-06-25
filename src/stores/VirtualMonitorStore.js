@@ -123,19 +123,21 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getHistoryDataList: function (id, obj) {
-        historyDataList=[];
+        historyDataList=new Array();
         for(var i=0;i<obj.length;i++){
-            ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[i], "", function (json) {
-                historyDataList.push(json);
-                VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
-            }, function (resp) {
-                console.log(resp);
-                if (resp.status == 200) {
+            (function(arg){
+                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[i], "", function (json) {
+                    historyDataList[arg]=json;
+                    VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
+                }, function (resp) {
+                    console.log(resp);
+                    if (resp.status == 200) {
 
-                } else if (resp.status >= 300) {
-                    alert(resp.responseJSON.message);
-                }
-            });
+                    } else if (resp.status >= 300) {
+                        alert(resp.responseJSON.message);
+                    }
+                });
+            })(i);
         }
     },
     createVCenter: function (obj) {
