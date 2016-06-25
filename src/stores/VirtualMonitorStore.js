@@ -18,7 +18,11 @@ var AppStore = require('../stores/AppStore');
 var vcenterList = [];
 var hypervisorList = [];
 var vmList = [];
+var graphItemList = [];
 var vcenterTips = [];
+var hypervisorTips = [];
+var hypervisorIDS=[];
+var hypervisorID="";
 
 var vcenterFilter = "";
 var hypervisorFilter = "";
@@ -26,6 +30,8 @@ var vmsFilter = "";
 var graphTemplateList = [];
 var editVcenter = {};
 var configDatas = [];
+var historyDataList = [];
+var curConfigDataType="";
 var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVCenterList: function () {
         ResourceUtils.VCENTER_LIST.GET("", function (json) {
@@ -58,6 +64,32 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisiorList);
         });
     },
+    getHypervisorTip: function (text) {
+        var vmsFilter = "";
+        ResourceUtils.HYPERVISOR_LIST.GET({
+            page: 0,
+            pageSize: 10,
+            interfaceIp: "",
+            ip: text
+        }, function (json) {
+            hypervisorTips.splice(0);
+            hypervisorIDS.splice(0);
+            json.content.forEach(function (item) {
+                hypervisorTips.push(item.name);
+                hypervisorIDS.push(item.hostid);
+            });
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisorTip);
+        });
+    },
+    getHypervisorTipData: function () {
+        return hypervisorTips;
+    },
+    setHyperVisorID: function (idx) {
+        hypervisorID=hypervisorIDS[idx];
+    },
+    getHypervisorID: function () {
+        return hypervisorID;
+    },
     getVmList: function (page, interfaceIp, ip) {
         hypervisorFilter = interfaceIp;
         vmsFilter = ip;
@@ -84,6 +116,30 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphTemplateList);
         });
     },
+    getGraphItemList: function (idString) {
+        ResourceUtils.GRAPHITEM_LIST.GET2(idString,"", function (json) {
+            graphItemList = json;
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphItemList);
+        });
+    },
+    getHistoryDataList: function (id,objArr) {
+        historyDataList=new Array();
+        for(var i=0;i<objArr.length;i++){
+            (function (arg) {
+                ResourceUtils.HISTORYDATA_LIST.POST2(id, objArr[arg], "", function (json) {
+                    historyDataList[arg]=json;
+                    VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
+                }, function (resp) {
+                    console.log(resp);
+                    if (resp.status == 200) {
+
+                    } else if (resp.status >= 300) {
+                        alert(resp.responseJSON.message);
+                    }
+                });
+            })(i)
+        }
+    },
     createVCenter: function (obj) {
         ResourceUtils.VCENTER_CREATE.POST(obj, "", function () {
 
@@ -103,8 +159,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         }, function (resp) {
             console.log(resp);
             if (resp.status == 200) {
-                MenuAction.changeBreadcrumb(4, "");
-                browserHistory.push("/dbList");
+
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
@@ -116,7 +171,22 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         }, function (resp) {
             console.log(resp);
             if (resp.status == 200) {
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+                createFlag = true;
+                /*MenuAction.changeBreadcrumb(4, AppStore.getOperator());*/
+                VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphTemplateList);
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
+    createGraphItem: function (obj) {
+        ResourceUtils.GRAPHITEM_CREATE.POST(obj, "", function () {
+
+        }, function (resp) {
+            console.log(resp);
+            if (resp.status == 200) {
+                createFlag = true;
+                VirtualMonitorStore.getGraphItemList(obj.templateId+ "/graphs");
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
@@ -129,7 +199,6 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         }, "", function (resp) {
             if (resp.status == 200) {
                 VirtualMonitorStore.getVCenterList();
-                VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
@@ -140,7 +209,18 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             console.log("aa");
         }, "", function (resp) {
             if (resp.status == 200) {
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    deleteGraphItem: function (id,templateId) {
+        ResourceUtils.GRAPHITEM_DELETE.DELETE(id, function (resp) {
+            console.log("aa");
+        }, "", function (resp) {
+            if (resp.status == 200) {
+                VirtualMonitorStore.getGraphItemList(templateId+ "/graphs");
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
@@ -164,20 +244,45 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             console.log("aa");
         }, function (resp) {
             if (resp.status == 200) {
-                MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         })
     },
     getConfigDataList: function (type) {
-        ResourceUtils.MONITOR_ITEMS_LIST.GET2(type, "", function (resp) {
-            ResourceUtils.TRIGGERS_LIST.GET2(type + "/items", "", function (resp2) {
+        curConfigDataType=type;
+        ResourceUtils.MONITOR_ITEMS_LIST.GET2(type+"/items", "", function (resp) {
+            configDatas[0] = resp;
+            ResourceUtils.TRIGGERS_LIST.GET2(type , "", function (resp2) {
                 configDatas[1] = resp2;
                 VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeConfigData);
             });
         });
 
+    },
+    saveMonitorItemRefresh: function (itemid,value) {
+        ResourceUtils.UPDATE_MONITOR_ITEMS.PUT2(itemid, "", {delay:value}, function (resp) {
+            console.log("aa");
+        }, function (resp) {
+            if (resp.status == 200) {
+                alert("监控项刷新频率设置成功");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    saveAlarmLine: function (triggerid,obj,status) {
+        ResourceUtils.TRIGGERS_LIST.PUT2(triggerid, obj, {status:status}, function (resp) {
+            console.log("aa");
+        }, function (resp) {
+            if (resp.status == 200) {
+                alert("告警阈值设置成功");
+                VirtualMonitorStore.getConfigDataList(curConfigDataType);
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
     },
     getConfigData: function () {
         return configDatas;
@@ -198,8 +303,14 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVmData: function () {
         return vmList;
     },
+    getHistoryData: function () {
+        return historyDataList;
+    },
     getGraphTemplateListData: function () {
         return graphTemplateList;
+    },
+    getGraphItemListData: function () {
+        return graphItemList;
     },
     emitChange: function (eventType) {
         this.emit(eventType);
@@ -216,7 +327,11 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeVmList: "ChangeVmList",
         ChangeVCenterTip: "ChangeVCenterTip",
         ChangeGraphTemplateList: "ChangeGraphTemplateList",
-        ChangeConfigData: "ChangeConfigData"
+        ChangeGraphItemList: "ChangeGraphItemList",
+        ChangeHistoryDataList: "ChangeHistoryDataList",
+        ChangeConfigData: "ChangeConfigData",
+        ChangeHypervisorTip:"ChangeHypervisorTip",
+        StartChartsRender:"StartChartsRender"
     }
 });
 
@@ -234,17 +349,29 @@ AntiFraudDispatcher.register(function (action) {
         case MonitorConstants.GetVmList:
             VirtualMonitorStore.getVmList(action.page, action.interfaceIp, action.ip);
             break;
+        case MonitorConstants.GetGraphItemList:
+            VirtualMonitorStore.getGraphItemList(action.idString);
+            break;
+        case MonitorConstants.GetHistoryDataList:
+            VirtualMonitorStore.getHistoryDataList(action.id, action.obj);
+            break;
         case MonitorConstants.CreateVCenter:
             VirtualMonitorStore.createVCenter(action.jsonObject);
             break;
         case MonitorConstants.CreateGraphTemplate:
             VirtualMonitorStore.createGraphTemplate(action.jsonObject);
             break;
+        case MonitorConstants.CreateGraphItem:
+            VirtualMonitorStore.createGraphItem(action.jsonObject);
+            break;
         case MonitorConstants.DeleteVCenter:
             VirtualMonitorStore.deleteVCenter(action.id);
             break;
         case MonitorConstants.DeleteGraphTemplate:
             VirtualMonitorStore.deleteGraphTemplate(action.id);
+            break;
+        case MonitorConstants.DeleteGraphItem:
+            VirtualMonitorStore.deleteGraphItem(action.id, action.templateId);
             break;
         case MonitorConstants.UpdateVCenter:
             VirtualMonitorStore.updateVCenter(action.id, action.jsonObject);
@@ -255,8 +382,20 @@ AntiFraudDispatcher.register(function (action) {
         case MonitorConstants.GetVCenterTip:
             VirtualMonitorStore.getVCenterTip();
             break;
+        case MonitorConstants.GetHypervisorTip:
+            VirtualMonitorStore.getHypervisorTip(action.text);
+            break;
         case MonitorConstants.GetConfigData:
             VirtualMonitorStore.getConfigDataList(action.type);
+            break;
+        case MonitorConstants.SaveMonitorItemRefresh:
+            VirtualMonitorStore.saveMonitorItemRefresh(action.itemid,action.value);
+            break;
+        case MonitorConstants.AlarmLineSet:
+            VirtualMonitorStore.saveAlarmLine(action.triggerid,action.obj,action.status);
+            break;
+        case MonitorConstants.StartChartsRender:
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
             break;
         default:
             break;

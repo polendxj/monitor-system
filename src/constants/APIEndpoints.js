@@ -6,14 +6,19 @@ var MofaAPIEndpoints = {
     HYPERVISOR_LIST:"/oms/hypervisors",
     VM_LIST:"/oms/vms",
     GRAPHTEMPLATE_LIST:"/oms/graphTemplates",
+    GRAPHITEM_LIST:"/oms/",
+    HISTORYDATA_LIST:"/oms/history/",
     VCENTER_CREATE:"/oms/vcenter",
     MYSQL_CREATE:"/oms/mysql",
     GRAPHTEMPLATE_CREATE:"/oms/graphTemplate",
+    GRAPHITEM_CREATE:"/oms/graph",
     VCENTER_DELETE:"/oms/vcenter/",
     GRAPHTEMPLATE_DELETE:"/oms/graphTemplate/",
+    GRAPHITEM_DELETE:"/oms/graph/",
     VCENTER_UPDATE:"/oms/vcenter/",
     TRIGGERS_LIST:"/oms/trigger/",
-    MONITOR_ITEMS_LIST:"/oms/template/"
+    MONITOR_ITEMS_LIST:"/oms/template/",
+    UPDATE_MONITOR_ITEMS:"/oms/items/"
 
 };
 

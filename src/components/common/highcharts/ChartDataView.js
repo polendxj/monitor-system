@@ -27,7 +27,6 @@ var ChartDataView = React.createClass({
     },
     render: function () {
         var dataTitle=this.props.dataTitle;
-        console.log(this.props.dataTitle);
         return (
             <div id="monitorItemsPanel" className="col-sm-6 col-md-5 col-lg-4" style={{padding:"10px 0 0 5px"}}>
                 <Table
@@ -46,7 +45,6 @@ var ChartDataView = React.createClass({
                         {this.props.viewData.map((row, index) => (
                             <TableRow key={index} selected={row.selected} style={{border:"0 red solid",backgroundColor:"white"}}>
                                 <TableRowColumn  style={{width:"32%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid",fontSize:"10px"}}>{row.name}</TableRowColumn>
-                                <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.last}</TableRowColumn>
                                 <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.avg}</TableRowColumn>
                                 <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.max}</TableRowColumn>
                                 <TableRowColumn  style={{width:"17%",textAlign:"center",padding:"5px 0 5px 0",border:"0 red solid"}}>{row.min}</TableRowColumn>

@@ -45,6 +45,14 @@ var Menus = React.createClass({
     _changeListData: function () {
         this.setState({listData: VirtualMonitorStore.getGraphTemplateListData()});
         this.setState({isLoading: false});
+        console.log(this.state.listData);
+        if(this.state.breadcrumbDataList.length==4&&this.state.breadcrumbDataList[3].breadcrumbID==3){
+            if(this.state.listData.length>0){
+                this._clickViewMenu(this.state.listData[0]);
+            }else{
+                MenuAction.changeViews("");
+            }
+        }
     },
     _changeFirstMenu: function () {
         this.setState({selectedIndex: 0});
@@ -71,17 +79,6 @@ var Menus = React.createClass({
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
-        if(this.state.breadcrumbDataList.length==4&&this.state.breadcrumbDataList[3].breadcrumbID==3){
-            if(this.state.listData.length>0){
-                setTimeout(function () {
-                    this._clickViewMenu(this.state.listData[0]);
-                }.bind(this), 5);
-            }else{
-                setTimeout(function () {
-                    MenuAction.changeViews("");
-                }.bind(this), 1);
-            }
-        }
     },
     _hover: function (idx, hoverParentIdx) {
         this.setState({hoverIndex: idx});
@@ -117,9 +114,10 @@ var Menus = React.createClass({
     },
     _clickViewMenu: function (obj) {
         browserHistory.push("/list");
+        VirtualMonitorAction.getGraphItemList(obj.id+"/graphs");
         setTimeout(function () {
-            MenuAction.changeViews(obj.name);
-        }, 1);
+            MenuAction.changeViews(obj);
+        }, 5);
         MenuAction.changeBreadcrumb(5, obj);
     },
     _clickCreateView: function (obj) {

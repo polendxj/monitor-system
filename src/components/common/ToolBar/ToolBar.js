@@ -24,7 +24,8 @@ var MenuAction = require('../../../actions/MenuAction');
 var MenuStore = require('../../../stores/MenuStore');
 
 var CreateVCenterModal = require("../VCenter/createVCenterModal");
-
+var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 
 require('jquery');
 
@@ -131,24 +132,25 @@ var Text = React.createClass({
             dataSource: [],
             tipHover: -1,
             selectedItem: "",
-            searchText:""
+            searchText: ""
         })
     },
-    handleUpdateInput: function (value) {
-        this.props.getText(value);
-        //this.setState({
-        //    dataSource: [
-        //        value,
-        //        value + value,
-        //        value + value + value,
-        //    ]
-        //});
+    handleUpdateInput: function (value, e) {
+        if (e.keyCode != "13") {
+            this.props.getText(value);
+            this.setState({
+                dataSource: this.props.dataSource
+            });
+        }
+
     },
     tipHover: function (index) {
         this.setState({tipHover: index});
     },
-    itemSelected: function (value) {
-        this.setState({selectedItem: value, tipItems: []});
+    itemSelected: function (chosenRequest, index) {
+        if (index >= 0) {
+            this.props.getText(chosenRequest, index);
+        }
     },
     onNewRequest: function (e) {
         if (e.keyCode == 13) {
@@ -168,7 +170,7 @@ var Text = React.createClass({
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
     },
     _changeBreadcrumbData: function () {
-        this.setState({searchText:""});
+        this.setState({searchText: ""});
     },
     render: function () {
         var tips = [];
@@ -176,9 +178,10 @@ var Text = React.createClass({
             <Form inline style={{marginTop:"-20px",height:"47px",display:"inline-block",position:"relative"}}>
                 <AutoComplete
                     hintText=""
-                    dataSource={this.props.dataSource?this.props.dataSource:[]}
+                    dataSource={this.state.dataSource}
                     onUpdateInput={this.handleUpdateInput}
                     floatingLabelText={this.props.placeholder}
+                    onNewRequest={this.itemSelected}
                     fullWidth={false}
                     onKeyDown={this.onNewRequest}
                     openOnFocus={this.props.openOnFocus}
@@ -231,7 +234,8 @@ var TextOfNoTips = React.createClass({
         }
         return (
             <TextField
-                defaultValue="5000"
+                id={this.props.idx}
+                defaultValue={this.props.value}
                 style={{fontSize:"12px",marginTop:"-15px",width:"50px",height:"30px"}}
                 />
 
@@ -267,7 +271,9 @@ var Button = React.createClass({
         AppAction.saveOperator(type, text);
         var curTool = "";
         if (type == 3) {
+            var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
             MenuAction.changeBreadcrumb(4, AppStore.getOperator());
+            VirtualMonitorStore.getGraphTemplateList(graphType);
         } else if (type == 4) {
             MenuAction.changeBreadcrumb(4, "");
         } else if (type == 1) {

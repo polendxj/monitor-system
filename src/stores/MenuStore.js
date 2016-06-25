@@ -9,6 +9,7 @@ var MonitorConstants = require('../constants/MonitorConstants');
 var store = require('store2');
 var jQuery = require('jquery');
 var VirtualMonitorAction = require("../actions/VirtualMonitorAction");
+var VirtualMonitorStore = require("../stores/VirtualMonitorStore");
 
 
 var firstMenus = [];
@@ -17,8 +18,11 @@ var subMenus = {
     parentIdx: "",
     subMenus: ""
 };
-var viewData = "";
-var graphType={type:""};
+var viewData = {
+    id:"",
+    name:"",
+    type:""
+};
 var editGraphData={};
 
 var MenuStore = assign({}, EventEmitter.prototype, {
@@ -43,15 +47,21 @@ var MenuStore = assign({}, EventEmitter.prototype, {
             breadcrumbDataList.push(breadcrumbData);
         }
         if(data.id==3&&level==4){//3:图表 4:面包屑为4层
-            graphType.type = breadcrumbDataList[2].breadcrumbName.toLowerCase();
-            setTimeout(function () {
-                VirtualMonitorAction.getGraphTemplateList(graphType);
-            },5);
+        }else{
+            createFlag=false;
         }
         this.emitChange(this.events.change_breadcrumb);
     },
     changeViews: function (data) {
-        viewData = data;
+        if(data!=""){
+            viewData.id = data.id;
+            viewData.name = data.name;
+            viewData.type = data.type;
+        }else{
+            viewData.id = "";
+            viewData.name = "";
+            viewData.type = "";
+        }
         this.emitChange(this.events.change_views);
     },
     getViewData: function () {
@@ -65,9 +75,6 @@ var MenuStore = assign({}, EventEmitter.prototype, {
     },
     getBreadcrumbData: function () {
         return breadcrumbDataList;
-    },
-    getGraphType: function () {
-        return graphType;
     },
     getEditGraphData: function () {
         return editGraphData;

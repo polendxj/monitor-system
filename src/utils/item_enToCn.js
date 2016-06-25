@@ -145,7 +145,7 @@ enToCn_data = {
         "vmware.hv.cpu.usage[{$URL},{HOST.HOST}]": {
             key: "vmware.hv.cpu.usage[{$URL},{HOST.HOST}]",
             name: "CPU usage",
-            name_cn: "cpu使用赫兹",
+            name_cn: "cpu使用率",
             position: "center",
             priority: 5,
             type: "hz"
@@ -160,7 +160,7 @@ enToCn_data = {
         "vmware.vm.cpu.usage[{$URL},{HOST.HOST}]": {
             key: "vmware.vm.cpu.usage[{$URL},{HOST.HOST}]",
             name: "CPU usage",
-            name_cn: "cpu使用赫兹",
+            name_cn: "cpu使用率",
             position: "center",
             type:"hz",
             priority: 5
