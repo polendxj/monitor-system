@@ -96,6 +96,11 @@ var Form = React.createClass({
                 case 221:
                     break;
                 case 222:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
                     break;
                 case 223:
                     break;
@@ -107,6 +112,11 @@ var Form = React.createClass({
                 case 221:
                     break;
                 case 222:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
                     break;
                 case 223:
                     break;
@@ -121,24 +131,33 @@ var Form = React.createClass({
     _vcenterTipChange: function () {
         this.setState({VCenterDataSource: VirtualMonitorStore.getVCenterTipData()});
     },
+    _hypervisorTipChange: function () {
+        this.setState({HyperVisorDataSource: VirtualMonitorStore.getHypervisorTipData()});
+    },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHypervisorTip, this._hypervisorTipChange);
         VirtualMonitorAction.getVCenterTip();
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
-        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHypervisorTip, this._hypervisorTipChange);
 
     },
     _vcenterTextFieldText: function (text) {
         this.setState({vcenterFilter: text});
     },
-    _hypervisorTextFieldText: function (text) {
+    _hypervisorTextFieldText: function (text, idx) {
         this.setState({hypervisorFilter: text});
+        VirtualMonitorStore.setHyperVisorID(idx);
+        VirtualMonitorAction.getHypervisorTip(text);
+
     },
     _vmsTextFieldText: function (text) {
-        this.setState({vmsFilter: text});
+        //this.setState({vmsFilter: text});
+        VirtualMonitorAction.getHypervisorTip(text);
     },
     render: function () {
         var formGroup = "";
@@ -154,7 +173,7 @@ var Form = React.createClass({
                                       openOnFocus={true} dataSource={this.state.VCenterDataSource}
                                       getText={this._vcenterTextFieldText} onChange={this.onChange}/>
                         <ToolBar.Text key={"bar2"} placeholder={"Hypervisor IP"}
-                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      openOnFocus={true} dataSource={this.state.HyperVisorDataSource}
                                       getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
@@ -189,8 +208,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"Hypervisor IP或别名"}
-                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar1"} placeholder={"Hypervisor IP"}
+                                              openOnFocus={true} dataSource={this.state.HyperVisorDataSource}
+                                              getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -222,8 +242,6 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar1"} placeholder={"VCenter IP或别名"}
-                                              appendText={""}/>
                             </div>;
                             break;
                     }
@@ -232,8 +250,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar2"} placeholder={"Hypervisor IP或别名"}
-                                              tip={"请输入Hypervisor IP或名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar1"} placeholder={"Hypervisor IP"}
+                                              openOnFocus={true} dataSource={this.state.HyperVisorDataSource}
+                                              getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -295,6 +314,7 @@ var Timestamp = React.createClass({
         }
         this.setState({oldSelectedItem: value});
         this.setState({timeText: GlobalUtils.text2Time(value)});
+        VirtualMonitorAction.startChartsRender();
     },
     hideDatePicker: function (param) {
         this.setState({visible: true});
@@ -328,7 +348,7 @@ var Content = React.createClass({
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
             viewData: MenuStore.getViewData(),
             flag: false,
-            graphItemList:[]
+            graphItemList: []
         })
     },
     componentDidMount: function () {
@@ -398,12 +418,14 @@ var Content = React.createClass({
                         </div>
                         您目前没有自定义视图，立即
                         <a href="#" onClick={this._jumpToCreateView}>&nbsp;创建自定义视图</a>
-                    </div>;
+                    </div>
+                    ;
                     <div style={{clear:"both"}}></div>
                 </div>
             } else if (this.state.viewData.id != "") {
                 div = <div>
                     <AllCharts viewData={this.state.viewData} listData={this.state.graphItemList}/>
+
                     <div style={{clear:"both"}}></div>
                 </div>;
             }

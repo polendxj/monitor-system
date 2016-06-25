@@ -2,6 +2,7 @@
  * Created by jingpeng on 16/6/11.
  */
 var React = require("react");
+var ReactDOM = require("react-dom");
 var Tabs = require("react-bootstrap/lib/Tabs");
 var Jquery = require('jquery');
 var Tab = require("react-bootstrap/lib/Tab");
@@ -48,13 +49,13 @@ var VCenterList = React.createClass({
         this.setState({isLoading: false});
     },
     _delete: function (index) {
-        var id=this.state.listData[index].hostid;
-        if(confirm("确定要删除该数据吗?")){
+        var id = this.state.listData[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
             VirtualMonitorAction.deleteVCenter(id);
         }
     },
     _edit: function (index) {
-        MenuAction.changeBreadcrumb(4, {id:30001,name:"编辑"});
+        MenuAction.changeBreadcrumb(4, {id: 30001, name: "编辑"});
         VirtualMonitorStore.setEditVcenterData(this.state.listData[index]);
         browserHistory.push("/updateVCenter");
     },
@@ -109,8 +110,12 @@ var VCenterList = React.createClass({
                         </td>);
                         tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                      style={{textAlign:"center"}}>
-                            <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that._edit.bind(that,key1)}>编辑</button>
-                            <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans" onClick={that._delete.bind(that,key1)}>删除</button>
+                            <button type="button" className="btn btn-xs btn-info btn-rad btn-trans"
+                                    onClick={that._edit.bind(that,key1)}>编辑
+                            </button>
+                            <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                    onClick={that._delete.bind(that,key1)}>删除
+                            </button>
                         </td>);
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
                     });
@@ -182,7 +187,7 @@ var HypervisorList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        VirtualMonitorAction.getHypervisorList(page, VirtualMonitorStore.getFilter().vcenterFilter,  VirtualMonitorStore.getFilter().hypervisorFilter);
+        VirtualMonitorAction.getHypervisorList(page, VirtualMonitorStore.getFilter().vcenterFilter, VirtualMonitorStore.getFilter().hypervisorFilter);
     },
     render: function () {
         if (this.state.isLoading) {
@@ -311,7 +316,7 @@ var VMSList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        VirtualMonitorAction.getVmList(page,  VirtualMonitorStore.getFilter().hypervisorFilter,  VirtualMonitorStore.getFilter().vmsFilter);
+        VirtualMonitorAction.getVmList(page, VirtualMonitorStore.getFilter().hypervisorFilter, VirtualMonitorStore.getFilter().vmsFilter);
     },
     render: function () {
         if (this.state.isLoading) {
@@ -741,6 +746,20 @@ var HypervisorConfig = React.createClass({
         this.setState({key});
     },
     componentDidMount: function () {
+
+    },
+    saveMonitorRefresh: function (itemid, key) {
+        VirtualMonitorAction.saveConfigDataOfMonitorItemRefresh(itemid, $("#delay" + key).val());
+    },
+    saveAlarmLine: function (tplTriggerId, params, status, idx) {
+        var obj = {};
+        var count = 0;
+        for (param in JSON.parse(params)) {
+            obj[param] = $("#alarm" + idx + "sub" + (count++)).val();
+        }
+        VirtualMonitorAction.saveAlarmLine(tplTriggerId, obj, status);
+    },
+    componentDidUpdate: function () {
         $(".tab-content").css("padding", 0);
         $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
         $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
@@ -749,350 +768,109 @@ var HypervisorConfig = React.createClass({
         $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
     },
     render: function () {
-        return (
-            <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
-                  style={{padding:"0"}}>
-                <Tab eventKey={1} title="刷新频率" style={{padding:"0"}}>
-                    <Table responsive style={{margin:"0"}}>
-                        <thead>
-                        <tr>
-                            <th>监控项</th>
-                            <th>监控频率 (单位:秒)</th>
-                            <th style={{textAlign:"center"}}>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>cpu使用率</td>
+        if (this.props.configData.length == 2) {
+            var alarmSubCount = 0;
+            var refreshData = [];
+            var alarmConfig = [];
+            if (this.props.configData[0].length > 0) {
+                this.props.configData[0].forEach(function (val, key) {
+                    refreshData.push(
+                        <tr key={"refresh"+key}>
+                            <td style={{textAlign:"center"}}>{key + 1}</td>
+                            <td>{GlobalUtils.getMonitorItemByKey(val.key_)}</td>
                             <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
+                                <ToolBar.TextOfNoTips idx={"delay"+key} value={val.delay}/>
                             </td>
                             <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                <button onClick={this.saveMonitorRefresh.bind(this,val.itemid,key)} type="button"
+                                        className="btn btn-xs btn-success btn-rad btn-trans"
                                         disabled={false}>保存
                                 </button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>磁盘使用率</td>
+                    );
+                }.bind(this));
+            } else {
+                refreshData = <NoData text={"不存在任何监控项"}/>
+            }
+            if (this.props.configData[1].length > 0) {
+                this.props.configData[1].forEach(function (val, key) {
+                    alarmSubCount = 0;
+                    alarmConfig.push(
+                        <tr key={"alarm"+key}>
+                            <td style={{textAlign:"center"}}>{key + 1}</td>
                             <td>
-                                <ToolBar.TextOfNoTips tip={"磁盘使用率"}/>
+                                {GlobalUtils.analysisAlarmLine(val.description).split("").map(function (str, idx) {
+                                    if (str != "*") {
+                                        return str;
+                                    } else {
+                                        return <ToolBar.TextOfNoTips key={"alarm"+key+"sub"+key}
+                                                                     idx={"alarm"+key+"sub"+(alarmSubCount++)}/>;
+                                    }
+                                })}
                             </td>
+                            <td>{GlobalUtils.analysisAlarmParams(val.params)}</td>
+                            <td style={{textAlign:"center",color:val.status==0?"red":"green"}}>{val.status == 0 ? "已禁用" : "监控中"}</td>
                             <td style={{textAlign:"center"}}>
                                 <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
+                                        disabled={false}
+                                        onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,val.status,key)}>
+                                    保存
                                 </button>
+                                {val.status == 0 ?
+                                    <button onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,1,key)} type="button" className="btn btn-xs btn-success btn-rad btn-trans">
+                                        启用</button> :
+                                    <button onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,0,key)} type="button" className="btn btn-xs btn-danger btn-rad btn-trans">
+                                        禁用</button>}
                             </td>
                         </tr>
-                        <tr>
-                            <td>IO吞吐率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"IO吞吐率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>网络负载</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"网络负载监控"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                <ToolBar.TextOfNoTips tip={"cpu使用率监控频率"}/>
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Tab>
-                <Tab eventKey={2} title="告警阈值" style={{padding:"0"}}>
-                    <Table responsive style={{margin:"0"}}>
-                        <thead>
-                        <tr>
-                            <th>监控项</th>
-                            <th>告警线</th>
-                            <th style={{textAlign:"center"}}>状态</th>
-                            <th style={{textAlign:"center"}}>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"green"}}>监控中</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans">禁用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>磁盘使用率</td>
-                            <td>
-                                当磁盘使用率大于<ToolBar.TextOfNoTips />%,小于<ToolBar.TextOfNoTips />%的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
+                    );
+                }.bind(this));
+            } else {
+                alarmConfig = <NoData text={"不存在任何告警阈值设置项"}/>
+            }
+            return (
+                <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                      style={{padding:"0"}}>
+                    <Tab eventKey={1} title="刷新频率" style={{padding:"0"}}>
+                        <Table responsive style={{margin:"0"}}>
+                            <thead>
+                            <tr>
+                                <th style={{textAlign:"center"}}>编号</th>
+                                <th>监控项</th>
+                                <th>监控频率 (单位:秒)</th>
+                                <th style={{textAlign:"center"}}>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {refreshData}
+                            </tbody>
+                        </Table>
+                    </Tab>
+                    <Tab eventKey={2} title="告警阈值" style={{padding:"0"}}>
+                        <Table responsive style={{margin:"0"}}>
+                            <thead>
+                            <tr>
+                                <th style={{textAlign:"center"}}>编号</th>
+                                <th>告警线</th>
+                                <th>描述</th>
+                                <th style={{textAlign:"center"}}>状态</th>
+                                <th style={{textAlign:"center"}}>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {alarmConfig}
+                            </tbody>
+                        </Table>
+                    </Tab>
+                </Tabs>
+            )
+        } else {
+            return (
+                <Loading />
+            )
+        }
 
-                        </tr>
-                        <tr>
-                            <td>IO吞吐率</td>
-                            <td>
-                                当IO吞吐率大于<ToolBar.TextOfNoTips /> bpms/s,小于<ToolBar.TextOfNoTips />bpms/s的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>网络负载</td>
-                            <td>
-                                当网络负载大于<ToolBar.TextOfNoTips />%,小于<ToolBar.TextOfNoTips />%的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>cpu使用率</td>
-                            <td>
-                                当cpu负载大于<ToolBar.TextOfNoTips />,小于<ToolBar.TextOfNoTips />的时候进行告警
-                            </td>
-                            <td style={{textAlign:"center",color:"gray"}}>
-                                未监控
-                            </td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={true}>保存
-                                </button>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">启用</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Tab>
-            </Tabs>
-        )
     }
 });
 

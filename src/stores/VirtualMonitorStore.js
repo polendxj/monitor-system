@@ -8,6 +8,7 @@ var EventEmitter = require('events').EventEmitter;
 var AntiFraudDispatcher = require('../dispatcher/AntiFraudDispatcher');
 var MonitorConstants = require('../constants/MonitorConstants');
 var ResourceUtils = require('./ResourceUtils.js');
+var MenuStore = require('../stores/MenuStore');
 var store = require('store2');
 var jQuery = require('jquery');
 
@@ -19,14 +20,18 @@ var hypervisorList = [];
 var vmList = [];
 var graphItemList = [];
 var vcenterTips = [];
+var hypervisorTips = [];
+var hypervisorIDS=[];
+var hypervisorID="";
 
 var vcenterFilter = "";
 var hypervisorFilter = "";
 var vmsFilter = "";
 var graphTemplateList = [];
-var historyDataList = [];
 var editVcenter = {};
-createFlag = false;
+var configDatas = [];
+var historyDataList = [];
+var curConfigDataType="";
 var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVCenterList: function () {
         ResourceUtils.VCENTER_LIST.GET("", function (json) {
@@ -58,6 +63,32 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             hypervisorList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisiorList);
         });
+    },
+    getHypervisorTip: function (text) {
+        var vmsFilter = "";
+        ResourceUtils.HYPERVISOR_LIST.GET({
+            page: 0,
+            pageSize: 10,
+            interfaceIp: "",
+            ip: text
+        }, function (json) {
+            hypervisorTips.splice(0);
+            hypervisorIDS.splice(0);
+            json.content.forEach(function (item) {
+                hypervisorTips.push(item.name);
+                hypervisorIDS.push(item.hostid);
+            });
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisorTip);
+        });
+    },
+    getHypervisorTipData: function () {
+        return hypervisorTips;
+    },
+    setHyperVisorID: function (idx) {
+        hypervisorID=hypervisorIDS[idx];
+    },
+    getHypervisorID: function () {
+        return hypervisorID;
     },
     getVmList: function (page, interfaceIp, ip) {
         hypervisorFilter = interfaceIp;
@@ -217,6 +248,43 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             }
         })
     },
+    getConfigDataList: function (type) {
+        curConfigDataType=type;
+        ResourceUtils.MONITOR_ITEMS_LIST.GET2(type+"/items", "", function (resp) {
+            configDatas[0] = resp;
+            ResourceUtils.TRIGGERS_LIST.GET2(type , "", function (resp2) {
+                configDatas[1] = resp2;
+                VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeConfigData);
+            });
+        });
+
+    },
+    saveMonitorItemRefresh: function (itemid,value) {
+        ResourceUtils.UPDATE_MONITOR_ITEMS.PUT2(itemid, "", {delay:value}, function (resp) {
+            console.log("aa");
+        }, function (resp) {
+            if (resp.status == 200) {
+                alert("监控项刷新频率设置成功");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    saveAlarmLine: function (triggerid,obj,status) {
+        ResourceUtils.TRIGGERS_LIST.PUT2(triggerid, obj, {status:status}, function (resp) {
+            console.log("aa");
+        }, function (resp) {
+            if (resp.status == 200) {
+                alert("告警阈值设置成功");
+                VirtualMonitorStore.getConfigDataList(curConfigDataType);
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    getConfigData: function () {
+        return configDatas;
+    },
     getEditVcenterData: function () {
         return editVcenter;
     },
@@ -258,7 +326,10 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeVCenterTip: "ChangeVCenterTip",
         ChangeGraphTemplateList: "ChangeGraphTemplateList",
         ChangeGraphItemList: "ChangeGraphItemList",
-        ChangeHistoryDataList: "ChangeHistoryDataList"
+        ChangeHistoryDataList: "ChangeHistoryDataList",
+        ChangeConfigData: "ChangeConfigData",
+        ChangeHypervisorTip:"ChangeHypervisorTip",
+        StartChartsRender:"StartChartsRender"
     }
 });
 
@@ -308,6 +379,21 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.GetVCenterTip:
             VirtualMonitorStore.getVCenterTip();
+            break;
+        case MonitorConstants.GetHypervisorTip:
+            VirtualMonitorStore.getHypervisorTip(action.text);
+            break;
+        case MonitorConstants.GetConfigData:
+            VirtualMonitorStore.getConfigDataList(action.type);
+            break;
+        case MonitorConstants.SaveMonitorItemRefresh:
+            VirtualMonitorStore.saveMonitorItemRefresh(action.itemid,action.value);
+            break;
+        case MonitorConstants.AlarmLineSet:
+            VirtualMonitorStore.saveAlarmLine(action.triggerid,action.obj,action.status);
+            break;
+        case MonitorConstants.StartChartsRender:
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
             break;
         default:
             break;

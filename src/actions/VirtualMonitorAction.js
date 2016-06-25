@@ -32,20 +32,20 @@ var VirtualMonitorAction = {
     getGraphTemplateList: function (type) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.GetGraphTemplateList,
-            type:type
+            type: type
         })
     },
     getGraphItemList: function (idString) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.GetGraphItemList,
-            idString:idString
+            idString: idString
         })
     },
-    getHistoryDataList: function (id,obj) {
+    getHistoryDataList: function (id, obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.GetHistoryDataList,
-            id:id,
-            obj:obj
+            id: id,
+            obj: obj
         })
     },
     createVCenter: function (obj) {
@@ -57,52 +57,84 @@ var VirtualMonitorAction = {
     createMySql: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateMySql,
-            jsonObject:obj
+            jsonObject: obj
         })
     },
     createGraphTemplate: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateGraphTemplate,
-            jsonObject:obj
+            jsonObject: obj
         })
     },
     createGraphItem: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateGraphItem,
-            jsonObject:obj
+            jsonObject: obj
         })
     },
     deleteVCenter: function (id) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.DeleteVCenter,
-            id:id
+            id: id
         })
     },
-    updateVCenter: function (id,obj) {
+    updateVCenter: function (id, obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.UpdateVCenter,
-            id:id,
-            jsonObject:obj
+            id: id,
+            jsonObject: obj
         })
     },
     deleteGraphTemplate: function (id) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.DeleteGraphTemplate,
-            id:id
+            id: id
         })
     },
-    deleteGraphItem: function (id,templateId) {
+    deleteGraphItem: function (id, templateId) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.DeleteGraphItem,
-            id:id,
-            templateId:templateId
+            id: id,
+            templateId: templateId
         })
     },
-    updateGraphTemplate: function (id,obj) {
+    updateGraphTemplate: function (id, obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.UpdateGraphTemplate,
-            id:id,
-            jsonObject:obj
+            id: id,
+            jsonObject: obj
+        })
+    },
+    getConfigData: function (type) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetConfigData,
+            type: type
+        })
+    },
+    saveConfigDataOfMonitorItemRefresh: function (itemid, value) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.SaveMonitorItemRefresh,
+            itemid: itemid,
+            value: value
+        })
+    },
+    saveAlarmLine: function (triggerid,obj,status) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.AlarmLineSet,
+            triggerid: triggerid,
+            obj: obj,
+            status: status
+        })
+    },
+    getHypervisorTip: function (text) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetHypervisorTip,
+            text: text
+        })
+    },
+    startChartsRender: function () {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.StartChartsRender
         })
     }
 };
