@@ -236,7 +236,7 @@ var TextOfNoTips = React.createClass({
             <TextField
                 id={this.props.idx}
                 defaultValue={this.props.value}
-                style={{fontSize:"12px",marginTop:"-15px",width:"50px",height:"30px"}}
+                style={{fontSize:"12px",marginTop:"-15px",marginLeft:"5px",width:"50px",height:"30px"}}
                 />
 
         )

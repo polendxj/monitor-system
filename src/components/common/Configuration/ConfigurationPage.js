@@ -56,6 +56,9 @@ var ConfigurationPage = React.createClass({
                 case 233:
                     VirtualMonitorAction.getConfigData("sqlserver");
                     break;
+                case 241:
+                    VirtualMonitorAction.getConfigData("apache");
+                    break;
                 case 224:
                     break;
             }
@@ -74,6 +77,9 @@ var ConfigurationPage = React.createClass({
                     break;
                 case 233:
                     VirtualMonitorAction.getConfigData("sqlserver");
+                    break;
+                case 241:
+                    VirtualMonitorAction.getConfigData("apache");
                     break;
                 case 224:
                     break;

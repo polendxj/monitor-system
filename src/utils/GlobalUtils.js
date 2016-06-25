@@ -287,19 +287,23 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
     analysisAlarmParams: function (params) {
         var rs = "";
         var count = 1;
-        var p=JSON.parse(params);
-        for (item in p) {
-            switch (p[item]) {
-                case "uint":
-                    rs = rs + "参数" + count + ":大于0的整数  ";
-                    break;
-                case "int":
-                    rs = rs + "参数" + count + ":大于等于0的整数  ";
-                    break;
-                default:
-                    rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substring(p[item].indexOf("_")+"  ");
-                    break;
+        if(params){
+            var p=JSON.parse(params);
+            for (item in p) {
+                switch (p[item]) {
+                    case "uint":
+                        rs = rs + "参数" + count + ":大于0的整数  ";
+                        break;
+                    case "int":
+                        rs = rs + "参数" + count + ":大于等于0的整数  ";
+                        break;
+                    default:
+                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substring(p[item].indexOf("_")+"  ");
+                        break;
+                }
             }
+        }else{
+            rs="无";
         }
         return rs;
     }

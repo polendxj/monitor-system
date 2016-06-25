@@ -19,7 +19,8 @@ var MofaAPIEndpoints = {
     TRIGGERS_LIST:"/oms/trigger/",
     MONITOR_ITEMS_LIST:"/oms/template/",
     UPDATE_MONITOR_ITEMS:"/oms/items/",
-    DATABASE_LIST:"/oms/databases/"
+    DATABASE_LIST:"/oms/databases/",
+    APP_SERVICELIST:"/oms/apps/"
 
 };
 
