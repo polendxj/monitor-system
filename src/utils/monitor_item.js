@@ -8,17 +8,16 @@ monitorItems=
                 items:[
                     /*"'vmware.hv.hw.cpu.threads[{$URL},{HOST.HOST}]'"*/
                     "'vmware.hv.cpu.usage[{$URL},{HOST.HOST}]'",
-                    "'calc.vmware.hv.hw.cpu.all'"
+                    /*"'calc.vmware.hv.hw.cpu.all'"*/
                 ],
                 graphType:1,
                 convertDataType:"memoryM",
                 seriesType:[
                     "area",
-                    ""
                 ],
                 name:[
                     "cpu使用大小",
-                    "cpu总大小"
+                    /*"cpu总大小"*/
                 ]
             },
             "内存使用情况":{
