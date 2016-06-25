@@ -11,6 +11,8 @@ var Table = require("react-bootstrap/lib/Table");
 var ToolBar = require("../ToolBar/ToolBar");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
+var DatabasesAction = require("../../../actions/DatabasesAction");
+var DatabaseStore = require("../../../stores/DatabaseStore");
 var Pagination = require("../Paganation");
 var Loading = require("../CommonComponent").Loading;
 var GlobalUtils = require("../../../utils/GlobalUtils");
@@ -415,13 +417,23 @@ var VMSList = React.createClass({
 var MysqlList = React.createClass({
     getInitialState: function () {
         return {
-            key: 1
+            key: 1,
+            isLoading: true,
+            listData: [],
+            pages: 0
         };
     },
     handleSelect(key) {
         this.setState({key});
     },
     componentDidMount: function () {
+        DatabaseStore.addChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
+        DatabasesAction.getMysqlList("mysql", 0);
+    },
+    componentWillUnmount: function () {
+        VirtualMonitorStore.removeChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
+    },
+    componentDidUpdate: function () {
         $(".tab-content").css("padding", 0);
         $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
         $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
@@ -429,310 +441,104 @@ var MysqlList = React.createClass({
         $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
         $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
     },
+    _changeListData: function () {
+        this.setState({listData: DatabaseStore.getMysqListData(), pages: this.state.listData.totalPages});
+        this.setState({isLoading: false});
+    },
+    _changePage: function (page) {
+        DatabasesAction.getMysqlList("mysql", page);
+    },
     render: function () {
-        return (
-            <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
-                  style={{padding:"0"}}>
-                <Tab eventKey={1} title="常规状态" style={{padding:"0"}}>
-                    <Table responsive style={{margin:"0"}}>
-                        <thead>
-                        <tr>
-                            <th>监控项目</th>
-                            <th>版本</th>
-                            <th style={{textAlign:"center"}}>启动时间</th>
-                            <th>状态</th>
-                            <th style={{textAlign:"center"}}>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
+        if (this.state.isLoading) {
+            return (
+                <Loading />
+            )
+        } else {
+            if (this.state.listData.content.length > 0) {
+                var analysisData = GlobalUtils.en2Cn_item(this.state.listData.content[0].items);
+                var tabs = [];
+                var that = this;
+                var tabIndex = 1;
+                for (tab in analysisData) {
+                    /*生成了title*/
+                    var thead = [];
+                    thead.push(<th key={tab+"thead"+"-1"} style={{textAlign:"left"}}>{"监控项目"}</th>);   //生成项目监控title
+                    analysisData[tab].forEach(function (val1, key1) {
+                        thead.push(<th key={tab+"thead"+key1} style={{textAlign:val1.position}}>{val1.name_cn}</th>);
+                    });
+                    if (tabIndex == 1) {
+                        thead.push(<th key={tab+"thead"+"-3"} style={{textAlign:"center"}}>{"状态"}</th>);   //生成状态title
+                        thead.push(<th key={tab+"thead"+"-2"} style={{textAlign:"center"}}>{"操作"}</th>);   //生成操作title
+                    }
+                    /*生成了tr*/
+                    //
+                    var tr = [];
+                    var tbody = "";
+                    that.state.listData.content.forEach(function (val1, key1) {
+                        var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
+                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                        var tempTds = [];
+                        val1.items.forEach(function (val2, key2) {
+                            analysisData[tab].forEach(function (val3, key3) {
+                                if (val2.key_ == val3.key) {
+                                    tempTds.push({
+                                        data: <td key={tab+"tr"+key1+"td"+key2}
+                                                  style={{textAlign:val3.position}}>{GlobalUtils.type2Style(val3.type, val2.lastvalue)}</td>,
+                                        priority: key3
+                                    });
 
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>mysql:10.9.0.96</td>
-                            <td>5.0</td>
-                            <td style={{textAlign:"center"}}>2016-6-5 21:30:10</td>
-                            <td>正常</td>
-                            <td style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">详情</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Tab>
-                <Tab eventKey={2} title="操作统计" style={{padding:"0"}}>
-                    <Table responsive style={{margin:"0"}}>
-                        <thead>
-                        <tr>
-                            <th>监控项目</th>
-                            <th style={{textAlign:"center"}}>慢查询</th>
-                            <th style={{textAlign:"center"}}>Begin (单位:次/秒)</th>
-                            <th style={{textAlign:"center"}}>Commit (单位:次/秒)</th>
-                            <th style={{textAlign:"center"}}>Delete (单位:次/秒)</th>
-                            <th style={{textAlign:"center"}}>Insert (单位:次/秒)</th>
-                            <th style={{textAlign:"center"}}>Query (单位:次/秒)</th>
-                            <th style={{textAlign:"center"}}>Rollback (单位:次/秒)</th>
-                            <th style={{textAlign:"center"}}>Select (单位:次/秒)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>是</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                            <td style={{textAlign:"center"}}>5</td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Tab>
-                <Tab eventKey={3} title="网络流量" style={{padding:"0"}}>
-                    <Table responsive style={{margin:"0"}}>
-                        <thead>
-                        <tr>
-                            <th>监控项目</th>
-                            <th style={{textAlign:"center"}}>接收字节 (单位:秒)</th>
-                            <th style={{textAlign:"center"}}>发送字节 (单位:秒)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        <tr>
-                            <td>Mysql:10.9.0.96</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                            <td style={{textAlign:"center"}}>1024</td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Tab>
-            </Tabs>
-        )
+                                }
+                            });
+                        });
+                        tempTds.sort(GlobalUtils.arrSort("priority"));
+                        tempTds.forEach(function (o, k) {
+                            tds.push(o.data);
+                        });
+                        if (tabIndex == 1) {
+                            tds.push(<td key={tab+"tr"+key1+"td"+"-3"}
+                                         style={{textAlign:"center",color:val1.status==0?"red":"green"}}>
+                                {val1.status == 0 ? "已停用" : "运行中"}
+                            </td>);
+                            tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
+                                         style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                            </td>);
+                        }
+                        tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
+                    });
+                    tbody = <tbody key={tab+"tbody"}>{tr}</tbody>;
+                    tabs.push(
+                        <Tab key={"tab"+tabIndex} eventKey={tabIndex} title={tab} style={{padding:"0"}}>
+                            <Table responsive style={{margin:"0"}}>
+                                <thead>
+                                <tr>
+                                    {thead}
+                                </tr>
+                                </thead>
+                                {tbody}
+                            </Table>
+                        </Tab>);
+                    tabIndex++;
+                }
+
+
+                return (
+                    <div>
+                        <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                              style={{padding:"0"}}>
+                            {tabs}
+                        </Tabs>
+                        <Pagination pages={this.state.pages} _changePage={this._changePage}/>
+
+                    </div>
+
+                )
+            } else {
+                return (
+                    <NoData text={"未查找到任何VMS信息"}/>
+                )
+            }
+        }
     }
 });
 
@@ -791,7 +597,7 @@ var HypervisorConfig = React.createClass({
                     );
                 }.bind(this));
             } else {
-                refreshData = <NoData text={"不存在任何监控项"}/>
+                refreshData = <tr><td colSpan="5"><NoData text={"不存在任何监控项"}/></td></tr>
             }
             if (this.props.configData[1].length > 0) {
                 this.props.configData[1].forEach(function (val, key) {
@@ -827,7 +633,7 @@ var HypervisorConfig = React.createClass({
                     );
                 }.bind(this));
             } else {
-                alarmConfig = <NoData text={"不存在任何告警阈值设置项"}/>
+                alarmConfig = <tr><td colSpan="5"><NoData text={"不存在任何告警阈值设置项"}/></td></tr>
             }
             return (
                 <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"

@@ -36,7 +36,6 @@ var ConfigurationPage = React.createClass({
                 case 222:
                     break;
                 case 223:
-
                     break;
                 case 224:
                     break;
@@ -51,6 +50,9 @@ var ConfigurationPage = React.createClass({
                 case 223:
                     VirtualMonitorAction.getConfigData("vms");
                     break;
+                case 232:
+                    VirtualMonitorAction.getConfigData("mysql");
+                    break;
                 case 224:
                     break;
             }
@@ -59,8 +61,13 @@ var ConfigurationPage = React.createClass({
                 case 221:
                     break;
                 case 222:
+                    VirtualMonitorAction.getConfigData("hypervisor");
                     break;
                 case 223:
+                    VirtualMonitorAction.getConfigData("vms");
+                    break;
+                case 232:
+                    VirtualMonitorAction.getConfigData("mysql");
                     break;
                 case 224:
                     break;

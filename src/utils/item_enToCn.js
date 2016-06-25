@@ -555,7 +555,7 @@ enToCn_data = {
             position: "center",
             priority: 5,
         },
-        "mysql.status[Com_insert]": {
+        "MySQL-Innodb buffer pool pages misc": {
             key: "MySQL-Innodb buffer pool pages misc",
             name: "mysql.status[Innodb_buffer_pool_pages_misc]",
             name_cn: "Misc Pages",

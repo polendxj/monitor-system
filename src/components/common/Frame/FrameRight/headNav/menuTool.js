@@ -165,6 +165,14 @@ var Operator = React.createClass({
                         <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
                     </div>;
                     break;
+                case 232:
+                    btnGroup =<div>
+                        <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                        <ToolBar.Button label={"配置"} icon={1} tip={"配置Mysql"}/>
+                        <ToolBar.Button label={"图表"} icon={3} tip={"实时图表监控"}/>
+                        <ToolBar.Button label={"创建"} icon={0} tip={"创建Mysql"}/>
+                    </div>;
+                    break;
                 case 224:
                     btnGroup =<div>
                         <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
@@ -204,6 +212,16 @@ var Operator = React.createClass({
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 232:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Mysql列表"}/>
                             </div>;
                     }
                     break;
@@ -249,6 +267,16 @@ var Operator = React.createClass({
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
                                 <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
+                            </div>;
+                    }
+                    break;
+                case 232:
+                    switch (this.state.breadcrumbData[3].breadcrumbID){
+                        case 3:
+                            btnGroup = <div>
+                                <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
+                                <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
+                                <ToolBar.Button label={"列表"} icon={4} tip={"Mysql列表"}/>
                             </div>;
                     }
                     break;
