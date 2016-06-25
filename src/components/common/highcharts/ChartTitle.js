@@ -11,9 +11,8 @@ var ChartTitle = React.createClass({
     _detailClick: function () {
         this.props._detailClick();
     },
-    _checkBoxClick: function (index) {
-        this.props._checkBoxClick(index);
-
+    _checkBoxClick: function () {
+        this.props._checkBoxClick();
     },
     render: function () {
         return (

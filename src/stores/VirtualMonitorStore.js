@@ -117,16 +117,16 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getGraphItemList: function (idString) {
-        ResourceUtils.GRAPHITEM_LIST.GET2(idString,"", function (json) {
+        ResourceUtils.GRAPHITEM_LIST.GET2(idString, "", function (json) {
             graphItemList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeGraphItemList);
         });
     },
-    getHistoryDataList: function (id,objArr) {
+    getHistoryDataList: function (id, obj) {
         historyDataList=new Array();
-        for(var i=0;i<objArr.length;i++){
-            (function (arg) {
-                ResourceUtils.HISTORYDATA_LIST.POST2(id, objArr[arg], "", function (json) {
+        for(var i=0;i<obj.length;i++){
+            (function(arg){
+                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[i], "", function (json) {
                     historyDataList[arg]=json;
                     VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
                 }, function (resp) {
@@ -137,7 +137,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
                         alert(resp.responseJSON.message);
                     }
                 });
-            })(i)
+            })(i);
         }
     },
     createVCenter: function (obj) {
@@ -186,7 +186,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             console.log(resp);
             if (resp.status == 200) {
                 createFlag = true;
-                VirtualMonitorStore.getGraphItemList(obj.templateId+ "/graphs");
+                VirtualMonitorStore.getGraphItemList(obj.templateId + "/graphs");
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
@@ -215,12 +215,12 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             }
         })
     },
-    deleteGraphItem: function (id,templateId) {
+    deleteGraphItem: function (id, templateId) {
         ResourceUtils.GRAPHITEM_DELETE.DELETE(id, function (resp) {
             console.log("aa");
         }, "", function (resp) {
             if (resp.status == 200) {
-                VirtualMonitorStore.getGraphItemList(templateId+ "/graphs");
+                VirtualMonitorStore.getGraphItemList(templateId + "/graphs");
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }

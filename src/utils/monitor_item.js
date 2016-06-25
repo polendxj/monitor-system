@@ -4,22 +4,39 @@
 monitorItems=
     {
         hypervisor:{
-            "cpu使用率":{
+            "cpu使用情况":{
                 items:[
-                    "'vmware.hv.hw.cpu.threads[{$URL},{HOST.HOST}]'"
-                    /*"vmware.hv.cpu.usage[{$URL},{HOST.HOST}]"*/
-                ],
-                graphType:0,
-                convertDataType:"memory"
-            },
-            "内存使用率":{
-                items:[
-                    "'vmware.hv.hw.memory[{$URL},{HOST.HOST}]'"
-                    /*"'vmware.hv.memory.size.ballooned[{$URL},{HOST.HOST}]'",
-                    "'vmware.hv.memory.used[{$URL},{HOST.HOST}]'"*/
+                    /*"'vmware.hv.hw.cpu.threads[{$URL},{HOST.HOST}]'"*/
+                    "'vmware.hv.cpu.usage[{$URL},{HOST.HOST}]'",
+                    "'calc.vmware.hv.hw.cpu.all'"
                 ],
                 graphType:1,
-                convertDataType:"memory"
+                convertDataType:"memoryM",
+                seriesType:[
+                    "area",
+                    ""
+                ],
+                name:[
+                    "cpu使用大小",
+                    "cpu总大小"
+                ]
+            },
+            "内存使用情况":{
+                items:[
+                    "'vmware.hv.memory.used[{$URL},{HOST.HOST}]'",
+                    "'vmware.hv.hw.memory[{$URL},{HOST.HOST}]'"
+                    /*"'vmware.hv.memory.size.ballooned[{$URL},{HOST.HOST}]'",*/
+                ],
+                seriesType:[
+                    "area",
+                    ""
+                ],
+                name:[
+                    "内存使用大小",
+                    "内存总大小"
+                ],
+                graphType:1,
+                convertDataType:"memoryM"
             }
 
         },
