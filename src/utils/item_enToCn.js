@@ -17,6 +17,13 @@ enToCn_data = {
             position: "center",
             priority: 1
         },
+        "vmware.hv.fullname[{$URL},{HOST.HOST}]": {
+            key: "vmware.hv.fullname[{$URL},{HOST.HOST}]",
+            name: "Full name",
+            name_cn: "全名",
+            position: "center",
+            priority: 1
+        },
         "vmware.version[{$URL}]": {
             key: "vmware.version[{$URL}]",
             name: "Version",
@@ -150,6 +157,14 @@ enToCn_data = {
             priority: 5,
             type: "hz"
         },
+        "calc.vmware.hv.hw.cpu.all": {
+            key: "calc.vmware.hv.hw.cpu.all",
+            name: "CPU all",
+            name_cn: "cpu总大小",
+            position: "center",
+            priority: 5,
+            type: "hz"
+        },
         "vmware.vm.cpu.ready[{$URL},{HOST.HOST}]": {
             key: "vmware.vm.cpu.ready[{$URL},{HOST.HOST}]",
             name: "CPU ready",
@@ -172,6 +187,7 @@ enToCn_data = {
             position: "center",
             priority: 5
         },
+
         internalPriority: 2
     },
     DataStore: {
