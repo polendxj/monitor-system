@@ -41,6 +41,34 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
             DatabasesStore.emitChange(DatabasesStore.events.ChangeSqlserverList);
         });
     },
+    createDatabase: function (obj) {
+        ResourceUtils.DATABASE_CREATE.POST(obj, "", function () {
+
+        }, function (resp) {
+
+            if (resp.status == 200) {
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
+    deleteDatabase: function (id,type,page) {
+        ResourceUtils.DATABASE_DELETE.DELETE(id, function (resp) {
+
+        }, "", function (resp) {
+            if (resp.status == 200) {
+                if(type=="mysql"){
+                    DatabasesStore.getMysqlList(type,page);
+                }else if(type=="sqlserver"){
+                    DatabasesStore.getSqlserverList(type,page);
+                }
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
     getSqlserverListData: function () {
         return sqlserverList;
     },
@@ -66,6 +94,12 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.ChangeSqlserverList:
             DatabasesStore.getSqlserverList(action.type,action.page);
+            break;
+        case MonitorConstants.CreateDatabase:
+            DatabasesStore.createDatabase(action.jsonObject);
+            break;
+        case MonitorConstants.DeleteDatabase:
+            DatabasesStore.deleteDatabase(action.id,action.type,action.page);
             break;
         default:
             break;

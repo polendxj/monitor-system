@@ -63,9 +63,7 @@ var Content = React.createClass({
         if(macro3!=""&&macroValue3!=""){
             vcenter['macros'].push({"macro": macro3, "value": macroValue3})
         }
-        console.log(this.state.editVcenter);
-        console.log(vcenter);
-
+        VirtualMonitorAction.updateVCenter(id,vcenter);
     },
     render: function () {
         return (

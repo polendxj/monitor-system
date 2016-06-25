@@ -3,6 +3,7 @@
  */
 var React = require("react");
 var ReactDOM = require("react-dom");
+var browserHistory = require('react-router').browserHistory;
 var Tabs = require("react-bootstrap/lib/Tabs");
 var Jquery = require('jquery');
 var Tab = require("react-bootstrap/lib/Tab");
@@ -450,6 +451,12 @@ var MysqlList = React.createClass({
     _changePage: function (page) {
         DatabasesAction.getMysqlList("mysql", page);
     },
+    _delete: function (index) {
+        var id = this.state.listData.content[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
+            DatabasesAction.deleteDatabase(id,'mysql',0);
+        }
+    },
     render: function () {
         if (this.state.isLoading) {
             return (
@@ -504,6 +511,9 @@ var MysqlList = React.createClass({
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                        onClick={that._delete.bind(that,key1)}>删除
+                                </button>
                             </td>);
                         }
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
@@ -578,6 +588,12 @@ var SqlserverList = React.createClass({
     _changePage: function (page) {
         DatabasesAction.getSqlserverList("sqlserver", page);
     },
+    _delete: function (index) {
+        var id = this.state.listData.content[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
+            DatabasesAction.deleteDatabase(id,'sqlserver',0);
+        }
+    },
     render: function () {
         if (this.state.isLoading) {
             return (
@@ -632,6 +648,9 @@ var SqlserverList = React.createClass({
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                        onClick={that._delete.bind(that,key1)}>删除
+                                </button>
                             </td>);
                         }
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
@@ -707,6 +726,12 @@ var ApacheList = React.createClass({
     _changePage: function (page) {
         AppServiceAction.getApacheList("apache", page);
     },
+    _delete: function (index) {
+        var id = this.state.listData.content[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
+            AppServiceAction.deleteAppService(id,'apache',0);
+        }
+    },
     render: function () {
         if (this.state.isLoading) {
             return (
@@ -761,6 +786,9 @@ var ApacheList = React.createClass({
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                        onClick={that._delete.bind(that,key1)}>删除
+                                </button>
                             </td>);
                         }
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
@@ -836,6 +864,12 @@ var NginxList = React.createClass({
     _changePage: function (page) {
         AppServiceAction.getNginxList("nginx", page);
     },
+    _delete: function (index) {
+        var id = this.state.listData.content[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
+            AppServiceAction.deleteAppService(id,'nginx',0);
+        }
+    },
     render: function () {
         if (this.state.isLoading) {
             return (
@@ -890,6 +924,9 @@ var NginxList = React.createClass({
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
                                 <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                        onClick={that._delete.bind(that,key1)}>删除
+                                </button>
                             </td>);
                         }
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);

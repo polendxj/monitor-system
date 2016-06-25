@@ -293,6 +293,21 @@ var Button = React.createClass({
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createVCenterModal");
                     break;
+                case 232:
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createMysql");
+                case 233:
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createSqlServer");
+                    break;
+                case 241:
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createApache");
+                    break;
+                case 243:
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createNginx");
+                    break;
                 case 612:
                     o = {id: obj.id, name: "创建用户"};
                     MenuAction.changeBreadcrumb(4, o);

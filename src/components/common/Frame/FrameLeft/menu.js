@@ -99,6 +99,8 @@ var Menus = React.createClass({
                 case 224:
                     browserHistory.push("/list");
                     break;
+                case 311: //告警消息
+                case 321: //故障历史
                 case 611:
                     browserHistory.push("/updatePwd");
                     break;
@@ -106,6 +108,7 @@ var Menus = React.createClass({
         } else if (selectedParentIdx == 1) {
             MenuAction.changeBreadcrumb(3, this.state.subMenus.subMenus.secondLayer1[idx]);
             switch (this.state.subMenus.subMenus.secondLayer1[idx].id) {
+                case 312: //告警通知历史
                 case 612:
                     browserHistory.push("/userList");
                     break;
@@ -141,6 +144,17 @@ var Menus = React.createClass({
                 case 2:
                     thirdMenuParentName1 = "全部类型";
                     thirdMenuParentName2 = "故障管理";
+                    break;
+                case 3:
+                    switch (this.state.breadcrumbDataList[1].breadcrumbID) {
+                        case 31:
+                            thirdMenuParentName1 = "告警消息";
+                            thirdMenuParentName2 = "告警通知";
+                            break;
+                        case 32:
+                            thirdMenuParentName1 = "故障管理";
+                            break;
+                    }
                     break;
                 case 6:
                     thirdMenuParentName1 = "个人设置";

@@ -14,10 +14,11 @@ var MonitorConstants = keyMirror({
     GetVmList: null,
     GetHistoryDataList: null,
     CreateVCenter: null,
-    CreateMySql: null,
+    CreateDatabase: null,
     CreateGraphTemplate: null,
     CreateGraphItem: null,
     DeleteVCenter: null,
+    DeleteDatabase: null,
     DeleteGraphItem: null,
     UpdateVCenter: null,
     UpdateGraphTemplate: null,
@@ -31,7 +32,9 @@ var MonitorConstants = keyMirror({
     ChangeMysqlList: null,
     ChangeSqlserverList: null,
     ChangeApacheList: null,
-    ChangeNginxList: null
+    ChangeNginxList: null,
+    CreateAppService:null,
+    DeleteAppService:null
 });
 
 module.exports = MonitorConstants;

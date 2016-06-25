@@ -87,7 +87,7 @@ var CreateMysql = React.createClass({
                             数据库名称
                         </Col>
                         <Col sm={2}>
-                            <FormControl ref="applicationName" controlId="applicationName"/>
+                            <FormControl ref="applicationName" controlId="applicationName" defaultValue="mysql" readOnly/>
                         </Col>
                     </FormGroup>
                     <FormGroup>

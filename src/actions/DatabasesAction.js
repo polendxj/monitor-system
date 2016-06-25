@@ -16,6 +16,20 @@ var DatabasesAction = {
             type: type,
             page: page
         })
+    },
+    createDatabase: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateDatabase,
+            jsonObject: obj
+        })
+    },
+    deleteDatabase: function (id, type, page) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.DeleteDatabase,
+            id: id,
+            type:type,
+            page:page
+        })
     }
 };
 

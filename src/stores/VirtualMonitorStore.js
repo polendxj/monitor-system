@@ -153,18 +153,6 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             }
         });
     },
-    createMySql: function (obj) {
-        ResourceUtils.MYSQL_CREATE.POST(obj, "", function () {
-
-        }, function (resp) {
-            console.log(resp);
-            if (resp.status == 200) {
-
-            } else if (resp.status >= 300) {
-                alert(resp.responseJSON.message);
-            }
-        });
-    },
     createGraphTemplate: function (obj) {
         ResourceUtils.GRAPHTEMPLATE_CREATE.POST(obj, "", function () {
 
@@ -227,13 +215,12 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         })
     },
     updateVCenter: function (id, obj) {
-        ResourceUtils.VCENTER_UPDATE.PUT(id, obj, function (resp) {
-            console.log("aa");
-            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
+        ResourceUtils.VCENTER_UPDATE.PUT2(id, obj,"", function (resp) {
+
         }, function (resp) {
             if (resp.status == 200) {
-                VirtualMonitorStore.getVCenterList();
-                VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVCenterList);
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }

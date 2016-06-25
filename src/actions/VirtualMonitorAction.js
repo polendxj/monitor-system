@@ -54,12 +54,6 @@ var VirtualMonitorAction = {
             jsonObject: obj
         })
     },
-    createMySql: function (obj) {
-        AntiFraudDispatcher.dispatch({
-            actionType: MonitorConstants.CreateMySql,
-            jsonObject: obj
-        })
-    },
     createGraphTemplate: function (obj) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.CreateGraphTemplate,

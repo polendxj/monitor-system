@@ -16,6 +16,20 @@ var AppServiceAction = {
             type: type,
             page: page
         })
+    },
+    createAppService: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateAppService,
+            jsonObject: obj
+        })
+    },
+    deleteAppService: function (id, type, page) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.DeleteAppService,
+            id: id,
+            type:type,
+            page:page
+        })
     }
 };
 

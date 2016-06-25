@@ -90,7 +90,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:217,
                         name: '故障历史',
@@ -107,7 +107,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             },
             {
                 id:22,
@@ -149,7 +149,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:224,
                         name: '故障历史',
@@ -166,7 +166,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             },
             {
                 id:23,
@@ -232,7 +232,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:238,
                         name: '故障历史',
@@ -249,7 +249,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             },
             {
                 id:24,
@@ -299,7 +299,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:246,
                         name: '故障历史',
@@ -316,7 +316,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             },
             {
                 id:25,
@@ -374,7 +374,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:257,
                         name: '故障历史',
@@ -391,7 +391,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             },
             {
                 id:26,
@@ -433,7 +433,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:265,
                         name: '故障历史',
@@ -450,7 +450,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             },
             {
                 id:27,
@@ -500,7 +500,7 @@ menus = [
                         url: ''
                     }
                 ],
-                secondLayer1: [
+                /*secondLayer1: [
                     {
                         id:276,
                         name: '故障历史',
@@ -517,7 +517,7 @@ menus = [
                         status: false,
                         url: ''
                     }
-                ]
+                ]*/
             }
         ]
     },
@@ -528,7 +528,66 @@ menus = [
         url: '',
         status: false,
         firstLayer: [
-
+            {
+                id:31,
+                name: '告警',
+                icon: '',
+                status: false,
+                url: '',
+                secondLayer: [
+                    {
+                        id:311,
+                        name: '告警消息',
+                        icon: '',
+                        count:12,
+                        status: false,
+                        url: ''
+                    }
+                ],
+                secondLayer1: [
+                    {
+                        id:312,
+                        name: '告警通知历史',
+                        icon: '',
+                        count:-1,
+                        status: true,
+                        'url': ''
+                    },
+                    {
+                        id:313,
+                        name: '告警通知统计',
+                        icon: '',
+                        count:-1,
+                        status: false,
+                        url: ''
+                    },
+                    {
+                        id:314,
+                        name: 'URL回调通知历史',
+                        icon: '',
+                        count:-1,
+                        status: false,
+                        url: ''
+                    }
+                ]
+            },
+            {
+                id:32,
+                name: '故障',
+                icon: '',
+                status: false,
+                url: '',
+                secondLayer: [
+                    {
+                        id:311,
+                        name: '故障历史',
+                        icon: '',
+                        count:12,
+                        status: false,
+                        url: ''
+                    }
+                ],
+            },
         ]
     },
     {

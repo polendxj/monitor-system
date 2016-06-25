@@ -18,6 +18,10 @@ var UserList = require('./components/common/SystemConfig/UserConfig/UserList');
 var CreateUser = require('./components/common/SystemConfig/UserConfig/CreateUser');
 var UpdatePwd = require('./components/common/SystemConfig/UserConfig/UpdatePwd');
 var UpdateVCenter = require('./components/common/VCenter/EditVCenter');
+var CreateMysql = require('./components/common/CreateObj/CreateMysql');
+var CreateSqlServer = require('./components/common/CreateObj/CreateSqlServer');
+var CreateNginx = require('./components/common/CreateObj/CreateNginx');
+var CreateApache = require('./components/common/CreateObj/CreateApache');
 
 require('../static/maxent.min.js');
 
@@ -50,6 +54,10 @@ ReactDOM.render((
             <Route path="createUser" component={CreateUser} />
             <Route path="updatePwd" component={UpdatePwd} />
             <Route path="updateVCenter" component={UpdateVCenter} />
+            <Route path="createMysql" component={CreateMysql} />
+            <Route path="createSqlServer" component={CreateSqlServer} />
+            <Route path="createApache" component={CreateApache} />
+            <Route path="createNginx" component={CreateNginx} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));
