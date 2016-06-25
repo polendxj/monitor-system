@@ -289,18 +289,14 @@ var AllCharts = React.createClass({
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
-        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
         VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
     },
-    componentDidUpdate: function () {
-
-    },
     _changeListData: function () {
         this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
-        setTimeout(function () {
+        /*setTimeout(function () {
             var bodyArr = [];
             var id = 10163;
             var startTime = 1466431457;
@@ -310,15 +306,12 @@ var AllCharts = React.createClass({
                 bodyArr.push(obj);
             });
             VirtualMonitorAction.getHistoryDataList(id, bodyArr);
-        }.bind(this), 1000);
-    },
-    _changeHistoryListData: function () {
-        this.setState({historyDataList: VirtualMonitorStore.getHistoryData()});
+        }.bind(this), 1000);*/
     },
     _clickAddItems: function () {
         $("#monitorItemsPanel").slideToggle();
     },
-    _checkBoxClick: function (index) {
+/*    _checkBoxClick: function (index) {
         console.log($("#checkBox" + index).is(':checked'));
         if ($("#checkBox" + index).is(':checked')) {
             var bodyArr = [];
@@ -341,7 +334,7 @@ var AllCharts = React.createClass({
             });
             VirtualMonitorAction.getHistoryDataList(id, bodyArr);
         }
-    },
+    },*/
     _addItems: function (obj) {
         var graph = {
             templateId: this.props.viewData.id,
@@ -358,8 +351,18 @@ var AllCharts = React.createClass({
         var lineChartsGraph = [];
         var lineChartList = new Array();
         var pieCharts = [];
-        console.log(this.state.historyDataList);
+        var lineChartsArray=[];
+        var bodyArr = new Array();
         if (this.state.graphItemList.length > 0) {
+            this.state.graphItemList.forEach(function (graphItem, index){
+                if(graphItem.graphType==1){
+                    lineChartsArray.push(index);
+                    var startTime = 1466431457;
+                    var endTime = 1466641498;
+                    var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
+                    bodyArr.push(body);
+                }
+            });
             this.state.graphItemList.forEach(function (graphItem, index) {
                 switch (graphItem.graphType) {
                     case 0://pie
@@ -369,45 +372,21 @@ var AllCharts = React.createClass({
                     case 1://line
                         //var convertDataType=monitorItems[that.props.viewData.type][graphItem.name].convertDataType;
                         //console.log(convertDataType);
-                        var chartViewData = new Array();
-                        chartViewData[0] = {name: '', min: '最小值', avg: '平均值', max: '最大值'};
-                        if (that.state.historyDataList.length > 0 && that.state.historyDataList.length == that.state.graphItemList.length) {
-                            if(typeof (that.state.historyDataList[index])!="undefined"){
-                                for (var i = 0; i < that.state.historyDataList[index].length; i++) {
-                                    var dataList = that.state.historyDataList[index][i]['data'];
-                                    lineChartData.series = new Array();
-                                    var dataArr = new Array();
-                                    if (typeof (dataList[0].clock) == "number" && typeof (dataList[dataList.length - 1].clock) == "number") {
-                                        var timeDifference = Math.round((dataList[dataList.length - 1].clock - dataList[0].clock));
-                                        lineChartData.xAxis.tickInterval = GlobalUtils.getTickInterval(timeDifference);
-                                    }
-                                    for (var j = 0; j < dataList.length; j++) {
-                                        dataList[j].clock = GlobalUtils.toDateUTC(dataList[j].clock);
-                                        dataList[j].value = GlobalUtils.convertGraphData("memory", dataList[j].value);
-                                        var data = [dataList[j].clock, dataList[j].value];
-                                        dataArr[j] = data;
-                                    }
-                                    lineChartData.series[i] = $.extend({},{name: graphItem.name, data: dataArr});
-                                    chartViewData[i + 1] = {
-                                        name: graphItem.name,
-                                        min: GlobalUtils.convertGraphData("memory", that.state.historyDataList[index][i]['metricData'].min),
-                                        avg: GlobalUtils.convertGraphData("memory", that.state.historyDataList[index][i]['metricData'].avg),
-                                        max: GlobalUtils.convertGraphData("memory", that.state.historyDataList[index][i]['metricData'].max)
-                                    };
-                                }
-                            }
-                            lineChartData.title.text = graphItem.name;
+                        //var convertAndSeriesType=monitorItems[that.props.viewData.type][graphItem.name].seriesType;
+                        var id = 10163;
+                        var startTime = 1466431457;
+                        var endTime = 1466641498;
+                        var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                             lineChartList[index] = $.extend({},lineChartData);
-                            lineChartsGraph.push(<LineCharts index={index} _checkBoxClick={that._checkBoxClick}
+                            lineChartsGraph.push(<LineCharts index={index}
                                                              key={index}
                                                              data={lineChartList[index]} title={"vm:127.0.0.1"}
-                                                             dataTitle={graphItem.name} viewData={chartViewData}
-                                                             items={graphItem.items}/>);
-                        }
+                                                             dataTitle={graphItem.name } lineChartsArray={lineChartsArray}
+                                                             items={graphItem.items} id={id} bodyArr={bodyArr}/>);
+
                         break;
                 }
             });
-            console.log(lineChartList);
         }
         if (this.state.graphItemList.length == 0) {
             showChart = <div className="col-sm-12 col-md-12 col-lg-12"
@@ -444,7 +423,8 @@ var MonitorItemsEdit = React.createClass({
             enableSelectAll: false,
             deselectOnClickaway: false,
             showCheckboxes: false,
-            height: ''
+            height: '',
+            showFlags:[]
         })
     },
     _addItems: function (row) {
@@ -465,6 +445,7 @@ var MonitorItemsEdit = React.createClass({
     _isExist: function (row) {
         this.props.graphItemList.forEach(function (graphItem) {
             if (row.name == graphItem.name) {
+                console.log(row.name==graphItem.name);
                 return true;
             }
         });

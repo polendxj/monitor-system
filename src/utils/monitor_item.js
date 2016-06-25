@@ -9,8 +9,9 @@ monitorItems=
                     "'vmware.hv.hw.cpu.threads[{$URL},{HOST.HOST}]'"
                     /*"vmware.hv.cpu.usage[{$URL},{HOST.HOST}]"*/
                 ],
-                graphType:0,
-                convertDataType:"memory"
+                graphType:1,
+                convertDataType:"memory",
+                seriesType:'area'  //面积图
             },
             "内存使用率":{
                 items:[
@@ -19,7 +20,8 @@ monitorItems=
                     "'vmware.hv.memory.used[{$URL},{HOST.HOST}]'"*/
                 ],
                 graphType:1,
-                convertDataType:"memory"
+                convertDataType:"memory",
+                seriesType:'area'  //面积图
             }
 
         },
