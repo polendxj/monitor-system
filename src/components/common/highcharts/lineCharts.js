@@ -134,17 +134,21 @@ var LineCharts = React.createClass({
                     /*                for(var i=0;i<historyDataArr.length;i++){
                      var historyData=historyDataArr[i];*/
                     var dataList = historyData['data'];
-                    var dataArr = new Array();
-                    if (typeof (dataList[0].clock) == "number" && typeof (dataList[dataList.length - 1].clock) == "number") {
-                        var timeDifference = Math.round((dataList[dataList.length - 1].clock - dataList[0].clock));
-                        lineChartData.xAxis.tickInterval = GlobalUtils.getTickInterval(timeDifference);
+                    console.log(dataList);
+                    var dataArr=new Array();
+                    if(dataList.length>0){
+                        if (typeof (dataList[0].clock) == "number" && typeof (dataList[dataList.length - 1].clock) == "number") {
+                            var timeDifference = Math.round((dataList[dataList.length - 1].clock - dataList[0].clock));
+                            lineChartData.xAxis.tickInterval = GlobalUtils.getTickInterval(timeDifference);
+                        }
+                        for (var j = 0; j < dataList.length; j++) {
+                            var x = GlobalUtils.toDateUTC(dataList[j].clock);
+                            var y = GlobalUtils.convertGraphData(convertDataType, dataList[j].value);
+                            var data = [x, y];
+                            dataArr[j] = data;
+                        }
                     }
-                    for (var j = 0; j < dataList.length; j++) {
-                        var x = GlobalUtils.toDateUTC(dataList[j].clock);
-                        var y = GlobalUtils.convertGraphData(convertDataType, dataList[j].value);
-                        var data = [x, y];
-                        dataArr[j] = data;
-                    }
+
                     console.log(MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase());
                     var name=monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].name[index];
                     var seriesType=monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].seriesType[index];
