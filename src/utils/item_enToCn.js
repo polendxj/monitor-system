@@ -364,6 +364,29 @@ enToCn_data = {
             priority: 5,
             type: "memory"
         },
+        "perf_counter[\"\\SQLServer:Memory Manager\\Total Server Memory (KB)\"]": {
+            key: "perf_counter[\"\\SQLServer:Memory Manager\\Total Server Memory (KB)\"]",
+            name: "SQL Default Instance:Memory:Total Server Memory",
+            name_cn: "总内存",
+            position: "center",
+            type: "memory",
+            priority: 1,
+        },
+        "perf_counter[\"\\SQLServer:Memory Manager\\Connection Memory (KB)\"]": {
+            key: "perf_counter[\"\\SQLServer:Memory Manager\\Connection Memory (KB)\"]",
+            name: "SQL Default Instance:Memory:Connection Memory",
+            name_cn: "连接内存",
+            position: "center",
+            priority: 2,
+        },
+        "perf_counter[\"\\SQLServer:Memory Manager\\Granted Workspace Memory (KB)\"]": {
+            key: "perf_counter[\"\\SQLServer:Memory Manager\\Granted Workspace Memory (KB)\"]",
+            name: "SQL Default Instance:Memory:Granted Workspace Memory",
+            name_cn: "Workspace 内存",
+            position: "center",
+            type: "memory",
+            priority: 3,
+        },
         internalPriority: 3
     },
     "磁盘": {
@@ -489,6 +512,9 @@ enToCn_data = {
             position: "center",
             priority: 9,
         },
+        internalPriority: 3
+    },
+    "Innodb操作": {
         "mysql.status[Innodb_rows_inserted]": {
             key: "mysql.status[Innodb_rows_inserted]",
             name: "MySQL innodb rows inserted per second",
@@ -555,7 +581,7 @@ enToCn_data = {
             position: "center",
             priority: 5,
         },
-        "mysql.status[Com_insert]": {
+        "MySQL-Innodb buffer pool pages misc": {
             key: "MySQL-Innodb buffer pool pages misc",
             name: "mysql.status[Innodb_buffer_pool_pages_misc]",
             name_cn: "Misc Pages",
@@ -593,6 +619,13 @@ enToCn_data = {
             position: "center",
             priority: 2,
         },
+        "perf_counter[\"\\SQLServer:General Statistics\\User Connections\"]": {
+            key: "perf_counter[\"\\SQLServer:General Statistics\\User Connections\"]",
+            name: "SQL Default Instance:Number Users Connected",
+            name_cn: "用户连接数",
+            position: "center",
+            priority: 2,
+        },
         internalPriority: 3
     },
     "存储": {
@@ -615,6 +648,14 @@ enToCn_data = {
             key: "perf_counter[\"\\SQLServer:Databases(_Total)\\Log File(s) Size (KB)\"]",
             name: "SQL Default Instance:Log File Size",
             name_cn: "日志文件大小",
+            position: "center",
+            type: "memory",
+            priority: 3,
+        },
+        "perf_counter[\"\\SQLServer:Buffer Manager\\Page Life Expectancy\"]": {
+            key: "perf_counter[\"\\SQLServer:Buffer Manager\\Page Life Expectancy\"]",
+            name: "SQL Default Instance:Page Life Expectancy",
+            name_cn: "页面平均寿命",
             position: "center",
             type: "memory",
             priority: 3,
@@ -668,6 +709,13 @@ enToCn_data = {
             position: "center",
             priority: 3,
         },
+        "perf_counter[\"\\SQLServer:SQL Errors(_Total)\\Errors/sec\"]": {
+            key: "perf_counter[\"\\SQLServer:SQL Errors(_Total)\\Errors/sec\"]",
+            name: "SQL Default Instance:SQL Errors per second",
+            name_cn: "SQL错误数",
+            position: "center",
+            priority: 3,
+        },
         internalPriority: 3
     },
     "事务": {
@@ -692,6 +740,70 @@ enToCn_data = {
             name_cn: "失败Job数",
             position: "center",
             priority: 3,
+        },
+        internalPriority: 3,
+    },
+    "进程": {
+        "perf_counter[\"\\Process(sqlservr)\\% Processor Time\"]": {
+            key: "perf_counter[\"\\Process(sqlservr)\\% Processor Time\"]",
+            name: "SQL Default Instance:Processor:% sqlservr",
+            name_cn: "Sqlservr",
+            position: "center",
+            priority: 1,
+        },
+        "perf_counter[\"\\Processor(_Total)\\% Processor Time\"]": {
+            key: "perf_counter[\"\\Processor(_Total)\\% Processor Time\"]",
+            name: "SQL Default Instance:Processor:% Total Time",
+            name_cn: "总时间",
+            position: "center",
+            type: "timestamp",
+            priority: 2,
+        },
+        "perf_counter[\"\\Processor(_Total)\\% User Time\"]": {
+            key: "perf_counter[\"\\Processor(_Total)\\% User Time\"]",
+            name: "SQL Default Instance:Processor:% User Time",
+            name_cn: "用户时间",
+            position: "center",
+            type: "timestamp",
+            priority: 3,
+        },
+        internalPriority: 3,
+    },
+    "服务状态": {
+        "service_state[MSSQLServerOLAPService]": {
+            key: "service_state[MSSQLServerOLAPService]",
+            name: "SQL Default Instance:Service State:Analysis Services",
+            name_cn: "Analysis Services",
+            position: "center",
+            priority: 1,
+        },
+        "service_state[MSDtsServer]": {
+            key: "service_state[MSDtsServer]",
+            name: "SQL Default Instance:Service State:Integration Services",
+            name_cn: "Integration Services",
+            position: "center",
+            priority: 2,
+        },
+        "service_state[ReportServer]": {
+            key: "service_state[ReportServer]",
+            name: "SQL Default Instance:Service State:Reporting Services",
+            name_cn: "Reporting Services",
+            position: "center",
+            priority: 3,
+        },
+        "service_state[SQLServerAgent]": {
+            key: "service_state[SQLServerAgent]",
+            name: "SQL Default Instance:Service State:SQL Agent",
+            name_cn: "SQL Agent",
+            position: "center",
+            priority: 4,
+        },
+        "service_state[MSSQLSERVER]": {
+            key: "service_state[MSSQLSERVER]",
+            name: "SQL Default Instance:Service State:SQL Server",
+            name_cn: "SQL Server",
+            position: "center",
+            priority: 5,
         },
         internalPriority: 3,
     },
