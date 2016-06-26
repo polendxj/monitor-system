@@ -296,6 +296,7 @@ var Button = React.createClass({
                 case 232:
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createMysql");
+                    break;
                 case 233:
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createSqlServer");
@@ -312,6 +313,7 @@ var Button = React.createClass({
                     o = {id: obj.id, name: "创建用户"};
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createUser");
+                    break;
             }
         } else if (type == 5) {
             $("#monitorItemsPanel").slideToggle();

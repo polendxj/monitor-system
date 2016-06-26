@@ -16,6 +16,8 @@ var DatabasesAction = require("../../../actions/DatabasesAction");
 var DatabaseStore = require("../../../stores/DatabaseStore");
 var AppServiceAction = require("../../../actions/AppServiceAction");
 var AppServiceStore = require("../../../stores/AppServiceStore");
+var AlarmAction = require("../../../actions/AlarmAction");
+var AlarmStore = require("../../../stores/AlarmStore");
 var Pagination = require("../Paganation");
 var Loading = require("../CommonComponent").Loading;
 var GlobalUtils = require("../../../utils/GlobalUtils");
@@ -454,7 +456,7 @@ var MysqlList = React.createClass({
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
         if (confirm("确定要删除该数据吗?")) {
-            DatabasesAction.deleteDatabase(id,'mysql',0);
+            DatabasesAction.deleteDatabase(id, 'mysql', 0);
         }
     },
     render: function () {
@@ -591,7 +593,7 @@ var SqlserverList = React.createClass({
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
         if (confirm("确定要删除该数据吗?")) {
-            DatabasesAction.deleteDatabase(id,'sqlserver',0);
+            DatabasesAction.deleteDatabase(id, 'sqlserver', 0);
         }
     },
     render: function () {
@@ -706,7 +708,7 @@ var ApacheList = React.createClass({
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeApacheList, this._changeListData);
         setTimeout(function () {
             AppServiceAction.getApacheList("apache", 0);
-        },1);
+        }, 1);
     },
     componentWillUnmount: function () {
         DatabaseStore.removeChangeListener(AppServiceStore.events.ChangeApacheList, this._changeListData);
@@ -729,7 +731,7 @@ var ApacheList = React.createClass({
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
         if (confirm("确定要删除该数据吗?")) {
-            AppServiceAction.deleteAppService(id,'apache',0);
+            AppServiceAction.deleteAppService(id, 'apache', 0);
         }
     },
     render: function () {
@@ -844,7 +846,7 @@ var NginxList = React.createClass({
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeNginxList, this._changeListData);
         setTimeout(function () {
             AppServiceAction.getNginxList("nginx", 0);
-        },1);
+        }, 1);
     },
     componentWillUnmount: function () {
         DatabaseStore.removeChangeListener(AppServiceStore.events.ChangeNginxList, this._changeListData);
@@ -867,7 +869,7 @@ var NginxList = React.createClass({
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
         if (confirm("确定要删除该数据吗?")) {
-            AppServiceAction.deleteAppService(id,'nginx',0);
+            AppServiceAction.deleteAppService(id, 'nginx', 0);
         }
     },
     render: function () {
@@ -984,7 +986,7 @@ var HypervisorConfig = React.createClass({
     saveAlarmLine: function (tplTriggerId, params, status, idx) {
         var obj = {};
         var count = 0;
-        if(params){
+        if (params) {
             for (param in JSON.parse(params)) {
                 obj[param] = $("#alarm" + idx + "sub" + (count++)).val();
             }
@@ -1023,15 +1025,17 @@ var HypervisorConfig = React.createClass({
                     );
                 }.bind(this));
             } else {
-                refreshData = <tr><td colSpan="5"><NoData text={"不存在任何监控项"}/></td></tr>
+                refreshData = <tr>
+                    <td colSpan="5"><NoData text={"不存在任何监控项"}/></td>
+                </tr>
             }
             if (this.props.configData[1].length > 0) {
                 this.props.configData[1].forEach(function (val, key) {
-                    var defaultsValue=[];
-                    var dv="";
-                    if(val.defaultValues){
-                        dv=JSON.parse(val.defaultValues);
-                        for(item in dv){
+                    var defaultsValue = [];
+                    var dv = "";
+                    if (val.defaultValues) {
+                        dv = JSON.parse(val.defaultValues);
+                        for (item in dv) {
                             defaultsValue.push(dv[item]);
                         }
                     }
@@ -1044,7 +1048,8 @@ var HypervisorConfig = React.createClass({
                                     if (str != "*") {
                                         return str;
                                     } else {
-                                        return <ToolBar.TextOfNoTips value={defaultsValue[alarmSubCount]} key={"alarm"+key+"sub"+key}
+                                        return <ToolBar.TextOfNoTips value={defaultsValue[alarmSubCount]}
+                                                                     key={"alarm"+key+"sub"+key}
                                                                      idx={"alarm"+key+"sub"+(alarmSubCount++)}/>;
                                     }
                                 })}
@@ -1052,22 +1057,26 @@ var HypervisorConfig = React.createClass({
                             <td>{GlobalUtils.analysisAlarmParams(val.params)}</td>
                             <td style={{textAlign:"center",color:val.status==0?"red":"green"}}>{val.status == 0 ? "已禁用" : "监控中"}</td>
                             <td style={{textAlign:"center"}}>
-                                {val.params?<button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
-                                        disabled={false}
-                                        onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,val.status,key)}>
+                                {val.params ? <button type="button" className="btn btn-xs btn-success btn-rad btn-trans"
+                                                      disabled={false}
+                                                      onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,val.status,key)}>
                                     保存
-                                </button>:""}
+                                </button> : ""}
                                 {val.status == 0 ?
-                                    <button onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,1,key)} type="button" className="btn btn-xs btn-success btn-rad btn-trans">
+                                    <button onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,1,key)}
+                                            type="button" className="btn btn-xs btn-success btn-rad btn-trans">
                                         启用</button> :
-                                    <button onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,0,key)} type="button" className="btn btn-xs btn-danger btn-rad btn-trans">
+                                    <button onClick={this.saveAlarmLine.bind(this,val.tplTriggerId,val.params,0,key)}
+                                            type="button" className="btn btn-xs btn-danger btn-rad btn-trans">
                                         禁用</button>}
                             </td>
                         </tr>
                     );
                 }.bind(this));
             } else {
-                alarmConfig = <tr><td colSpan="5"><NoData text={"不存在任何告警阈值设置项"}/></td></tr>
+                alarmConfig = <tr>
+                    <td colSpan="5"><NoData text={"不存在任何告警阈值设置项"}/></td>
+                </tr>
             }
             return (
                 <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
@@ -1114,6 +1123,82 @@ var HypervisorConfig = React.createClass({
     }
 });
 
+var AlarmOfMessage = React.createClass({
+    getInitialState: function () {
+        return {
+            key: 1,
+            isLoading: true,
+            alarmMessageData: []
+        };
+    },
+    handleSelect(key) {
+        this.setState({key});
+    },
+    changeAlarmMessageList: function () {
+        this.setState({isLoading: false, alarmMessageData: AlarmStore.getAlarmMessageData()});
+    },
+    componentDidMount: function () {
+        AlarmStore.addChangeListener(AlarmStore.events.ChangeAlarmMessageList, this.changeAlarmMessageList);
+        AlarmAction.getAlarmMessageList();
+    },
+    componentWillUnmount: function () {
+        AlarmStore.removeChangeListener(AlarmStore.events.ChangeAlarmMessageList, this.changeAlarmMessageList);
+    },
+    componentDidUpdate: function () {
+        $(".tab-content").css("padding", 0);
+        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    },
+    render: function () {
+        if (!this.state.isLoading) {
+            var rs=[];
+            if(this.state.alarmMessageData.length>0){
+                this.state.alarmMessageData.forEach(function (val,key) {
+                    rs.push(
+                        <tr>
+                            <td>{val.servername}</td>
+                            <td style={{textAlign:"center"}}>{GlobalUtils.timestampToTimeText(val.createTime)}</td>
+                            <td style={{textAlign:"center",color:GlobalUtils.alarmLevelColor(val.severity)}} >{val.severity}</td>
+                            <td>{val.issue}</td>
+                        </tr>
+                    );
+                });
+            }else{
+                rs=[<tr><td colSpan="5"><NoData /></td></tr>];
+            }
+            return (
+                <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                      style={{padding:"0"}}>
+                    <Tab eventKey={1} title="告警消息" style={{padding:"0"}}>
+                        <Table responsive style={{margin:"0"}}>
+                            <thead>
+                            <tr>
+                                <th>监控项目</th>
+                                <th style={{textAlign:"center"}}>告警时间</th>
+                                <th style={{textAlign:"center"}}>告警级别</th>
+                                <th >消息内容</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {rs}
+                            </tbody>
+                        </Table>
+                    </Tab>
+
+                </Tabs>
+            )
+        } else {
+            return (
+                <Loading />
+            )
+        }
+
+    }
+});
+
 module.exports = {
     VCenterList,
     HypervisorList,
@@ -1122,5 +1207,6 @@ module.exports = {
     SqlserverList,
     HypervisorConfig,
     ApacheList,
-    NginxList
+    NginxList,
+    AlarmOfMessage
 };
