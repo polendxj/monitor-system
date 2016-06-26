@@ -23,11 +23,11 @@ var AppServiceAction = {
             jsonObject: obj
         })
     },
-    deleteAppService: function (id, type, page) {
+    deleteAppService: function (id, url, page) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.DeleteAppService,
             id: id,
-            type:type,
+            url:url,
             page:page
         })
     }

@@ -95,8 +95,9 @@ for (var endpoint in APIEndpoints) {
              return jQuery.ajax(ajaxOpt).then(callback).then(null, failed);
              }*/
             DELETE: function (id, callback, params, error) {
-                var url = urlBuilder(APIEndpoints[endpoint], params);
+                var url = APIEndpoints[endpoint];
                 if (id) url += id + "/";
+                url = urlBuilder(url, params);
                 var ajaxOpt = assign({}, this.ajaxOpt, {
                     url: url,
                     type: "DELETE"

@@ -27,6 +27,41 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
             WebSiteStore.emitChange(WebSiteStore.events.ChangeHttpList);
         });
     },
+    createHttp: function (obj) {
+        ResourceUtils.WEB_SITE_CREATE.POST(obj, "", function () {
+
+        }, function (resp) {
+
+            if (resp.status == 200) {
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
+    deleteHttp: function (id,url,page) {
+        var body={
+            "name": "akka",
+            "steps": [
+                {
+                    "name": "akka",
+                    "url": "http://akka.io/",
+                    "status_codes": 200,
+                    "no": 1
+                }
+            ]
+        };
+        ResourceUtils.WEB_SITE_DELETE.DELETE(id, function (resp) {
+
+        }, body, function (resp) {
+            if (resp.status == 200) {
+                WebSiteStore.getHttpList(url, page);
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
     getHttpData: function () {
         return httpList;
     },
@@ -48,6 +83,12 @@ AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeHttpList:
             WebSiteStore.getHttpList(action.url, action.page);
+            break;
+        case MonitorConstants.CreateHttp:
+            WebSiteStore.createHttp(action.jsonObject);
+            break;
+        case MonitorConstants.DeleteHttp:
+            WebSiteStore.deleteHttp(action.id,action.url,action.page);
             break;
         default:
             break;

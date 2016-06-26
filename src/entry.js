@@ -16,12 +16,14 @@ var ConfigurationPage = require('./components/common/Configuration/Configuration
 var CreateVCenterModal = require('./components/common/VCenter/createVCenterModal');
 var UserList = require('./components/common/SystemConfig/UserConfig/UserList');
 var CreateUser = require('./components/common/SystemConfig/UserConfig/CreateUser');
+var UpdateUser = require('./components/common/SystemConfig/UserConfig/updateUser');
 var UpdatePwd = require('./components/common/SystemConfig/UserConfig/UpdatePwd');
 var UpdateVCenter = require('./components/common/VCenter/EditVCenter');
 var CreateMysql = require('./components/common/CreateObj/CreateMysql');
 var CreateSqlServer = require('./components/common/CreateObj/CreateSqlServer');
 var CreateNginx = require('./components/common/CreateObj/CreateNginx');
 var CreateApache = require('./components/common/CreateObj/CreateApache');
+var CreateHttp = require('./components/common/CreateObj/CreateHttp');
 
 require('../static/maxent.min.js');
 
@@ -58,6 +60,8 @@ ReactDOM.render((
             <Route path="createSqlServer" component={CreateSqlServer} />
             <Route path="createApache" component={CreateApache} />
             <Route path="createNginx" component={CreateNginx} />
+            <Route path="createHttp" component={CreateHttp} />
+            <Route path="updateUser" component={UpdateUser} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));

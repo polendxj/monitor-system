@@ -42,7 +42,9 @@ var VCenterList = React.createClass({
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterList, this._changeListData);
-        VirtualMonitorAction.getVCenterList();
+        setTimeout(function () {
+            VirtualMonitorAction.getVCenterList();
+        },1);
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVCenterList, this._changeListData);
@@ -68,7 +70,7 @@ var VCenterList = React.createClass({
     _edit: function (index) {
         MenuAction.changeBreadcrumb(4, {id: 30001, name: "编辑"});
         VirtualMonitorStore.setEditVcenterData(this.state.listData[index]);
-        browserHistory.push("/updateVCenter");
+        browserHistory.push("/updateVcenter");
     },
     render: function () {
         if (this.state.isLoading) {
@@ -1011,7 +1013,7 @@ var HttpWebList = React.createClass({
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
         if (confirm("确定要删除该数据吗?")) {
-            AppServiceAction.deleteAppService(id, 'nginx', 0);
+            WebSiteAction.deleteHttp(id, "", 0);
         }
     },
     render: function () {
@@ -1147,14 +1149,21 @@ var UsersList = React.createClass({
         UsersAction.getUsersList("", page);
     },
     _delete: function (index) {
-        var id = this.state.listData.content[index].hostid;
+        var id = this.state.usersData.content[index].userid;
+        var body = {"username": "Admin", "password": "zabbix"};
         if (confirm("确定要删除该数据吗?")) {
-            AppServiceAction.deleteAppService(id, 'nginx', 0);
+            UsersAction.deleteUser(id, body ,"", 0);
         }
+    },
+    _edit: function (index) {
+        MenuAction.changeBreadcrumb(4, {id: 30001, name: "编辑"});
+        UsersStore.setEditUserData(this.state.usersData.content[index]);
+        browserHistory.push("/updateUser");
     },
     render: function () {
         if (!this.state.isLoading) {
             var rs = [];
+            var that = this;
             if (this.state.usersData.content.length > 0) {
                 this.state.usersData.content.forEach(function (val, key) {
                     rs.push(
@@ -1162,7 +1171,12 @@ var UsersList = React.createClass({
                             <td style={{textAlign:"left"}}>{val.name}</td>
                             <td style={{textAlign:"center"}}>{val.type == 2 ? "管理员" : "超级管理员"}</td>
                             <td style={{textAlign:"center"}}>
-
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans"
+                                        onClick={that._edit.bind(that,key)}>编辑
+                                </button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                        onClick={that._delete.bind(that,key)}>删除
+                                </button>
                             </td>
                         </tr>
                     );

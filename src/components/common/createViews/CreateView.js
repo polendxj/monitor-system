@@ -75,7 +75,7 @@ var Content = React.createClass({
                 <div>
                     <div style={{display:this.state.succTip?"none":"block"}}>
                         <Form horizontal>
-                            <FormGroup controlId="formHostName" validationState={this.state.helpState?"error":""}>
+                            <FormGroup controlId="formHostName" validationState={this.state.helpState?"error":"default"}>
                                 <Col componentClass={ControlLabel} sm={1}>
                                     名称
                                 </Col>

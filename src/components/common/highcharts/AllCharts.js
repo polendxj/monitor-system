@@ -292,7 +292,9 @@ var AllCharts = React.createClass({
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
-        VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
+        setTimeout(function () {
+            VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
+        },1)
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);

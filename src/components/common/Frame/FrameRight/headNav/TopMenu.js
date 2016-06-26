@@ -579,7 +579,7 @@ menus = [
                 url: '',
                 secondLayer: [
                     {
-                        id:311,
+                        id:321,
                         name: '故障历史',
                         icon: '',
                         count:12,

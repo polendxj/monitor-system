@@ -9,6 +9,20 @@ var AppServiceAction = {
             url: url,
             page: page
         })
+    },
+    createHttp: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateHttp,
+            jsonObject: obj
+        })
+    },
+    deleteHttp: function (id, url, page) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.DeleteHttp,
+            id: id,
+            url:url,
+            page:page
+        })
     }
 };
 

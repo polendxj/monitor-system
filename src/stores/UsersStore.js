@@ -16,6 +16,7 @@ var MenuAction = require('../actions/MenuAction');
 var AppStore = require('../stores/AppStore');
 
 var users = [];
+var editUser={};
 var UsersStore = assign({}, EventEmitter.prototype, {
     getUserList: function (name, page) {
         ResourceUtils.USERS_LIST.GET({
@@ -26,6 +27,50 @@ var UsersStore = assign({}, EventEmitter.prototype, {
             users = json;
             UsersStore.emitChange(UsersStore.events.ChangeUsersList);
         });
+    },
+    createUser: function (obj) {
+        ResourceUtils.USER_CREATE.POST(obj, "", function () {
+
+        }, function (resp) {
+
+            if (resp.status == 200) {
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
+    updateUser: function (id,obj) {
+        ResourceUtils.USER_UPDATE.PUT2(id, obj,"", function (resp) {
+
+        }, function (resp) {
+            if (resp.status == 200) {
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    deleteUser: function (id,obj,name,page) {
+        ResourceUtils.USER_DELETE.DELETE(id, function (resp) {
+
+        }, obj, function (resp) {
+            if (resp.status == 200) {
+                UsersStore.getUserList(name, page);
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
+    setEditUserData: function (obj) {
+        editUser['userid'] = obj.userid;
+        editUser['username'] = obj.name;
+        editUser['type'] = obj.type;
+    },
+    getEditUserData: function () {
+        return editUser;
     },
     getUsersData: function () {
         return users;
@@ -48,6 +93,15 @@ AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeUsersList:
             UsersStore.getUserList(action.name, action.page);
+            break;
+        case MonitorConstants.CreateUser:
+            UsersStore.createUser(action.jsonObject);
+            break;
+        case MonitorConstants.UpdateUser:
+            UsersStore.updateUser(action.id,action.jsonObject);
+            break;
+        case MonitorConstants.DeleteUser:
+            UsersStore.deleteUser(action.id,action.jsonObject,action.name,action.page);
             break;
         default:
             break;

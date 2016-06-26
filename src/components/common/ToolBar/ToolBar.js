@@ -309,6 +309,10 @@ var Button = React.createClass({
                     MenuAction.changeBreadcrumb(4, o);
                     browserHistory.push("/createNginx");
                     break;
+                case 251:
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createHttp");
+                    break;
                 case 612:
                     o = {id: obj.id, name: "创建用户"};
                     MenuAction.changeBreadcrumb(4, o);

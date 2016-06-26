@@ -18,8 +18,9 @@ var Breadcrumb = require("react-bootstrap").Breadcrumb;
 var MenuAction = require('../../../../actions/MenuAction');
 var MenuStore = require('../../../../stores/MenuStore');
 var UsersAction = require('../../../../actions/UsersAction');
+var UsersStore = require('../../../../stores/UsersStore');
 
-var CreateUser = React.createClass({
+var UpdateUser = React.createClass({
     render: function () {
         return (
             <div style={{backgroundColor:"white",padding:"3px 0 30px 0"}}>
@@ -37,23 +38,29 @@ var Content = React.createClass({
     getInitialState: function () {
         return ({
             roleList: [
-                {id: 0, type: 1, roleName: "超级管理员"},
+                {id: 0, type: 3, roleName: "超级管理员"},
                 {id: 1, type: 2, roleName: "普通管理员"}
             ],
+            editData:UsersStore.getEditUserData(),
             helpState:false
         })
     },
     _click: function () {
+        console.log(this.state.editData);
         var userData={};
         var password=ReactDOM.findDOMNode(this.refs.password).value;
         var confirmPassword=ReactDOM.findDOMNode(this.refs.confirmPassword).value;
         var username=ReactDOM.findDOMNode(this.refs.username).value;
         var type=ReactDOM.findDOMNode(this.refs.type).value;
+        var id = this.state.editData.userid;
         userData['username']=username;
         userData['type']=type;
-        userData['password']=password;
+        if(password!=""&&password!=null){
+            userData['password']=password;
+        }
         if(!this.state.helpState){
-            UsersAction.createUser(userData);
+            console.log(userData);
+            UsersAction.updateUser(id,userData);
         }
     },
     _blur: function () {
@@ -80,7 +87,7 @@ var Content = React.createClass({
                             用户名:
                         </Col>
                         <Col sm={2}>
-                            <FormControl controlId="userName" ref="username"/>
+                            <FormControl controlId="userName" ref="username" defaultValue={this.state.editData.username}/>
                         </Col>
                     </FormGroup>
                     <FormGroup>
@@ -88,7 +95,7 @@ var Content = React.createClass({
                             权限:
                         </Col>
                         <Col sm={2}>
-                            <FormControl componentClass="select" ref="type">
+                            <FormControl componentClass="select" ref="type" defaultValue={this.state.editData.type}>
                                 {roleSelect}
                             </FormControl>
                         </Col>
@@ -125,4 +132,4 @@ var Content = React.createClass({
     }
 });
 
-module.exports = CreateUser;
+module.exports = UpdateUser;

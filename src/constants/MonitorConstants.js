@@ -14,6 +14,9 @@ var MonitorConstants = keyMirror({
     GetVmList: null,
     GetHistoryDataList: null,
     CreateVCenter: null,
+    CreateUser:null,
+    UpdateUser:null,
+    DeleteUser:null,
     CreateDatabase: null,
     CreateGraphTemplate: null,
     CreateGraphItem: null,
@@ -37,6 +40,8 @@ var MonitorConstants = keyMirror({
     DeleteAppService: null,
     ChangeAlarmMessageList: null,
     ChangeHttpList: null,
+    CreateHttp:null,
+    DeleteHttp:null,
     ChangeUsersList: null
 });
 
