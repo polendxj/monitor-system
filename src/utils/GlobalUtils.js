@@ -6,7 +6,7 @@ var EventEmitter = require('events').EventEmitter;
 require('./item_enToCn');
 
 var oldPriority = [];
-var selectedTimes=[];
+var selectedTimes = [];
 var GlobalUtils = assign({}, EventEmitter.prototype, {
     text2Time: function (text) {
         var times = [];
@@ -61,7 +61,7 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
             case "自定义":
                 break;
         }
-        selectedTimes=times;
+        selectedTimes = times;
         return times;
     },
     getTimes: function () {
@@ -287,8 +287,8 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
     analysisAlarmParams: function (params) {
         var rs = "";
         var count = 1;
-        if(params){
-            var p=JSON.parse(params);
+        if (params) {
+            var p = JSON.parse(params);
             for (item in p) {
                 switch (p[item]) {
                     case "uint":
@@ -298,14 +298,38 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                         rs = rs + "参数" + count + ":大于等于0的整数  ";
                         break;
                     default:
-                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substring(p[item].indexOf("_")+"  ");
+                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substring(p[item].indexOf("_") + "  ");
                         break;
                 }
             }
-        }else{
-            rs="无";
+        } else {
+            rs = "无";
         }
         return rs;
+    },
+    timestampToTimeText: function (timestamp) {
+        var date = new Date(timestamp * 1000);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var mins = date.getMinutes();
+        return year + "-" + month + "-" + day + " " + hour + ":" + mins;
+    },
+    alarmLevelColor: function (level) {
+        var color = "blue";
+        switch (level) {
+            case "High":
+                color = "red";
+                break;
+            case "Average":
+                color = "#45A2E1";
+                break;
+            case "Warning":
+                color = "orange";
+                break;
+        }
+        return color;
     }
 
 });

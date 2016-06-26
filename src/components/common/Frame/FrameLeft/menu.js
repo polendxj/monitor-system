@@ -100,6 +100,8 @@ var Menus = React.createClass({
                     browserHistory.push("/list");
                     break;
                 case 311: //告警消息
+                    browserHistory.push("/list");
+                    break;
                 case 321: //故障历史
                 case 611:
                     browserHistory.push("/updatePwd");

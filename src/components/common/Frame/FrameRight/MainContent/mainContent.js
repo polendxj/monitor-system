@@ -51,7 +51,7 @@ var MainContent = React.createClass({
                     <MenuTool />
                 </div>
                 <div
-                    style={{height:"47px",display:this.state.breadcrumbDataList.length==4&&this.state.viewData==""?"none":"block"}}>
+                    style={{height:"47px",display:(this.state.breadcrumbDataList.length==4&&this.state.viewData=="") ?"none":"block"}}>
                     <Timestamp />
                     <Form />
                 </div>
@@ -217,6 +217,13 @@ var Form = React.createClass({
                 case 243:
                     formGroup = <div>
                         <ToolBar.Text key={"bar2"} placeholder={"Nginx 名称"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                    </div>;
+                    break;
+                case 311:
+                    formGroup = <div>
+                        <ToolBar.Text key={"bar2"} placeholder={"关键字"}
                                       openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
                                       getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                     </div>;
@@ -419,7 +426,7 @@ var Timestamp = React.createClass({
     },
     render: function () {
         var result = "";
-        if ((this.state.breadcrumbData.length == 4 || this.state.breadcrumbData.length == 5) && this.state.breadcrumbData[3].breadcrumbID == 3) {
+        if (((this.state.breadcrumbData.length == 4 || this.state.breadcrumbData.length == 5) && this.state.breadcrumbData[3].breadcrumbID == 3) || (this.state.breadcrumbData.length == 3 && this.state.breadcrumbData[2].breadcrumbID == 311)) {
             var display = "时间段 : " + this.state.oldSelectedItem + "(" + this.state.timeText[0].value + " 至 " + this.state.timeText[1].value + ")";
             if (this.state.visible) {
                 result = <div><ToolBar.DropdownList onChange={this.onChange} items={this.state.timeItems} noCaret={true}
@@ -522,6 +529,13 @@ var Content = React.createClass({
                 case 243:
                     div = <div>
                         <ObjectList.NginxList />
+
+                        <div style={{clear:"both"}}></div>
+                    </div>;
+                    break;
+                case 311:
+                    div = <div>
+                        <ObjectList.AlarmOfMessage />
 
                         <div style={{clear:"both"}}></div>
                     </div>;

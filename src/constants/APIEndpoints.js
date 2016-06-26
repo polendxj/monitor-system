@@ -24,7 +24,8 @@ var MofaAPIEndpoints = {
     DATABASE_LIST:"/oms/databases/",
     APP_SERVICELIST:"/oms/apps/",
     APP_SERVICE_CREATE:"/oms/app",
-    APP_SERVICE_DELETE:"/oms/app/"
+    APP_SERVICE_DELETE:"/oms/app/",
+    ALARM_MESSAEGE_LIST:"/oms/events/",
 
 };
 
