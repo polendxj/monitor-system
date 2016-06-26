@@ -235,6 +235,13 @@ var Form = React.createClass({
                                       getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
+                case 612:
+                    formGroup = <div>
+                        <ToolBar.Text key={"bar2"} placeholder={"User 名称"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                    </div>;
+                    break;
             }
         } else if (this.state.breadcrumbData.length == 4) {
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -570,6 +577,13 @@ var Content = React.createClass({
                 case 251:
                     div = <div>
                         <ObjectList.HttpWebList />
+
+                        <div style={{clear:"both"}}></div>
+                    </div>;
+                    break;
+                case 612:
+                    div = <div>
+                        <ObjectList.UsersList />
 
                         <div style={{clear:"both"}}></div>
                     </div>;

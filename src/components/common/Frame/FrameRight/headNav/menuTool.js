@@ -309,7 +309,7 @@ var Operator = React.createClass({
                     break;
                 case 612:
                     btnGroup =<div>
-                        <ToolBar.Button label={"创建"} icon={0} tip={"创建用户"}/>
+                        <ToolBar.Button label={"列表"} icon={4} tip={"用户列表"}/>
                     </div>;
                     break;
             }

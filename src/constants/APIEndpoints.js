@@ -26,7 +26,8 @@ var MofaAPIEndpoints = {
     APP_SERVICE_CREATE:"/oms/app",
     APP_SERVICE_DELETE:"/oms/app/",
     ALARM_MESSAEGE_LIST:"/oms/events/",
-    WEB_SITE_LIST:"/oms/webs/"
+    WEB_SITE_LIST:"/oms/webs/",
+    USERS_LIST:"/oms/users"
 
 };
 

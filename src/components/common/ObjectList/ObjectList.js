@@ -18,6 +18,8 @@ var AppServiceAction = require("../../../actions/AppServiceAction");
 var AppServiceStore = require("../../../stores/AppServiceStore");
 var AlarmAction = require("../../../actions/AlarmAction");
 var AlarmStore = require("../../../stores/AlarmStore");
+var UsersAction = require("../../../actions/UsersAction");
+var UsersStore = require("../../../stores/UsersStore");
 var WebSiteAction = require("../../../actions/WebSiteAction");
 var WebSiteStore = require("../../../stores/WebSiteStore");
 var Pagination = require("../Paganation");
@@ -1108,6 +1110,99 @@ var HttpWebList = React.createClass({
     }
 });
 
+var UsersList = React.createClass({
+    getInitialState: function () {
+        return {
+            key: 1,
+            isLoading: true,
+            usersData: [],
+            pages: 0
+        };
+    },
+    handleSelect(key) {
+        this.setState({key});
+    },
+    componentDidMount: function () {
+        UsersStore.addChangeListener(UsersStore.events.ChangeUsersList, this._changeListData);
+        setTimeout(function () {
+            UsersAction.getUsersList("", 0);
+        }, 1);
+    },
+    componentWillUnmount: function () {
+        UsersStore.removeChangeListener(UsersStore.events.ChangeUsersList, this._changeListData);
+    },
+    componentDidUpdate: function () {
+        $(".tab-content").css("padding", 0);
+        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    },
+    _changeListData: function () {
+        this.setState({usersData: UsersStore.getUsersData(), pages: this.state.usersData.totalPages});
+        this.setState({isLoading: false});
+    },
+    _changePage: function (page) {
+        UsersAction.getUsersList("", page);
+    },
+    _delete: function (index) {
+        var id = this.state.listData.content[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
+            AppServiceAction.deleteAppService(id, 'nginx', 0);
+        }
+    },
+    render: function () {
+        if (!this.state.isLoading) {
+            var rs = [];
+            if (this.state.usersData.content.length > 0) {
+                this.state.usersData.content.forEach(function (val, key) {
+                    rs.push(
+                        <tr key={"user"+key}>
+                            <td style={{textAlign:"left"}}>{val.name}</td>
+                            <td style={{textAlign:"center"}}>{val.type == 2 ? "管理员" : "超级管理员"}</td>
+                            <td style={{textAlign:"center"}}>
+
+                            </td>
+                        </tr>
+                    );
+                });
+            } else {
+                rs = [<tr key={"user"+0}>
+                    <td colSpan="5"><NoData /></td>
+                </tr>];
+            }
+            return (
+                <div>
+                    <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                          style={{padding:"0"}}>
+                        <Tab eventKey={1} title="用户列表" style={{padding:"0"}}>
+                            <Table responsive style={{margin:"0"}}>
+                                <thead>
+                                <tr>
+                                    <th style={{textAlign:"left"}}>用户名</th>
+                                    <th style={{textAlign:"center"}}>类型</th>
+                                    <th style={{textAlign:"center"}}>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {rs}
+                                </tbody>
+                            </Table>
+                        </Tab>
+
+                    </Tabs>
+                    <Pagination pages={this.state.pages} _changePage={this._changePage}/>
+                </div>
+            )
+        } else {
+            return (
+                <Loading />
+            )
+        }
+    }
+});
+
 var HypervisorConfig = React.createClass({
     getInitialState: function () {
         return {
@@ -1294,20 +1389,22 @@ var AlarmOfMessage = React.createClass({
     },
     render: function () {
         if (!this.state.isLoading) {
-            var rs=[];
-            if(this.state.alarmMessageData.length>0){
-                this.state.alarmMessageData.forEach(function (val,key) {
+            var rs = [];
+            if (this.state.alarmMessageData.length > 0) {
+                this.state.alarmMessageData.forEach(function (val, key) {
                     rs.push(
-                        <tr>
+                        <tr key={"alarm"+key}>
                             <td>{val.servername}</td>
                             <td style={{textAlign:"center"}}>{GlobalUtils.timestampToTimeText(val.createTime)}</td>
-                            <td style={{textAlign:"center",color:GlobalUtils.alarmLevelColor(val.severity)}} >{val.severity}</td>
+                            <td style={{textAlign:"center",color:GlobalUtils.alarmLevelColor(val.severity)}}>{val.severity}</td>
                             <td>{val.issue}</td>
                         </tr>
                     );
                 });
-            }else{
-                rs=[<tr><td colSpan="5"><NoData /></td></tr>];
+            } else {
+                rs = [<tr>
+                    <td colSpan="5"><NoData /></td>
+                </tr>];
             }
             return (
                 <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
@@ -1349,5 +1446,6 @@ module.exports = {
     ApacheList,
     NginxList,
     AlarmOfMessage,
-    HttpWebList
+    HttpWebList,
+    UsersList
 };

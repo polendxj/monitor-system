@@ -112,7 +112,7 @@ var Menus = React.createClass({
             switch (this.state.subMenus.subMenus.secondLayer1[idx].id) {
                 case 312: //告警通知历史
                 case 612:
-                    browserHistory.push("/userList");
+                    browserHistory.push("/list");
                     break;
             }
         }
