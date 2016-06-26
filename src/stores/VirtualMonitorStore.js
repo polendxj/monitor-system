@@ -20,13 +20,19 @@ var hypervisorList = [];
 var vmList = [];
 var graphItemList = [];
 var vcenterTips = [];
+
 var hypervisorTips = [];
 var hypervisorIDS=[];
 var hypervisorID="";
 
+var vmTips = [];
+var vmIDS=[];
+var vmID="";
+
 var vcenterFilter = "";
 var hypervisorFilter = "";
 var vmsFilter = "";
+
 var graphTemplateList = [];
 var editVcenter = {};
 var configDatas = [];
@@ -36,6 +42,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVCenterList: function () {
         ResourceUtils.VCENTER_LIST.GET("", function (json) {
             vcenterList = json;
+            vcenterTips.splice(0);
             json.forEach(function (item) {
                 vcenterTips.push(item.name);
             });
@@ -65,7 +72,6 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getHypervisorTip: function (text) {
-        var vmsFilter = "";
         ResourceUtils.HYPERVISOR_LIST.GET({
             page: 0,
             pageSize: 10,
@@ -102,6 +108,31 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             vmList = json;
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVmList);
         });
+    },
+    getVMSTip: function (text) {
+        ResourceUtils.VM_LIST.GET({
+            page: 0,
+            pageSize: 10,
+            interfaceIp: "",
+            ip: text
+        }, function (json) {
+            vmTips.splice(0);
+            vmIDS.splice(0);
+            json.content.forEach(function (item) {
+                vmTips.push(item.name);
+                vmIDS.push(item.hostid);
+            });
+            VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVMSTip);
+        });
+    },
+    getVMSTipData: function () {
+        return vmTips;
+    },
+    setVMID: function (idx) {
+        vmID=vmIDS[idx];
+    },
+    getVMID: function () {
+        return vmID;
     },
     getFilter: function () {
         return {
@@ -319,7 +350,8 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeConfigData: "ChangeConfigData",
         ChangeHypervisorTip:"ChangeHypervisorTip",
         StartChartsRender:"StartChartsRender",
-        ChangeMysqlList:"ChangeMysqlList"
+        ChangeMysqlList:"ChangeMysqlList",
+        ChangeVMSTip:"ChangeVMSTip"
     }
 });
 
@@ -372,6 +404,9 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.GetHypervisorTip:
             VirtualMonitorStore.getHypervisorTip(action.text);
+            break;
+        case MonitorConstants.GetVMSTip:
+            VirtualMonitorStore.getVMSTip(action.text);
             break;
         case MonitorConstants.GetConfigData:
             VirtualMonitorStore.getConfigDataList(action.type);

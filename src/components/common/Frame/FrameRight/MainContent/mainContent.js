@@ -17,6 +17,8 @@ var Pagination = require("../../../Paganation");
 
 var MenuAction = require('../../../../../actions/MenuAction');
 var VirtualMonitorAction = require('../../../../../actions/VirtualMonitorAction');
+var DatabasesAction = require('../../../../../actions/DatabasesAction');
+var DatabaseStore = require('../../../../../stores/DatabaseStore');
 var MenuStore = require('../../../../../stores/MenuStore');
 var VirtualMonitorStore = require('../../../../../stores/VirtualMonitorStore');
 
@@ -72,9 +74,13 @@ var Form = React.createClass({
             VCenterDataSource: [],
             HyperVisorDataSource: [],
             VMSDataSource: [],
+            MysqlDataSource: [],
+            SqlserverDataSource: [],
             vcenterFilter: "",
             hypervisorFilter: "",
-            vmsFilter: ""
+            vmsFilter: "",
+            mysqlFilter: "",
+            sqlserverFilter: ""
         })
     },
     onChange: function () {
@@ -87,6 +93,12 @@ var Form = React.createClass({
                     break;
                 case 223:
                     VirtualMonitorAction.getVmList(0, this.state.hypervisorFilter, this.state.vmsFilter);
+                    break;
+                case 232:
+                    DatabasesAction.getMysqlList(this.state.mysqlFilter, "mysql", 0);
+                    break;
+                case 233:
+                    DatabasesAction.getSqlserverList(this.state.sqlserverFilter, "sqlserver", 0);
                     break;
                 case 224:
                     break;
@@ -103,6 +115,25 @@ var Form = React.createClass({
                     }
                     break;
                 case 223:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 232:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 233:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
                     break;
                 case 224:
                     break;
@@ -119,6 +150,25 @@ var Form = React.createClass({
                     }
                     break;
                 case 223:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 232:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 233:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
                     break;
                 case 224:
                     break;
@@ -134,16 +184,31 @@ var Form = React.createClass({
     _hypervisorTipChange: function () {
         this.setState({HyperVisorDataSource: VirtualMonitorStore.getHypervisorTipData()});
     },
+    _vmsTipChange: function () {
+        this.setState({VMSDataSource: VirtualMonitorStore.getVMSTipData()});
+    },
+    _mysqlTipChange: function () {
+        this.setState({MysqlDataSource: DatabaseStore.getMysqlTipData()});
+    },
+    _sqlserverTipChange: function () {
+        this.setState({SqlserverDataSource: DatabaseStore.getSqlserverTipData()});
+    },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHypervisorTip, this._hypervisorTipChange);
+        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVMSTip, this._vmsTipChange);
+        DatabaseStore.addChangeListener(DatabaseStore.events.ChangeMysqlTip, this._mysqlTipChange);
+        DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverTip, this._sqlserverTipChange);
         VirtualMonitorAction.getVCenterTip();
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHypervisorTip, this._hypervisorTipChange);
+        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVMSTip, this._vmsTipChange);
+        DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeMysqlTip, this._mysqlTipChange);
+        DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeSqlserverTip, this._sqlserverTipChange);
 
     },
     _vcenterTextFieldText: function (text) {
@@ -155,9 +220,20 @@ var Form = React.createClass({
         VirtualMonitorAction.getHypervisorTip(text);
 
     },
-    _vmsTextFieldText: function (text) {
-        //this.setState({vmsFilter: text});
-        VirtualMonitorAction.getHypervisorTip(text);
+    _vmsTextFieldText: function (text, idx) {
+        this.setState({vmsFilter: text});
+        VirtualMonitorStore.setVMID(idx);
+        VirtualMonitorAction.getVMSTip(text);
+    },
+    _mysqlTextFieldText: function (text, idx) {
+        this.setState({mysqlFilter: text});
+        DatabaseStore.setMysqlID(idx);
+        DatabaseStore.getMysqlTip("mysql", text);
+    },
+    _sqlserverTextFieldText: function (text, idx) {
+        this.setState({sqlserverFilter: text});
+        DatabaseStore.setSqlserverID(idx);
+        DatabaseStore.getSqlserverTip("sqlserver", text);
     },
     render: function () {
         var formGroup = "";
@@ -182,7 +258,7 @@ var Form = React.createClass({
                         <ToolBar.Text key={"bar2"} placeholder={"Hypervisor IP"}
                                       openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
                                       getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
-                        <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"VM IP"}
+                        <ToolBar.Text key={"bar3"} placeholder={"VM IP"}
                                       openOnFocus={false} dataSource={this.state.VMSDataSource}
                                       getText={this._vmsTextFieldText} onChange={this.onChange}/>
                     </div>;
@@ -196,15 +272,15 @@ var Form = React.createClass({
                 case 232:
                     formGroup = <div>
                         <ToolBar.Text key={"bar2"} placeholder={"Mysql 名称"}
-                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
-                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                                      openOnFocus={true} dataSource={this.state.MysqlDataSource}
+                                      getText={this._mysqlTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 233:
                     formGroup = <div>
                         <ToolBar.Text key={"bar2"} placeholder={"Sqlserver 名称"}
-                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
-                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                                      openOnFocus={false} dataSource={this.state.SqlserverDataSource}
+                                      getText={this._sqlserverTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 241:
@@ -268,8 +344,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"VM IP或别名"}
-                                              tip={"请输入VM IP或名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar3"} placeholder={"VM IP"}
+                                              openOnFocus={false} dataSource={this.state.VMSDataSource}
+                                              getText={this._vmsTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -288,8 +365,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Mysql 名称"}
-                                              tip={"请输入Mysql 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Mysql 名称"}
+                                              openOnFocus={true} dataSource={this.state.MysqlDataSource}
+                                              getText={this._mysqlTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -298,8 +376,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Sqlserver 名称"}
-                                              tip={"请输入Sqlserver 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Sqlserver 名称"}
+                                              openOnFocus={false} dataSource={this.state.SqlserverDataSource}
+                                              getText={this._sqlserverTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -350,8 +429,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"VM IP或别名"}
-                                              tip={"请输入VM IP或名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar3"} placeholder={"VM IP"}
+                                              openOnFocus={false} dataSource={this.state.VMSDataSource}
+                                              getText={this._vmsTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -370,8 +450,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Mysql 名称"}
-                                              tip={"请输入Mysql 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Mysql 名称"}
+                                              openOnFocus={true} dataSource={this.state.MysqlDataSource}
+                                              getText={this._mysqlTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -380,8 +461,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Sqlserver 名称"}
-                                              tip={"请输入Sqlserver 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Sqlserver 名称"}
+                                              openOnFocus={false} dataSource={this.state.SqlserverDataSource}
+                                              getText={this._sqlserverTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }

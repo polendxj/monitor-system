@@ -17,9 +17,24 @@ var AppStore = require('../stores/AppStore');
 
 var mysqlList = [];
 var sqlserverList = [];
+
+var mysqlTips = [];
+var mysqlIDS = [];
+var mysqlID = "";
+
+var sqlserverTips = [];
+var sqlserverIDS = [];
+var sqlserverID = "";
+
+
+var mysqlFilter = "";
+var sqlserverFilter = "";
+
 var DatabasesStore = assign({}, EventEmitter.prototype, {
-    getMysqlList: function (type, page) {
+    getMysqlList: function (ip, type, page) {
+        mysqlFilter = ip;
         ResourceUtils.DATABASE_LIST.GET({
+            ip: ip,
             type: type,
             page: page,
             pageSize: 10
@@ -31,8 +46,39 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
     getMysqListData: function () {
         return mysqlList;
     },
-    getSqlserverList: function (type, page) {
+    getMysqlTip: function (type, text) {
         ResourceUtils.DATABASE_LIST.GET({
+            type: type,
+            page: 0,
+            pageSize: 10,
+            ip: text
+        }, function (json) {
+            mysqlTips.splice(0);
+            json.content.forEach(function (item) {
+                mysqlTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
+                mysqlIDS.push(item.hostid);
+            });
+            DatabasesStore.emitChange(DatabasesStore.events.ChangeMysqlTip);
+        });
+    },
+    getMysqlTipData: function () {
+        return mysqlTips;
+    },
+    setMysqlID: function (idx) {
+        mysqlID = mysqlTips[idx];
+    },
+    getMysqlID: function () {
+        return mysqlID;
+    },
+    getFilter: function () {
+        return {
+            mysqlFilter: mysqlFilter,
+            sqlserverFilter: sqlserverFilter
+        }
+    },
+    getSqlserverList: function (ip, type, page) {
+        ResourceUtils.DATABASE_LIST.GET({
+            ip: ip,
             type: type,
             page: page,
             pageSize: 10
@@ -40,6 +86,34 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
             sqlserverList = json;
             DatabasesStore.emitChange(DatabasesStore.events.ChangeSqlserverList);
         });
+    },
+    getSqlserverListData: function () {
+        return sqlserverList;
+    },
+    getSqlserverTip: function (type, text) {
+        ResourceUtils.DATABASE_LIST.GET({
+            type: type,
+            page: 0,
+            pageSize: 10,
+            ip: text
+        }, function (json) {
+            sqlserverTips.splice(0);
+            json.content.forEach(function (item) {
+                console.log(item.host);
+                sqlserverTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
+                sqlserverIDS.push(item.hostid);
+            });
+            DatabasesStore.emitChange(DatabasesStore.events.ChangeSqlserverTip);
+        });
+    },
+    getSqlserverTipData: function () {
+        return sqlserverTips;
+    },
+    setSqlserverID: function (idx) {
+        sqlserverID = sqlserverTips[idx];
+    },
+    getSqlserverID: function () {
+        return sqlserverID;
     },
     createDatabase: function (obj) {
         ResourceUtils.DATABASE_CREATE.POST(obj, "", function () {
@@ -54,23 +128,20 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
             }
         });
     },
-    deleteDatabase: function (id,type,page) {
+    deleteDatabase: function (id, type, page) {
         ResourceUtils.DATABASE_DELETE.DELETE(id, function (resp) {
 
         }, "", function (resp) {
             if (resp.status == 200) {
-                if(type=="mysql"){
-                    DatabasesStore.getMysqlList(type,page);
-                }else if(type=="sqlserver"){
-                    DatabasesStore.getSqlserverList(type,page);
+                if (type == "mysql") {
+                    DatabasesStore.getMysqlList(type, page);
+                } else if (type == "sqlserver") {
+                    DatabasesStore.getSqlserverList(type, page);
                 }
             } else if (resp.status >= 300) {
                 alert(resp.responseJSON.message);
             }
         })
-    },
-    getSqlserverListData: function () {
-        return sqlserverList;
     },
     emitChange: function (eventType) {
         this.emit(eventType);
@@ -83,23 +154,31 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
     },
     events: {
         ChangeMysqlList: "ChangeMysqlList",
-        ChangeSqlserverList: "ChangeSqlserverList"
+        ChangeSqlserverList: "ChangeSqlserverList",
+        ChangeMysqlTip: "ChangeMysqlTip",
+        ChangeSqlserverTip: "ChangeSqlserverTip"
     }
 });
 
 AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeMysqlList:
-            DatabasesStore.getMysqlList(action.type,action.page);
+            DatabasesStore.getMysqlList(action.ip, action.type, action.page);
+            break;
+        case MonitorConstants.GetMysqlTip:
+            DatabasesStore.getMysqlTip(action.type, action.text);
             break;
         case MonitorConstants.ChangeSqlserverList:
-            DatabasesStore.getSqlserverList(action.type,action.page);
+            DatabasesStore.getSqlserverList(action.ip, action.type, action.page);
+            break;
+        case MonitorConstants.GetSqlserverTip:
+            DatabasesStore.getMysqlTip(action.type, action.text);
             break;
         case MonitorConstants.CreateDatabase:
             DatabasesStore.createDatabase(action.jsonObject);
             break;
         case MonitorConstants.DeleteDatabase:
-            DatabasesStore.deleteDatabase(action.id,action.type,action.page);
+            DatabasesStore.deleteDatabase(action.id, action.type, action.page);
             break;
         default:
             break;

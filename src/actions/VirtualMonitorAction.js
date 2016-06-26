@@ -126,6 +126,12 @@ var VirtualMonitorAction = {
             text: text
         })
     },
+    getVMSTip: function (text) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetVMSTip,
+            text: text
+        })
+    },
     startChartsRender: function () {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.StartChartsRender

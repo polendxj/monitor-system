@@ -37,7 +37,10 @@ var MonitorConstants = keyMirror({
     DeleteAppService: null,
     ChangeAlarmMessageList: null,
     ChangeHttpList: null,
-    ChangeUsersList: null
+    ChangeUsersList: null,
+    GetVMSTip: null,
+    GetMysqlTip: null,
+    GetSqlserverTip:null
 });
 
 module.exports = MonitorConstants;
