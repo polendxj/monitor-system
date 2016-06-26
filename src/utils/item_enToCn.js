@@ -170,7 +170,7 @@ enToCn_data = {
         "web.speed[{$URL}]": {
             key: "web.speed[{$URL}]",
             name: "Download Speed",
-            name_cn: "下载速度",
+            name_cn: "下载速度(秒)",
             position: "center",
             type:"memory",
             priority: 1,
@@ -1300,18 +1300,18 @@ enToCn_data = {
         internalPriority: 3,
     },
     "读写操作": {
-        "system.swap.size[,free]": {
-            key: "system.swap.size[,free]",
-            name: "Free swap space",
-            name_cn: "空闲交换空间",
+        "vfs.dev.read[/dev/sda1,bps]": {
+            key: "vfs.dev.read[/dev/sda1,bps]",
+            name: "Read bps on disk /dev/sda1",
+            name_cn: "sda1磁盘读bps",
             position: "center",
             type:"memory",
             priority: 1,
         },
-        "system.swap.size[,pfree]": {
-            key: "system.swap.size[,pfree]",
-            name: "Free swap space in %",
-            name_cn: "空闲交换比例",
+        "vfs.dev.read[/dev/sda2,bps]": {
+            key: "vfs.dev.read[/dev/sda2,bps]",
+            name: "Read bps on disk /dev/sda2",
+            name_cn: "sda2磁盘读bps",
             position: "center",
             priority: 2,
         },
