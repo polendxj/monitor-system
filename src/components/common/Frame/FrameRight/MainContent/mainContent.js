@@ -228,6 +228,13 @@ var Form = React.createClass({
                                       getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
+                case 251:
+                    formGroup = <div>
+                        <ToolBar.Text key={"bar2"} placeholder={"Http 名称"}
+                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
+                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                    </div>;
+                    break;
             }
         } else if (this.state.breadcrumbData.length == 4) {
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -296,6 +303,16 @@ var Form = React.createClass({
                             formGroup = <div>
                                 <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Apache 名称"}
                                               tip={"请输入Apache 名称"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 251:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Http 名称"}
+                                              tip={"请输入Http 名称"} appendText={""}/>
                             </div>;
                             break;
                     }
@@ -378,6 +395,16 @@ var Form = React.createClass({
                             formGroup = <div>
                                 <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Nginx 名称"}
                                               tip={"请输入Nginx 名称"} appendText={""}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 251:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Http 名称"}
+                                              tip={"请输入Http 名称"} appendText={""}/>
                             </div>;
                             break;
                     }
