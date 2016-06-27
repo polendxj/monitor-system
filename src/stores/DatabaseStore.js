@@ -65,7 +65,7 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
         return mysqlTips;
     },
     setMysqlID: function (idx) {
-        mysqlID = mysqlTips[idx];
+        mysqlID = mysqlIDS[idx];
     },
     getMysqlID: function () {
         return mysqlID;
@@ -110,7 +110,7 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
         return sqlserverTips;
     },
     setSqlserverID: function (idx) {
-        sqlserverID = sqlserverTips[idx];
+        sqlserverID = sqlserverIDS[idx];
     },
     getSqlserverID: function () {
         return sqlserverID;

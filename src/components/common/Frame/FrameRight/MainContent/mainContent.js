@@ -19,6 +19,12 @@ var MenuAction = require('../../../../../actions/MenuAction');
 var VirtualMonitorAction = require('../../../../../actions/VirtualMonitorAction');
 var DatabasesAction = require('../../../../../actions/DatabasesAction');
 var DatabaseStore = require('../../../../../stores/DatabaseStore');
+var AppserviceAction = require('../../../../../actions/AppServiceAction');
+var AppServiceStore = require('../../../../../stores/AppServiceStore');
+var WebSiteAction = require('../../../../../actions/WebSiteAction');
+var WebSiteStore = require('../../../../../stores/WebSiteStore');
+var ServerAction = require('../../../../../actions/ServerAction');
+var ServerStore = require('../../../../../stores/ServerStore');
 var MenuStore = require('../../../../../stores/MenuStore');
 var VirtualMonitorStore = require('../../../../../stores/VirtualMonitorStore');
 
@@ -76,11 +82,19 @@ var Form = React.createClass({
             VMSDataSource: [],
             MysqlDataSource: [],
             SqlserverDataSource: [],
+            ApacheDataSource: [],
+            NginxDataSource: [],
+            HttpDataSource: [],
+            LinuxDataSource: [],
             vcenterFilter: "",
             hypervisorFilter: "",
             vmsFilter: "",
             mysqlFilter: "",
-            sqlserverFilter: ""
+            sqlserverFilter: "",
+            apacheFilter: "",
+            nginxFilter: "",
+            httpFilter: "",
+            linuxFilter: "",
         })
     },
     onChange: function () {
@@ -101,6 +115,18 @@ var Form = React.createClass({
                     DatabasesAction.getSqlserverList(this.state.sqlserverFilter, "sqlserver", 0);
                     break;
                 case 224:
+                    break;
+                case 241:
+                    AppserviceAction.getApacheList(this.state.apacheFilter, "apache", 0);
+                    break;
+                case 243:
+                    AppserviceAction.getNginxList(this.state.nginxFilter, "nginx", 0);
+                    break;
+                case 251:
+                    WebSiteAction.getHttpList(this.state.httpFilter, 0);
+                    break;
+                case 212:
+                    ServerAction.getLinuxList(this.state.linuxFilter,"linux", 0);
                     break;
             }
         } else if (this.state.breadcrumbData.length == 4) {
@@ -137,6 +163,34 @@ var Form = React.createClass({
                     break;
                 case 224:
                     break;
+                case 241:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 243:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 251:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 212:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
             }
         } else if (this.state.breadcrumbData.length == 5) {
             switch (this.state.breadcrumbData[2].breadcrumbID) {
@@ -172,6 +226,34 @@ var Form = React.createClass({
                     break;
                 case 224:
                     break;
+                case 241:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 243:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 251:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
+                case 212:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            VirtualMonitorAction.startChartsRender();
+                            break;
+                    }
+                    break;
             }
         }
     },
@@ -193,6 +275,18 @@ var Form = React.createClass({
     _sqlserverTipChange: function () {
         this.setState({SqlserverDataSource: DatabaseStore.getSqlserverTipData()});
     },
+    _apacheTipChange: function () {
+        this.setState({ApacheDataSource: AppServiceStore.getApacheTipData()});
+    },
+    _nginxTipChange: function () {
+        this.setState({NginxDataSource: AppServiceStore.getNginxTipData()});
+    },
+    _httpTipChange: function () {
+        this.setState({HttpDataSource: WebSiteStore.getHttpTipData()});
+    },
+    _linuxTipChange: function () {
+        this.setState({LinuxDataSource: ServerStore.getLinuxTipData()});
+    },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterTip, this._vcenterTipChange);
@@ -200,6 +294,10 @@ var Form = React.createClass({
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVMSTip, this._vmsTipChange);
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeMysqlTip, this._mysqlTipChange);
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverTip, this._sqlserverTipChange);
+        AppServiceStore.addChangeListener(AppServiceStore.events.ChangeApacheTip, this._apacheTipChange);
+        AppServiceStore.addChangeListener(AppServiceStore.events.ChangeNginxTip, this._nginxTipChange);
+        WebSiteStore.addChangeListener(WebSiteStore.events.ChangeHttpTip, this._httpTipChange);
+        ServerStore.addChangeListener(ServerStore.events.ChangeLinuxTip, this._linuxTipChange);
         VirtualMonitorAction.getVCenterTip();
     },
     componentWillUnmount: function () {
@@ -209,6 +307,13 @@ var Form = React.createClass({
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVMSTip, this._vmsTipChange);
         DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeMysqlTip, this._mysqlTipChange);
         DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeSqlserverTip, this._sqlserverTipChange);
+        AppServiceStore.removeChangeListener(AppServiceStore.events.ChangeApacheTip, this._apacheTipChange);
+        AppServiceStore.removeChangeListener(AppServiceStore.events.ChangeNginxTip, this._nginxTipChange);
+        WebSiteStore.removeChangeListener(WebSiteStore.events.ChangeHttpTip, this._httpTipChange);
+        ServerStore.removeChangeListener(ServerStore.events.ChangeLinuxTip, this._linuxTipChange);
+
+
+
 
     },
     _vcenterTextFieldText: function (text) {
@@ -234,6 +339,26 @@ var Form = React.createClass({
         this.setState({sqlserverFilter: text});
         DatabaseStore.setSqlserverID(idx);
         DatabaseStore.getSqlserverTip("sqlserver", text);
+    },
+    _apacheTextFieldText: function (text, idx) {
+        this.setState({apacheFilter: text});
+        AppServiceStore.setApacheID(idx);
+        AppServiceStore.getApacheTip("nginx", text);
+    },
+    _nginxTextFieldText: function (text, idx) {
+        this.setState({nginxFilter: text});
+        AppServiceStore.setNginxID(idx);
+        AppServiceStore.getNginxTip("nginx", text);
+    },
+    _httpTextFieldText: function (text, idx) {
+        this.setState({httpFilter: text});
+        WebSiteStore.setHttpID(idx);
+        WebSiteStore.getHttpTip(text);
+    },
+    _linuxTextFieldText: function (text, idx) {
+        this.setState({linuxFilter: text});
+        ServerStore.setLinuxID(idx);
+        ServerStore.getLinuxTip("linux",text);
     },
     render: function () {
         var formGroup = "";
@@ -286,15 +411,15 @@ var Form = React.createClass({
                 case 241:
                     formGroup = <div>
                         <ToolBar.Text key={"bar2"} placeholder={"Apache 名称"}
-                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
-                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                                      openOnFocus={false} dataSource={this.state.ApacheDataSource}
+                                      getText={this._apacheTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 243:
                     formGroup = <div>
                         <ToolBar.Text key={"bar2"} placeholder={"Nginx 名称"}
-                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
-                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                                      openOnFocus={false} dataSource={this.state.NginxDataSource}
+                                      getText={this._nginxTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 311:
@@ -307,8 +432,15 @@ var Form = React.createClass({
                 case 251:
                     formGroup = <div>
                         <ToolBar.Text key={"bar2"} placeholder={"Http 名称"}
-                                      openOnFocus={false} dataSource={this.state.HyperVisorDataSource}
-                                      getText={this._hypervisorTextFieldText} onChange={this.onChange}/>
+                                      openOnFocus={false} dataSource={this.state.HttpDataSource}
+                                      getText={this._httpTextFieldText} onChange={this.onChange}/>
+                    </div>;
+                    break;
+                case 212:
+                    formGroup = <div>
+                        <ToolBar.Text key={"bar2"} placeholder={"Linux 名称"}
+                                      openOnFocus={false} dataSource={this.state.LinuxDataSource}
+                                      getText={this._linuxTextFieldText} onChange={this.onChange}/>
                     </div>;
                     break;
                 case 612:
@@ -387,8 +519,20 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Apache 名称"}
-                                              tip={"请输入Apache 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Apache 名称"}
+                                              openOnFocus={false} dataSource={this.state.ApacheDataSource}
+                                              getText={this._apacheTextFieldText} onChange={this.onChange}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 243:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text key={"bar2"} placeholder={"Nginx 名称"}
+                                              openOnFocus={false} dataSource={this.state.NginxDataSource}
+                                              getText={this._nginxTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -397,8 +541,20 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Http 名称"}
-                                              tip={"请输入Http 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Http 名称"}
+                                              openOnFocus={false} dataSource={this.state.HttpDataSource}
+                                              getText={this._httpTextFieldText} onChange={this.onChange}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 212:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text key={"bar2"} placeholder={"Linux 名称"}
+                                              openOnFocus={false} dataSource={this.state.LinuxDataSource}
+                                              getText={this._linuxTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -472,8 +628,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Apache 名称"}
-                                              tip={"请输入Apache 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Apache 名称"}
+                                              openOnFocus={false} dataSource={this.state.ApacheDataSource}
+                                              getText={this._apacheTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -482,8 +639,9 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Nginx 名称"}
-                                              tip={"请输入Nginx 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Nginx 名称"}
+                                              openOnFocus={false} dataSource={this.state.NginxDataSource}
+                                              getText={this._nginxTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -492,8 +650,20 @@ var Form = React.createClass({
                     switch (this.state.breadcrumbData[3].breadcrumbID) {
                         case 3:
                             formGroup = <div>
-                                <ToolBar.Text onChange={this.onChange} key={"bar3"} placeholder={"Http 名称"}
-                                              tip={"请输入Http 名称"} appendText={""}/>
+                                <ToolBar.Text key={"bar2"} placeholder={"Http 名称"}
+                                              openOnFocus={false} dataSource={this.state.HttpDataSource}
+                                              getText={this._httpTextFieldText} onChange={this.onChange}/>
+                            </div>;
+                            break;
+                    }
+                    break;
+                case 212:
+                    switch (this.state.breadcrumbData[3].breadcrumbID) {
+                        case 3:
+                            formGroup = <div>
+                                <ToolBar.Text key={"bar2"} placeholder={"Linux 名称"}
+                                              openOnFocus={false} dataSource={this.state.LinuxDataSource}
+                                              getText={this._linuxTextFieldText} onChange={this.onChange}/>
                             </div>;
                             break;
                     }
@@ -659,6 +829,13 @@ var Content = React.createClass({
                 case 251:
                     div = <div>
                         <ObjectList.HttpWebList />
+
+                        <div style={{clear:"both"}}></div>
+                    </div>;
+                    break;
+                case 212:
+                    div = <div>
+                        <ObjectList.LinuxList />
 
                         <div style={{clear:"both"}}></div>
                     </div>;
