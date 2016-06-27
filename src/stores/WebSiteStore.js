@@ -16,10 +16,17 @@ var MenuAction = require('../actions/MenuAction');
 var AppStore = require('../stores/AppStore');
 
 var httpList = [];
+
+var httpTips = [];
+var httpIDS = [];
+var httpID = "";
+
+var httpFilter = "";
 var WebSiteStore = assign({}, EventEmitter.prototype, {
     getHttpList: function (url, page) {
+        httpFilter = url;
         ResourceUtils.WEB_SITE_LIST.GET({
-            url:url,
+            url: url,
             page: page,
             pageSize: 10
         }, function (json) {
@@ -40,8 +47,36 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
             }
         });
     },
-    deleteHttp: function (id,url,page) {
-        var body={
+    getHttpTip: function (text) {
+        ResourceUtils.WEB_SITE_LIST.GET({
+            page: 0,
+            pageSize: 10,
+            url: text
+        }, function (json) {
+            httpTips.splice(0);
+            json.content.forEach(function (item) {
+                httpTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
+                httpIDS.push(item.hostid);
+            });
+            WebSiteStore.emitChange(WebSiteStore.events.ChangeHttpTip);
+        });
+    },
+    getHttpTipData: function () {
+        return httpTips;
+    },
+    setHttpID: function (idx) {
+        httpID = httpIDS[idx];
+    },
+    getHttpID: function () {
+        return httpID;
+    },
+    getFilter: function () {
+        return {
+            httpFilter: httpFilter
+        }
+    },
+    deleteHttp: function (id, url, page) {
+        var body = {
             "name": "akka",
             "steps": [
                 {
@@ -75,7 +110,8 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
         this.removeListener(event, callback);
     },
     events: {
-        ChangeHttpList: "ChangeHttpList"
+        ChangeHttpList: "ChangeHttpList",
+        ChangeHttpTip:"ChangeHttpTip"
     }
 });
 
@@ -88,7 +124,7 @@ AntiFraudDispatcher.register(function (action) {
             WebSiteStore.createHttp(action.jsonObject);
             break;
         case MonitorConstants.DeleteHttp:
-            WebSiteStore.deleteHttp(action.id,action.url,action.page);
+            WebSiteStore.deleteHttp(action.id, action.url, action.page);
             break;
         default:
             break;

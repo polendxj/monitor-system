@@ -67,6 +67,9 @@ var ConfigurationPage = React.createClass({
                 case 251:
                     VirtualMonitorAction.getConfigData("web");
                     break;
+                case 212:
+                    VirtualMonitorAction.getConfigData("linux");
+                    break;
             }
         } else if (breads.length == 5) {
             switch (breads[2].breadcrumbID) {
@@ -94,6 +97,9 @@ var ConfigurationPage = React.createClass({
                     break;
                 case 243:
                     VirtualMonitorAction.getConfigData("nginx");
+                    break;
+                case 212:
+                    VirtualMonitorAction.getConfigData("linux");
                     break;
             }
         }

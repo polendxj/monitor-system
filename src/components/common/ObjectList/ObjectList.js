@@ -22,6 +22,8 @@ var UsersAction = require("../../../actions/UsersAction");
 var UsersStore = require("../../../stores/UsersStore");
 var WebSiteAction = require("../../../actions/WebSiteAction");
 var WebSiteStore = require("../../../stores/WebSiteStore");
+var ServerAction = require("../../../actions/ServerAction");
+var ServerStore = require("../../../stores/ServerStore");
 var Pagination = require("../Paganation");
 var Loading = require("../CommonComponent").Loading;
 var GlobalUtils = require("../../../utils/GlobalUtils");
@@ -44,7 +46,7 @@ var VCenterList = React.createClass({
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVCenterList, this._changeListData);
         setTimeout(function () {
             VirtualMonitorAction.getVCenterList();
-        },1);
+        }, 1);
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVCenterList, this._changeListData);
@@ -586,7 +588,7 @@ var SqlserverList = React.createClass({
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
         setTimeout(function () {
-            DatabasesAction.getSqlserverList("","sqlserver", 0);
+            DatabasesAction.getSqlserverList("", "sqlserver", 0);
         }, 1);
     },
     componentWillUnmount: function () {
@@ -605,7 +607,7 @@ var SqlserverList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        DatabasesAction.getSqlserverList("","sqlserver", page);
+        DatabasesAction.getSqlserverList(DatabaseStore.getFilter().sqlserverFilter, "sqlserver", page);
     },
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
@@ -724,7 +726,7 @@ var ApacheList = React.createClass({
     componentDidMount: function () {
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeApacheList, this._changeListData);
         setTimeout(function () {
-            AppServiceAction.getApacheList("apache", 0);
+            AppServiceAction.getApacheList("", "apache", 0);
         }, 1);
     },
     componentWillUnmount: function () {
@@ -743,7 +745,7 @@ var ApacheList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        AppServiceAction.getApacheList("apache", page);
+        AppServiceAction.getApacheList(AppServiceStore.getFilter().apacheFilter, "apache", page);
     },
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
@@ -779,7 +781,7 @@ var ApacheList = React.createClass({
                     var tbody = "";
                     that.state.listData.content.forEach(function (val1, key1) {
                         var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
-                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                                       style={{textAlign:"left"}}>{val1.host}</td>];
                         var tempTds = [];
                         val1.items.forEach(function (val2, key2) {
                             analysisData[tab].forEach(function (val3, key3) {
@@ -862,7 +864,7 @@ var NginxList = React.createClass({
     componentDidMount: function () {
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeNginxList, this._changeListData);
         setTimeout(function () {
-            AppServiceAction.getNginxList("nginx", 0);
+            AppServiceAction.getNginxList("", "nginx", 0);
         }, 1);
     },
     componentWillUnmount: function () {
@@ -881,7 +883,7 @@ var NginxList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        AppServiceAction.getNginxList("nginx", page);
+        AppServiceAction.getNginxList(AppServiceStore.getFilter().nginxFilter, "nginx", page);
     },
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
@@ -917,7 +919,7 @@ var NginxList = React.createClass({
                     var tbody = "";
                     that.state.listData.content.forEach(function (val1, key1) {
                         var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
-                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                                       style={{textAlign:"left"}}>{val1.host}</td>];
                         var tempTds = [];
                         val1.items.forEach(function (val2, key2) {
                             analysisData[tab].forEach(function (val3, key3) {
@@ -1019,7 +1021,7 @@ var HttpWebList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        WebSiteAction.getHttpList("", page);
+        WebSiteAction.getHttpList(WebSiteStore.getFilter().httpFilter, page);
     },
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
@@ -1055,7 +1057,7 @@ var HttpWebList = React.createClass({
                     var tbody = "";
                     that.state.listData.content.forEach(function (val1, key1) {
                         var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
-                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                                       style={{textAlign:"left"}}>{val1.host}</td>];
                         var tempTds = [];
                         val1.items.forEach(function (val2, key2) {
                             analysisData[tab].forEach(function (val3, key3) {
@@ -1123,6 +1125,144 @@ var HttpWebList = React.createClass({
     }
 });
 
+var LinuxList = React.createClass({
+    getInitialState: function () {
+        return {
+            key: 1,
+            isLoading: true,
+            listData: [],
+            pages: 0
+        };
+    },
+    handleSelect(key) {
+        this.setState({key});
+    },
+    componentDidMount: function () {
+        ServerStore.addChangeListener(ServerStore.events.ChangeLinuxList, this._changeListData);
+        setTimeout(function () {
+            ServerAction.getLinuxList("","linux", 0);
+        }, 1);
+    },
+    componentWillUnmount: function () {
+        ServerStore.removeChangeListener(ServerStore.events.ChangeLinuxList, this._changeListData);
+    },
+    componentDidUpdate: function () {
+        $(".tab-content").css("padding", 0);
+        $(".tab-content").find("th").css("borderBottom", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderTop", "thin #ECECEC solid");
+        $(".tab-content").find("th").css("borderLeft", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderTop", "0 #ECECEC solid");
+        $(".tab-content").find("td").css("borderLeft", "0 #ECECEC solid");
+    },
+    _changeListData: function () {
+        this.setState({listData: ServerStore.getLinuxData(), pages: this.state.listData.totalPages});
+        this.setState({isLoading: false});
+    },
+    _changePage: function (page) {
+        ServerAction.getLinuxList(ServerStore.getFilter().linuxFilter,"linux", page);
+    },
+    _delete: function (index) {
+        var id = this.state.listData.content[index].hostid;
+        if (confirm("确定要删除该数据吗?")) {
+            WebSiteAction.deleteHttp(id, "", 0);
+        }
+    },
+    render: function () {
+        if (this.state.isLoading) {
+            return (
+                <Loading />
+            )
+        } else {
+            if (this.state.listData.content.length > 0) {
+                var analysisData = GlobalUtils.en2Cn_item(this.state.listData.content[0].items);
+                var tabs = [];
+                var that = this;
+                var tabIndex = 1;
+                for (tab in analysisData) {
+                    /*生成了title*/
+                    var thead = [];
+                    thead.push(<th key={tab+"thead"+"-1"} style={{textAlign:"left"}}>{"监控项目"}</th>);   //生成项目监控title
+                    analysisData[tab].forEach(function (val1, key1) {
+                        thead.push(<th key={tab+"thead"+key1} style={{textAlign:val1.position}}>{val1.name_cn}</th>);
+                    });
+                    if (tabIndex == 1) {
+                        thead.push(<th key={tab+"thead"+"-3"} style={{textAlign:"center"}}>{"状态"}</th>);   //生成状态title
+                        thead.push(<th key={tab+"thead"+"-2"} style={{textAlign:"center"}}>{"操作"}</th>);   //生成操作title
+                    }
+                    /*生成了tr*/
+                    //
+                    var tr = [];
+                    var tbody = "";
+                    that.state.listData.content.forEach(function (val1, key1) {
+                        var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
+                                       style={{textAlign:"left"}}>{val1.host}</td>];
+                        var tempTds = [];
+                        val1.items.forEach(function (val2, key2) {
+                            analysisData[tab].forEach(function (val3, key3) {
+                                if (val2.key_ == val3.key) {
+                                    tempTds.push({
+                                        data: <td key={tab+"tr"+key1+"td"+key2}
+                                                  style={{textAlign:val3.position}}>{GlobalUtils.type2Style(val3.type, val2.lastvalue)}</td>,
+                                        priority: key3
+                                    });
+
+                                }
+                            });
+                        });
+                        tempTds.sort(GlobalUtils.arrSort("priority"));
+                        tempTds.forEach(function (o, k) {
+                            tds.push(o.data);
+                        });
+                        if (tabIndex == 1) {
+                            tds.push(<td key={tab+"tr"+key1+"td"+"-3"}
+                                         style={{textAlign:"center",color:val1.status==0?"red":"green"}}>
+                                {val1.status == 0 ? "已停用" : "运行中"}
+                            </td>);
+                            tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
+                                         style={{textAlign:"center"}}>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
+                                        onClick={that._delete.bind(that,key1)}>删除
+                                </button>
+                            </td>);
+                        }
+                        tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
+                    });
+                    tbody = <tbody key={tab+"tbody"}>{tr}</tbody>;
+                    tabs.push(
+                        <Tab key={"tab"+tabIndex} eventKey={tabIndex} title={tab} style={{padding:"0"}}>
+                            <Table responsive style={{margin:"0"}}>
+                                <thead>
+                                <tr>
+                                    {thead}
+                                </tr>
+                                </thead>
+                                {tbody}
+                            </Table>
+                        </Tab>);
+                    tabIndex++;
+                }
+
+                return (
+                    <div>
+                        <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example"
+                              style={{padding:"0"}}>
+                            {tabs}
+                        </Tabs>
+                        <Pagination pages={this.state.pages} _changePage={this._changePage}/>
+
+                    </div>
+
+                )
+            } else {
+                return (
+                    <NoData text={"未查找到任何Linux信息"}/>
+                )
+            }
+        }
+    }
+});
+
 var UsersList = React.createClass({
     getInitialState: function () {
         return {
@@ -1163,7 +1303,7 @@ var UsersList = React.createClass({
         var id = this.state.usersData.content[index].userid;
         var body = {"username": "Admin", "password": "zabbix"};
         if (confirm("确定要删除该数据吗?")) {
-            UsersAction.deleteUser(id, body ,"", 0);
+            UsersAction.deleteUser(id, body, "", 0);
         }
     },
     _edit: function (index) {
@@ -1309,7 +1449,7 @@ var HypervisorConfig = React.createClass({
                                         return str;
                                     } else {
                                         return <ToolBar.TextOfNoTips value={defaultsValue[alarmSubCount]}
-                                                                     key={"alarm"+key+"sub"+key}
+                                                                     key={"alarm"+key+"sub"+((alarmSubCount))}
                                                                      idx={"alarm"+key+"sub"+(alarmSubCount++)}/>;
                                     }
                                 })}
@@ -1475,5 +1615,6 @@ module.exports = {
     NginxList,
     AlarmOfMessage,
     HttpWebList,
-    UsersList
+    UsersList,
+    LinuxList
 };

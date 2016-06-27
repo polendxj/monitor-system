@@ -3,18 +3,20 @@ var MonitorConstants = require('../constants/MonitorConstants');
 var assign = require('object-assign');
 
 var AppServiceAction = {
-    getApacheList: function (type, page) {
+    getApacheList: function (ip, type, page) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.ChangeApacheList,
             type: type,
-            page: page
+            page: page,
+            ip: ip
         })
     },
-    getNginxList: function (type, page) {
+    getNginxList: function (ip, type, page) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.ChangeNginxList,
             type: type,
-            page: page
+            page: page,
+            ip: ip
         })
     },
     createAppService: function (obj) {
@@ -27,8 +29,8 @@ var AppServiceAction = {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.DeleteAppService,
             id: id,
-            url:url,
-            page:page
+            url: url,
+            page: page
         })
     }
 };
