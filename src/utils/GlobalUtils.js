@@ -2,6 +2,8 @@
  * Created by jingpeng on 16/6/19.
  */
 var assign = require('object-assign');
+var React = require('react');
+var ProgressBar = require('react-bootstrap/lib/ProgressBar');
 var EventEmitter = require('events').EventEmitter;
 require('./item_enToCn');
 
@@ -237,17 +239,15 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                     rs = parseInt(value / 24 / 3600) + "天" + parseInt((value % (3600 * 24)) / 3600) + "时" + parseInt(((value % (3600 * 24)) % 3600) / 60) + "分" + ((value % (3600 * 24)) % 3600) % 60 + "秒";
                 } else {
                     if (parseInt(value / 3600) > 0) {
-                        rs = value / 3600 + "时" + (value % 3600) / 60 + "分" + (value % 3600) % 60 + "秒";
+                        rs = parseInt(value / 3600) + "时" + (value % 3600) / 60 + "分" + (value % 3600) % 60 + "秒";
                     } else {
                         if (parseInt(value / 60) > 0) {
-                            rs = value / 60 + "分" + value % 60 + "秒";
+                            rs = parseInt(value / 60) + "分" + value % 60 + "秒";
                         } else {
                             rs = value + "秒";
                         }
                     }
                 }
-                break;
-            case "percent":
                 break;
             case "memory":
                 if (parseInt(value / 1024 / 1024 / 1024) > 0) {
@@ -269,6 +269,29 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                     rs = (value / 1000).toFixed(1) + "KHz";
                 } else {
                     rs = (value) + "Hz";
+                }
+                break;
+            case "power":
+                if (value == 1) {
+                    rs = <span style={{color:"green"}}>开机</span>;
+                } else {
+                    rs = <span style={{color:"red"}}>关机</span>;
+                }
+                break;
+            case "percent":
+                rs = <ProgressBar active now={parseInt(value*100)} label={`${parseInt(value*100)}%`} />;
+                break;
+            case "percentage":
+                rs = <ProgressBar active now={parseInt(value)} label={`${parseInt(value)}%`} />;
+                break;
+            case "times":
+                rs=this.timestampToTimeText(value);
+                break;
+            case "overall":
+                if (value == 1) {
+                    rs = <span style={{color:"green"}}>正常</span>;
+                } else {
+                    rs = <span style={{color:"red"}}>异常</span>;
                 }
                 break;
             default :
@@ -310,7 +333,7 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                         rs = rs + "参数" + count + ":大于等于0的整数  ";
                         break;
                     default:
-                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substr(p[item].indexOf("_")+1) + "  ";
+                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substr(p[item].indexOf("_") + 1) + "  ";
                         break;
                 }
                 count++;
