@@ -106,6 +106,9 @@ var Menus = React.createClass({
                 case 611:
                     browserHistory.push("/updatePwd");
                     break;
+                default :
+                    browserHistory.push("/list");
+                    break;
             }
         } else if (selectedParentIdx == 1) {
             MenuAction.changeBreadcrumb(3, this.state.subMenus.subMenus.secondLayer1[idx]);
@@ -148,14 +151,16 @@ var Menus = React.createClass({
                     thirdMenuParentName2 = "故障管理";
                     break;
                 case 3:
-                    switch (this.state.breadcrumbDataList[1].breadcrumbID) {
-                        case 31:
-                            thirdMenuParentName1 = "告警消息";
-                            thirdMenuParentName2 = "告警通知";
-                            break;
-                        case 32:
-                            thirdMenuParentName1 = "故障管理";
-                            break;
+                    if(this.state.breadcrumbDataList.length>1){
+                        switch (this.state.breadcrumbDataList[1].breadcrumbID) {
+                            case 31:
+                                thirdMenuParentName1 = "告警消息";
+                                thirdMenuParentName2 = "告警通知";
+                                break;
+                            case 32:
+                                thirdMenuParentName1 = "故障管理";
+                                break;
+                        }
                     }
                     break;
                 case 6:
