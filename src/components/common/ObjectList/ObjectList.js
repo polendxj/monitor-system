@@ -317,6 +317,9 @@ var VMSList = React.createClass({
     handleSelect(key) {
         this.setState({key});
     },
+    redirectToCharts: function (hostid,host) {
+        VirtualMonitorAction.setHypervisorData(hostid,host);
+    },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVmList, this._changeListData);
         setTimeout(function () {
@@ -448,6 +451,9 @@ var MysqlList = React.createClass({
     handleSelect(key) {
         this.setState({key});
     },
+    redirectToCharts: function (hostid,host) {
+        DatabaseStore.setMysqlData(hostid,host);
+    },
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
         setTimeout(function () {
@@ -532,7 +538,7 @@ var MysqlList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -587,6 +593,9 @@ var SqlserverList = React.createClass({
     },
     handleSelect(key) {
         this.setState({key});
+    },
+    redirectToCharts: function (hostid,host) {
+        DatabaseStore.setSqlserverData(hostid,host);
     },
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
@@ -671,7 +680,7 @@ var SqlserverList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -725,6 +734,9 @@ var ApacheList = React.createClass({
     },
     handleSelect(key) {
         this.setState({key});
+    },
+    redirectToCharts: function (hostid,host) {
+        AppServiceStore.setApacheData(hostid,host);
     },
     componentDidMount: function () {
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeApacheList, this._changeListData);
@@ -809,7 +821,7 @@ var ApacheList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -863,6 +875,9 @@ var NginxList = React.createClass({
     },
     handleSelect(key) {
         this.setState({key});
+    },
+    redirectToCharts: function (hostid,host) {
+        AppServiceStore.setNginxData(hostid,host);
     },
     componentDidMount: function () {
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeNginxList, this._changeListData);
@@ -947,7 +962,7 @@ var NginxList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -1001,6 +1016,9 @@ var HttpWebList = React.createClass({
     },
     handleSelect(key) {
         this.setState({key});
+    },
+    redirectToCharts: function (hostid,host) {
+        WebSiteStore.setHttpData(hostid,host);
     },
     componentDidMount: function () {
         WebSiteStore.addChangeListener(WebSiteStore.events.ChangeHttpList, this._changeListData);
@@ -1085,7 +1103,7 @@ var HttpWebList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -1139,6 +1157,9 @@ var LinuxList = React.createClass({
     },
     handleSelect(key) {
         this.setState({key});
+    },
+    redirectToCharts: function (hostid,host) {
+        ServerStore.setServerData(hostid,host);
     },
     componentDidMount: function () {
         ServerStore.addChangeListener(ServerStore.events.ChangeLinuxList, this._changeListData);
@@ -1223,7 +1244,7 @@ var LinuxList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>

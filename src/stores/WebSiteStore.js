@@ -75,6 +75,9 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
             httpFilter: httpFilter
         }
     },
+    setHttpData: function (hostid, host) {
+        httpID = {hostid: hostid, host: host}
+    },
     deleteHttp: function (id, url, page) {
         var body = {
             "name": "akka",

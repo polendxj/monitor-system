@@ -91,6 +91,12 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
     getSqlserverListData: function () {
         return sqlserverList;
     },
+    setMysqlData: function (hostid, host) {
+        mysqlID = {hostid: hostid, host: host};
+    },
+    setSqlserverData: function (hostid, host) {
+        sqlserverID = {hostid: hostid, host: host};
+    },
     getSqlserverTip: function (type, text) {
         ResourceUtils.DATABASE_LIST.GET({
             type: type,

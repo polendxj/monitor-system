@@ -83,6 +83,9 @@ var ServerStore = assign({}, EventEmitter.prototype, {
     clearID: function () {
         linuxID = "";
     },
+    setServerData: function (hostid, host) {
+        linuxID = {hostid: host, host: host}
+    },
     getLinuxTipData: function () {
         return linuxTips;
     },
