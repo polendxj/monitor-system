@@ -61,5 +61,40 @@ monitorItems=
                 graphType:"lineCharts"
             }
 
+        },
+        mysql:{
+            "mysql连接数":{
+                items:[
+                    "'mysql.status[Threads_running]'",
+                    "'mysql.status[Threads_connected]'"
+                ],
+                graphType:1,
+                convertDataType:"number",
+                seriesType:[
+                    "",
+                    ""
+                ],
+                name:[
+                    "mysql活跃连接数",
+                    "mysql总连接数"
+                ]
+            },
+            "mysql吞吐率":{
+                items:[
+                    "'mysql.status[Bytes_received]'",
+                    "'mysql.status[Bytes_sent]'"
+                ],
+                graphType:1,
+                convertDataType:"memoryK",
+                seriesType:[
+                    "",
+                    ""
+                ],
+                name:[
+                    "接收字节",
+                    "发送字节"
+                ]
+            },
+
         }
     };

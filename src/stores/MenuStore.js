@@ -64,6 +64,9 @@ var MenuStore = assign({}, EventEmitter.prototype, {
         }
         this.emitChange(this.events.change_views);
     },
+    changeBtnClick: function () {
+        this.emitChange(this.events.change_btnClick);
+    },
     getViewData: function () {
         return viewData;
     },
@@ -97,7 +100,8 @@ var MenuStore = assign({}, EventEmitter.prototype, {
         change_menus: "change_menus",
         change_firstMenus: "change_firstMenus",
         change_breadcrumb: "change_breadcrumb",
-        change_views: "change_views"
+        change_views: "change_views",
+        change_btnClick:"change_btnClick"
     }
 
 });
@@ -115,6 +119,9 @@ AntiFraudDispatcher.register(function (action) {
             break;
         case MonitorConstants.ChangeViews:
             MenuStore.changeViews(action.viewData);
+            break;
+        case MonitorConstants.ChangeBtnClick:
+            MenuStore.changeBtnClick();
             break;
         default:
             break;

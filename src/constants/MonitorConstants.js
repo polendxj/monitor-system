@@ -6,6 +6,7 @@ var MonitorConstants = keyMirror({
     ChangeFirstMenus: null,
     SaveOperator: null,
     ChangeBreadcrumb: null,
+    ChangeBtnClick:null,
     ChangeViews: null,
     GetVCenterList: null,
     GetVCenterTip: null,

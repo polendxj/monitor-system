@@ -31,6 +31,11 @@ var MenuAction = {
             actionType: MonitorConstants.ChangeViews,
             viewData: data
         });
+    },
+    changeBtnClick: function () {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.ChangeBtnClick
+        });
     }
 };
 

@@ -13,6 +13,7 @@ var TableBody = require('material-ui/lib/table/table-body');
 var TableRowColumn = require('material-ui/lib/table/table-row-column');
 var MenuStore = require("../../../stores/MenuStore");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
+var DatabaseStore = require("../../../stores/DatabaseStore");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var GlobalUtils = require("../../../utils/GlobalUtils");
 
@@ -285,25 +286,54 @@ var AllCharts = React.createClass({
         return ({
             graphItemList: [],
             historyDataList: [],
-            hypervisorID:"",
+            monitorItemID:"",
             selectedTime:[]
         })
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
+        var monitorItemID="";
+        var selectedTime=GlobalUtils.getTimes();
+        switch (this.props.viewData.type){
+            case "hypervisor":
+                monitorItemID=10163;
+                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
+                break;
+            case "mysql":
+                monitorItemID=10228;
+                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
+                break;
+        }
         setTimeout(function () {
             VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
-        },1)
+        }.bind(this),1)
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
     },
     _startChartsRender: function () {
-        var hypervisorID=VirtualMonitorStore.getHypervisorID();
-        var selectedTime=GlobalUtils.getTimes();
-        setTimeout(function () {
+        var monitorItemID;
+        /*var selectedTime=GlobalUtils.getTimes();*/
+        var startTime,endTime;
+        var date = new Date();
+        endTime = parseInt(date.getTime()/1000);
+        date.setHours(0);
+        date.setMinutes(0);
+        startTime = parseInt(date.getTime()/1000);
+        var selectedTime={startTime:startTime,endTime:endTime};
+        switch (this.props.viewData.type){
+            case "hypervisor":
+                monitorItemID=VirtualMonitorStore.getHypervisorID();
+                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
+                break;
+            case "mysql":
+                monitorItemID=10228;
+                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
+                break;
+        }
+        /*setTimeout(function () {
             var bodyArr=new Array();
             if(this.state.graphItemList.length>0){
                 for(var i=0;i<this.state.graphItemList.length;i++){
@@ -314,9 +344,9 @@ var AllCharts = React.createClass({
                     bodyArr.push(body);
                 }
                 console.log(bodyArr);
-                VirtualMonitorAction.getHistoryDataList(hypervisorID, bodyArr);
+                VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
             }
-        }.bind(this),10)
+        }.bind(this),10)*/
 
     },
     _changeListData: function () {
@@ -336,30 +366,6 @@ var AllCharts = React.createClass({
     _clickAddItems: function () {
         $("#monitorItemsPanel").slideToggle();
     },
-/*    _checkBoxClick: function (index) {
-        console.log($("#checkBox" + index).is(':checked'));
-        if ($("#checkBox" + index).is(':checked')) {
-            var bodyArr = [];
-            var id = 10163;
-            var startTime = 1466431457;
-            var endTime = 1466641498;
-            this.state.graphItemList.forEach(function (graphItem, idx) {
-                var obj;
-                if (index == idx) {
-                    var date = new Date();
-                    var endTime1 = parseInt(date.getTime() / 1000);
-                    var startTime1 = endTime1 - 3600;
-                    console.log(startTime1);
-                    obj = {keys: JSON.parse(graphItem.items), startTime: startTime1, endTime: endTime1, type: 3};
-                    bodyArr.push(obj);
-                } else {
-                    obj = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
-                    bodyArr.push(obj);
-                }
-            });
-            VirtualMonitorAction.getHistoryDataList(id, bodyArr);
-        }
-    },*/
     _addItems: function (obj) {
         var graph = {
             templateId: this.props.viewData.id,
@@ -378,18 +384,25 @@ var AllCharts = React.createClass({
         var pieCharts = [];
         var lineChartsArray=[];
         var bodyArr = new Array();
+        var monitorItemID="";
         if (this.state.graphItemList.length > 0) {
             this.state.graphItemList.forEach(function (graphItem, index){
                 if(graphItem.graphType==1){
                     lineChartsArray.push(index);
-                    var startTime,endTime;
+/*                    var startTime,endTime;
                     var date = new Date();
                     endTime = parseInt(date.getTime()/1000);
                     date.setHours(0);
                     date.setMinutes(0);
-                    startTime = parseInt(date.getTime()/1000);
+                    startTime = parseInt(date.getTime()/1000);*/
+                    var startTime=parseInt(that.state.selectedTime[0].key/1000);
+                    var endTime=parseInt(that.state.selectedTime[1].key/1000);
                     var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                     bodyArr.push(body);
+                }
+                console.log(bodyArr);
+                if(that.state.monitorItemID!=""){
+                    VirtualMonitorAction.getHistoryDataList(that.state.monitorItemID,bodyArr);
                 }
             });
             this.state.graphItemList.forEach(function (graphItem, index) {
@@ -402,13 +415,12 @@ var AllCharts = React.createClass({
                         //var convertDataType=monitorItems[that.props.viewData.type][graphItem.name].convertDataType;
                         //console.log(convertDataType);
                         //var convertAndSeriesType=monitorItems[that.props.viewData.type][graphItem.name].seriesType;
-                        var id = 10163;
                             lineChartList[index] = $.extend({},lineChartData);
                             lineChartsGraph.push(<LineCharts index={index}
                                                              key={index}
-                                                             data={lineChartList[index]} title={"vm:127.0.0.1"}
+                                                             title={"vm:127.0.0.1"}
                                                              dataTitle={graphItem.name } lineChartsArray={lineChartsArray}
-                                                             items={graphItem.items} id={id} bodyArr={bodyArr}/>);
+                                                             items={graphItem.items} id={that.state.monitorItemID} bodyArr={bodyArr}/>);
 
                         break;
                 }
@@ -463,16 +475,15 @@ var MonitorItemsEdit = React.createClass({
             if (row.name == graphItem.name) {
                 id = graphItem.id;
                 templateId = graphItem.templateId;
-                return;
             }
         });
+        console.log(row);
         VirtualMonitorAction.deleteGraphItem(id, templateId);
     },
     _isExist: function (row) {
         var flag=false;
         this.props.graphItemList.forEach(function (graphItem) {
             if (row.name == graphItem.name) {
-                console.log(row.name==graphItem.name);
                 flag=true;
             }
         });
@@ -507,7 +518,7 @@ var MonitorItemsEdit = React.createClass({
                         >
                         <TableRow style={{height:"30px"}}>
                             <TableHeaderColumn colSpan="3" style={{textAlign: 'center',height:"30px"}}>
-                                Hypervisor 监控项
+                                {MenuStore.getBreadcrumbData()[2].breadcrumbName+" 监控项"}
                             </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>

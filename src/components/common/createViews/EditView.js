@@ -40,6 +40,15 @@ var Content = React.createClass({
             editGraphData:MenuStore.getEditGraphData()
         })
     },
+    componentDidMount: function () {
+        MenuStore.addChangeListener(MenuStore.events.change_btnClick, this._changeSuccTip);
+    },
+    componentWillUnmount: function () {
+        MenuStore.removeChangeListener(MenuStore.events.change_btnClick, this._changeSuccTip);
+    },
+    _changeSuccTip: function () {
+        this.setState({succTip: false});
+    },
     _handleViewName: function (e) {
         var value = e.target.value;
         this.setState({viewName: value});
