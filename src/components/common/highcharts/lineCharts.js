@@ -11,6 +11,10 @@ var MenuStore = require("../../../stores/MenuStore");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var GlobalUtils = require("../../../utils/GlobalUtils");
+var WebSiteStore = require("../../../stores/WebSiteStore");
+var ServerStore = require("../../../stores/ServerStore");
+var AppServiceStore = require("../../../stores/AppServiceStore");
+var DatabaseStore = require("../../../stores/DatabaseStore");
 require("../../../utils/monitor_item");
 
 
@@ -100,6 +104,11 @@ var LineCharts = React.createClass({
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
         VirtualMonitorStore.clearHistoryData();
+        VirtualMonitorStore.clearID();
+        DatabaseStore.clearID();
+        AppServiceStore.clearID();
+        ServerStore.clearID();
+        WebSiteStore.clearID();
     },
     /*    _startChartsRender: function () {
      var hypervisorID=VirtualMonitorStore.getHypervisorID();
