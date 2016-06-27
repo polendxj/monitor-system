@@ -103,12 +103,12 @@ var LineCharts = React.createClass({
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
-        VirtualMonitorStore.clearHistoryData();
+        /*VirtualMonitorStore.clearHistoryData();
         VirtualMonitorStore.clearID();
         DatabaseStore.clearID();
         AppServiceStore.clearID();
         ServerStore.clearID();
-        WebSiteStore.clearID();
+        WebSiteStore.clearID();*/
     },
     /*    _startChartsRender: function () {
      var hypervisorID=VirtualMonitorStore.getHypervisorID();

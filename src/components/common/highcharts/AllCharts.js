@@ -304,6 +304,12 @@ var AllCharts = React.createClass({
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
+        VirtualMonitorStore.clearHistoryData();
+         VirtualMonitorStore.clearID();
+         DatabaseStore.clearID();
+         AppServiceStore.clearID();
+         ServerStore.clearID();
+         WebSiteStore.clearID();
     },
     _startChartsRender: function () {
         var monitorItemID="";
