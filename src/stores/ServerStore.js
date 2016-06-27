@@ -49,7 +49,7 @@ var ServerStore = assign({}, EventEmitter.prototype, {
             linuxTips.splice(0);
             json.content.forEach(function (item) {
                 linuxTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
-                linuxIDS.push(item.hostid);
+                linuxIDS.push({hostid: item.hostid, host: item.host});
             });
             ServerStore.emitChange(ServerStore.events.ChangeLinuxTip);
         });

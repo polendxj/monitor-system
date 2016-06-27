@@ -61,9 +61,7 @@ var lineChartData = {
             color: '#808080'
         }]
     },
-    tooltip: {
-
-    },
+    tooltip: {},
     series: []
 };
 /*Highcharts.setOptions({
@@ -237,7 +235,7 @@ var LineCharts = React.createClass({
             var unitName = "单位:";
             if (convertDataType.indexOf('M') > -1) {
                 unitName += 'M';
-                lineChartData.tooltip= {
+                lineChartData.tooltip = {
                     formatter: function () {
                         return '<b>'
                             + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',
@@ -248,7 +246,7 @@ var LineCharts = React.createClass({
                 chartViewData[0] = {name: '', min: '最小值(M)', avg: '平均值(M)', max: '最大值(M)'};
             } else if (convertDataType.indexOf('G') > -1) {
                 unitName += 'G';
-                lineChartData.tooltip= {
+                lineChartData.tooltip = {
                     formatter: function () {
                         return '<b>'
                             + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',

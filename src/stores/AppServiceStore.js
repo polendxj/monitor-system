@@ -54,7 +54,7 @@ var AppServiceStore = assign({}, EventEmitter.prototype, {
             apacheTips.splice(0);
             json.content.forEach(function (item) {
                 apacheTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
-                apacheIDS.push(item.hostid);
+                apacheIDS.push({hostid: item.hostid, host: item.host});
             });
             AppServiceStore.emitChange(AppServiceStore.events.ChangeApacheTip);
         });
@@ -98,7 +98,7 @@ var AppServiceStore = assign({}, EventEmitter.prototype, {
             nginxTips.splice(0);
             json.content.forEach(function (item) {
                 nginxTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
-                nginxIDS.push(item.hostid);
+                nginxIDS.push({hostid: item.hostid, host: item.host});
             });
             AppServiceStore.emitChange(AppServiceStore.events.ChangeNginxTip);
         });

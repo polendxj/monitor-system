@@ -82,7 +82,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             hypervisorIDS.splice(0);
             json.content.forEach(function (item) {
                 hypervisorTips.push(item.name);
-                hypervisorIDS.push(item.hostid);
+                hypervisorIDS.push({hostid: item.hostid, host: item.host});
             });
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHypervisorTip);
         });
@@ -120,7 +120,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             vmIDS.splice(0);
             json.content.forEach(function (item) {
                 vmTips.push(item.name);
-                vmIDS.push(item.hostid);
+                vmIDS.push({hostid: item.hostid, host: item.host});
             });
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeVMSTip);
         });
@@ -154,10 +154,11 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getHistoryDataList: function (id, obj) {
-        historyDataList=new Array();
+        historyDataList.splice(0);
         for(var i=0;i<obj.length;i++){
+            console.log(obj.length);
             (function(arg){
-                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[i], "", function (json) {
+                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[arg], "", function (json) {
                     historyDataList[arg]=json;
                     VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
                 }, function (resp) {
@@ -351,7 +352,8 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeHypervisorTip:"ChangeHypervisorTip",
         StartChartsRender:"StartChartsRender",
         ChangeMysqlList:"ChangeMysqlList",
-        ChangeVMSTip:"ChangeVMSTip"
+        ChangeVMSTip:"ChangeVMSTip",
+        StartPullHistoryData:"StatPullHistoryData"
     }
 });
 
