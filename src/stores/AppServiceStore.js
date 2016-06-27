@@ -92,6 +92,12 @@ var AppServiceStore = assign({}, EventEmitter.prototype, {
     getNginxListData: function () {
         return nginxList;
     },
+    setApacheData: function (hostid, host) {
+        apacheID = {hostid: hostid, host: host}
+    },
+    setNginxData: function (hostid, host) {
+        nginxID = {hostid: hostid, host: host};
+    },
     getNginxTip: function (type, text) {
         ResourceUtils.APP_SERVICELIST.GET({
             type: type,
