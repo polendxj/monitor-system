@@ -93,6 +93,7 @@ var AppServiceStore = assign({}, EventEmitter.prototype, {
         return nginxList;
     },
     setApacheData: function (hostid, host) {
+        alert(hostid);
         apacheID = {hostid: hostid, host: host}
     },
     setNginxData: function (hostid, host) {
