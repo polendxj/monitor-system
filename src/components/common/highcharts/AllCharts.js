@@ -286,25 +286,13 @@ var AllCharts = React.createClass({
         return ({
             graphItemList: [],
             historyDataList: [],
-            monitorItemID:"",
+            hypervisorID:"",
             selectedTime:[]
         })
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
-        var monitorItemID="";
-        var selectedTime=GlobalUtils.getTimes();
-        switch (this.props.viewData.type){
-            case "hypervisor":
-                monitorItemID=10163;
-                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
-                break;
-            case "mysql":
-                monitorItemID=10228;
-                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
-                break;
-        }
         setTimeout(function () {
             VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
         }.bind(this),1)
@@ -315,25 +303,16 @@ var AllCharts = React.createClass({
     },
     _startChartsRender: function () {
         var monitorItemID;
-        /*var selectedTime=GlobalUtils.getTimes();*/
-        var startTime,endTime;
-        var date = new Date();
-        endTime = parseInt(date.getTime()/1000);
-        date.setHours(0);
-        date.setMinutes(0);
-        startTime = parseInt(date.getTime()/1000);
-        var selectedTime={startTime:startTime,endTime:endTime};
         switch (this.props.viewData.type){
             case "hypervisor":
                 monitorItemID=VirtualMonitorStore.getHypervisorID();
-                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
                 break;
             case "mysql":
                 monitorItemID=10228;
-                this.setState({monitorItemID:monitorItemID,selectedTime:selectedTime});
                 break;
         }
-        /*setTimeout(function () {
+        var selectedTime=GlobalUtils.getTimes();
+        setTimeout(function () {
             var bodyArr=new Array();
             if(this.state.graphItemList.length>0){
                 for(var i=0;i<this.state.graphItemList.length;i++){
@@ -346,7 +325,7 @@ var AllCharts = React.createClass({
                 console.log(bodyArr);
                 VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
             }
-        }.bind(this),10)*/
+        }.bind(this),10)
 
     },
     _changeListData: function () {
@@ -374,6 +353,7 @@ var AllCharts = React.createClass({
             graphType: obj.graphType,
             dataType: 3
         };
+        console.log(graph);
         VirtualMonitorAction.createGraphItem(graph);
     },
     render: function () {
@@ -387,22 +367,27 @@ var AllCharts = React.createClass({
         var monitorItemID="";
         if (this.state.graphItemList.length > 0) {
             this.state.graphItemList.forEach(function (graphItem, index){
+                switch (that.props.viewData.type){
+                    case "hypervisor":
+                        monitorItemID=10163;
+                        break;
+                    case "mysql":
+                        monitorItemID=10228;
+                        break;
+                }
                 if(graphItem.graphType==1){
                     lineChartsArray.push(index);
-/*                    var startTime,endTime;
+                    var startTime,endTime;
                     var date = new Date();
                     endTime = parseInt(date.getTime()/1000);
                     date.setHours(0);
                     date.setMinutes(0);
-                    startTime = parseInt(date.getTime()/1000);*/
-                    var startTime=parseInt(that.state.selectedTime[0].key/1000);
-                    var endTime=parseInt(that.state.selectedTime[1].key/1000);
+                    startTime = parseInt(date.getTime()/1000);
                     var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                     bodyArr.push(body);
                 }
-                console.log(bodyArr);
-                if(that.state.monitorItemID!=""){
-                    VirtualMonitorAction.getHistoryDataList(that.state.monitorItemID,bodyArr);
+                if(monitorItemID!=""){
+                    VirtualMonitorAction.getHistoryDataList(monitorItemID,bodyArr);
                 }
             });
             this.state.graphItemList.forEach(function (graphItem, index) {
@@ -420,7 +405,7 @@ var AllCharts = React.createClass({
                                                              key={index}
                                                              title={"vm:127.0.0.1"}
                                                              dataTitle={graphItem.name } lineChartsArray={lineChartsArray}
-                                                             items={graphItem.items} id={that.state.monitorItemID} bodyArr={bodyArr}/>);
+                                                             items={graphItem.items} id={monitorItemID} bodyArr={bodyArr}/>);
 
                         break;
                 }
