@@ -74,6 +74,10 @@ var AppServiceStore = assign({}, EventEmitter.prototype, {
             nginxFilter: nginxFilter
         }
     },
+    clearID: function () {
+        apacheID = "";
+        nginxID = "";
+    },
     getNginxList: function (ip, type, page) {
         ResourceUtils.APP_SERVICELIST.GET({
             ip: ip,

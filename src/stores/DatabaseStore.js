@@ -116,6 +116,10 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
     getSqlserverID: function () {
         return sqlserverID;
     },
+    clearID: function () {
+        mysqlID = "";
+        sqlserverID = "";
+    },
     createDatabase: function (obj) {
         ResourceUtils.DATABASE_CREATE.POST(obj, "", function () {
 

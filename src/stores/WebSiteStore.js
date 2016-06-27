@@ -100,6 +100,9 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
     getHttpData: function () {
         return httpList;
     },
+    clearID: function () {
+        httpID = "";
+    },
     emitChange: function (eventType) {
         this.emit(eventType);
     },
@@ -111,7 +114,7 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
     },
     events: {
         ChangeHttpList: "ChangeHttpList",
-        ChangeHttpTip:"ChangeHttpTip"
+        ChangeHttpTip: "ChangeHttpTip"
     }
 });
 
