@@ -145,6 +145,10 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         hypervisorID = {hostid: hostid, host: host};
         /*VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);*/
     },
+    setVMSData: function (hostid, host) {
+        vmID = {hostid: hostid, host: host};
+        /*VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);*/
+    },
     clearID: function () {
         hypervisorID = "";
         vmID = "";
