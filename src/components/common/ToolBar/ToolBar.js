@@ -285,6 +285,10 @@ var Button = React.createClass({
             var obj = AppStore.getOperator();
             var o = {id: obj.id, name: "创建" + MenuStore.getBreadcrumbData()[2].breadcrumbName};
             switch (MenuStore.getBreadcrumbData()[2].breadcrumbID) {
+                case 212:
+                    MenuAction.changeBreadcrumb(4, o);
+                    browserHistory.push("/createLinux");
+                    break;
                 case 221:
                 case 222:
                 case 223:

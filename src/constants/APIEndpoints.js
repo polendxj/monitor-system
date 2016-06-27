@@ -33,7 +33,9 @@ var MofaAPIEndpoints = {
     USER_CREATE:"/oms/user",
     USER_UPDATE:"/oms/user/",
     USER_DELETE:"/oms/user/",
-    SERVER_LIST:"/oms/servers/"
+    SERVER_LIST:"/oms/servers/",
+    SERVER_CREATE:"/oms/server",
+    SERVER_DELETE:"/oms/server/"
 
 };
 

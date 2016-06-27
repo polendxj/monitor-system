@@ -596,7 +596,16 @@ menus = [
         icon: 'fa fa-home',
         url: '',
         status: false,
-        firstLayer: []
+        firstLayer: [
+            {
+                id:41,
+                name: '虚拟化拓扑',
+                icon: 'fa fa-desktop',
+                url: '',
+                status: true,
+                secondLayer: []
+            }
+        ]
     },
     {
         id:5,
@@ -661,6 +670,12 @@ var TopMenu = React.createClass({
         this.setState({selectedIndex:idx});
         if(idx==0){
             browserHistory.push("/dashboard");
+            MenuAction.changeMenus(menus[idx]);
+            setTimeout(function () {
+                MenuAction.changeBreadcrumb(1,menus[idx]);
+            }.bind(this),1);
+        }else if(idx==3){
+            browserHistory.push("/topology");
             MenuAction.changeMenus(menus[idx]);
             setTimeout(function () {
                 MenuAction.changeBreadcrumb(1,menus[idx]);

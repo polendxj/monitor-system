@@ -738,29 +738,23 @@ var Content = React.createClass({
         return ({
             breadcrumbDataList: MenuStore.getBreadcrumbData(),
             viewData: MenuStore.getViewData(),
-            flag: false,
-            graphItemList: []
+            flag: false
         })
     },
     componentDidMount: function () {
         MenuStore.addChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         MenuStore.addChangeListener(MenuStore.events.change_views, this._changeViews);
-        VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
 
     },
     componentWillUnmount: function () {
         MenuStore.removeChangeListener(MenuStore.events.change_breadcrumb, this._changeBreadcrumbData);
         MenuStore.removeChangeListener(MenuStore.events.change_views, this._changeViews);
-        VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
     },
     _changeBreadcrumbData: function () {
         this.setState({breadcrumbDataList: MenuStore.getBreadcrumbData()});
     },
     _changeViews(){
         this.setState({viewData: MenuStore.getViewData()});
-    },
-    _changeListData: function () {
-        this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
     },
     _jumpToCreateView: function () {
         MenuAction.changeBreadcrumb(5, viewBtn[0]);
@@ -864,7 +858,7 @@ var Content = React.createClass({
                 </div>
             } else if (this.state.viewData.id != "") {
                 div = <div>
-                    <AllCharts viewData={this.state.viewData} listData={this.state.graphItemList}/>
+                    <AllCharts viewData={this.state.viewData}/>
 
                     <div style={{clear:"both"}}></div>
                 </div>;

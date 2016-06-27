@@ -1164,7 +1164,7 @@ var LinuxList = React.createClass({
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
         if (confirm("确定要删除该数据吗?")) {
-            WebSiteAction.deleteHttp(id, "", 0);
+            ServerAction.deleteLinux(id,"", "linux", 0);
         }
     },
     render: function () {

@@ -85,9 +85,9 @@ var LineCharts = React.createClass({
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
 
         $(".highcharts-container").css("marginLeft", "-2px");
-        if(this.props.id!=""){
+        /*if(this.props.id!=""){
             VirtualMonitorAction.getHistoryDataList(this.props.id, this.props.bodyArr);
-        }
+        }*/
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
@@ -258,6 +258,7 @@ var LineCharts = React.createClass({
                 };
                 chartViewData[0] = {name: '', min: '最小值(G)', avg: '平均值(G)', max: '最大值(G)'};
             }else if(convertDataType.indexOf('number') > -1){
+                unitName += '个';
                 lineChartData.tooltip= {
                     formatter: function () {
                         return '<b>'
@@ -266,6 +267,29 @@ var LineCharts = React.createClass({
                             + this.series.name + ': ' + this.y + '个'
                     }
                 };
+                chartViewData[0] = {name: '', min: '最小值(个)', avg: '平均值(个)', max: '最大值(个)'};
+            }else if(convertDataType.indexOf('K') > -1){
+                unitName += 'K';
+                lineChartData.tooltip= {
+                    formatter: function () {
+                        return '<b>'
+                            + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',
+                                this.x) + '</b><br/>'
+                            + this.series.name + ': ' + this.y + 'K'
+                    }
+                };
+                chartViewData[0] = {name: '', min: '最小值(K)', avg: '平均值(K)', max: '最大值(K)'};
+            }else if(convertDataType.indexOf('second') > -1){
+                unitName += '秒';
+                lineChartData.tooltip= {
+                    formatter: function () {
+                        return '<b>'
+                            + Highcharts.dateFormat('%Y-%m-%d %H:%M:%S',
+                                this.x) + '</b><br/>'
+                            + this.series.name + ': ' + this.y + 's'
+                    }
+                };
+                chartViewData[0] = {name: '', min: '最小值(秒)', avg: '平均值(秒)', max: '最大值(秒)'};
             }
             lineChartData.yAxis.title.text = unitName;
             that.state.historyDataList.forEach(function (historyData, index) {

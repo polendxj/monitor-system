@@ -47,7 +47,9 @@ var MonitorConstants = keyMirror({
     GetSqlserverTip:null,
     CreateHttp:null,
     DeleteHttp:null,
-    ChangeLinuxList:null
+    ChangeLinuxList:null,
+    CreateLinux:null,
+    DeleteLinux:null
 });
 
 module.exports = MonitorConstants;

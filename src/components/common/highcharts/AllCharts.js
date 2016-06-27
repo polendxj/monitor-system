@@ -303,12 +303,23 @@ var AllCharts = React.createClass({
     },
     _startChartsRender: function () {
         var monitorItemID;
+        var title;
         switch (this.props.viewData.type){
             case "hypervisor":
-                monitorItemID=VirtualMonitorStore.getHypervisorID();
+                monitorItemID=VirtualMonitorStore.getHypervisorID().hostid;
+                title=VirtualMonitorStore.getHypervisorID().host;
                 break;
             case "mysql":
-                monitorItemID=10228;
+                monitorItemID=DatabaseStore.getMysqlID().hostid;
+                break;
+            case "http":
+                monitorItemID=10247;
+                break;
+            case "apache":
+                monitorItemID = 10112;
+                break;
+            case "linux":
+                monitorItemID = 10084;
                 break;
         }
         var selectedTime=GlobalUtils.getTimes();
@@ -330,6 +341,43 @@ var AllCharts = React.createClass({
     },
     _changeListData: function () {
         this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
+        var that = this;
+        var monitorItemID="";
+        var bodyArr = new Array();
+        if (VirtualMonitorStore.getGraphItemListData().length > 0) {
+            VirtualMonitorStore.getGraphItemListData().forEach(function (graphItem, index) {
+                switch (that.props.viewData.type) {
+                    case "hypervisor":
+                        monitorItemID = 10163;
+                        break;
+                    case "mysql":
+                        monitorItemID = 10228;
+                        break;
+                    case "http":
+                        monitorItemID = 10247;
+                        break;
+                    case "apache":
+                        monitorItemID = 10112;
+                        break;
+                    case "linux":
+                        monitorItemID = 10084;
+                        break;
+                }
+                if (graphItem.graphType == 1) {
+                    var startTime, endTime;
+                    var date = new Date();
+                    endTime = parseInt(date.getTime() / 1000);
+                    date.setHours(0);
+                    date.setMinutes(0);
+                    startTime = parseInt(date.getTime() / 1000);
+                    var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
+                    bodyArr.push(body);
+                }
+                if (monitorItemID != "") {
+                    VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
+                }
+            });
+        }
         /*setTimeout(function () {
             var bodyArr = [];
             var id = 10163;
@@ -365,6 +413,7 @@ var AllCharts = React.createClass({
         var lineChartsArray=[];
         var bodyArr = new Array();
         var monitorItemID="";
+        var title="";
         if (this.state.graphItemList.length > 0) {
             this.state.graphItemList.forEach(function (graphItem, index){
                 switch (that.props.viewData.type){
@@ -373,6 +422,15 @@ var AllCharts = React.createClass({
                         break;
                     case "mysql":
                         monitorItemID=10228;
+                        break;
+                    case "http":
+                        monitorItemID=10247;
+                        break;
+                    case "apache":
+                        monitorItemID = 10112;
+                        break;
+                    case "linux":
+                        monitorItemID = 10084;
                         break;
                 }
                 if(graphItem.graphType==1){
@@ -385,9 +443,6 @@ var AllCharts = React.createClass({
                     startTime = parseInt(date.getTime()/1000);
                     var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                     bodyArr.push(body);
-                }
-                if(monitorItemID!=""){
-                    VirtualMonitorAction.getHistoryDataList(monitorItemID,bodyArr);
                 }
             });
             this.state.graphItemList.forEach(function (graphItem, index) {

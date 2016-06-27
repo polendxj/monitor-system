@@ -10,6 +10,21 @@ var ServerAction = {
             page: page,
             ip: ip
         })
+    },
+    createLinux: function (obj) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.CreateLinux,
+            jsonObject: obj
+        })
+    },
+    deleteLinux: function (id,ip, type, page) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.DeleteLinux,
+            id: id,
+            ip: ip,
+            type: type,
+            page: page
+        })
     }
 };
 

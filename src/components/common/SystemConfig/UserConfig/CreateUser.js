@@ -37,7 +37,7 @@ var Content = React.createClass({
     getInitialState: function () {
         return ({
             roleList: [
-                {id: 0, type: 1, roleName: "超级管理员"},
+                {id: 0, type: 3, roleName: "超级管理员"},
                 {id: 1, type: 2, roleName: "普通管理员"}
             ],
             helpState:false

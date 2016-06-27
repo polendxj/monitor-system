@@ -54,6 +54,32 @@ var ServerStore = assign({}, EventEmitter.prototype, {
             ServerStore.emitChange(ServerStore.events.ChangeLinuxTip);
         });
     },
+    createLinux: function (obj) {
+        ResourceUtils.SERVER_CREATE.POST(obj, "", function () {
+
+        }, function (resp) {
+
+            if (resp.status == 200) {
+                MenuAction.changeBreadcrumb(4, "");
+                browserHistory.push("/list");
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        });
+    },
+    deleteLinux: function (id,ip, type, page) {
+        ResourceUtils.SERVER_DELETE.DELETE(id, function (resp) {
+
+        }, "", function (resp) {
+            if (resp.status == 200) {
+                if (type == "linux") {
+                    ServerStore.getLinuxList(ip, type, page);
+                }
+            } else if (resp.status >= 300) {
+                alert(resp.responseJSON.message);
+            }
+        })
+    },
     getLinuxTipData: function () {
         return linuxTips;
     },
@@ -88,6 +114,12 @@ AntiFraudDispatcher.register(function (action) {
     switch (action.actionType) {
         case MonitorConstants.ChangeLinuxList:
             ServerStore.getLinuxList(action.ip, action.type, action.page);
+            break;
+        case MonitorConstants.CreateLinux:
+            ServerStore.createLinux(action.jsonObject);
+            break;
+        case MonitorConstants.DeleteLinux:
+            ServerStore.deleteLinux(action.id,action.ip, action.type, action.page);
             break;
         default:
             break;

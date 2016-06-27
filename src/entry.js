@@ -24,6 +24,8 @@ var CreateSqlServer = require('./components/common/CreateObj/CreateSqlServer');
 var CreateNginx = require('./components/common/CreateObj/CreateNginx');
 var CreateApache = require('./components/common/CreateObj/CreateApache');
 var CreateHttp = require('./components/common/CreateObj/CreateHttp');
+var CreateLinux = require('./components/common/CreateObj/CreateLinux');
+var TopologyChart = require('./components/common/topology/TopologyChart');
 
 require('../static/maxent.min.js');
 
@@ -61,7 +63,9 @@ ReactDOM.render((
             <Route path="createApache" component={CreateApache} />
             <Route path="createNginx" component={CreateNginx} />
             <Route path="createHttp" component={CreateHttp} />
+            <Route path="createLinux" component={CreateLinux} />
             <Route path="updateUser" component={UpdateUser} />
+            <Route path="topology" component={TopologyChart} />
         </Route>
     </Router>
 ), document.getElementById("wrap"));
