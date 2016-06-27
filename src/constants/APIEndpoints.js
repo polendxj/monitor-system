@@ -18,6 +18,7 @@ var MofaAPIEndpoints = {
     GRAPHTEMPLATE_DELETE:"/oms/graphTemplate/",
     GRAPHITEM_DELETE:"/oms/graph/",
     VCENTER_UPDATE:"/oms/vcenter/",
+    GRAPHTEMPLATE_UPDATE:"/oms/graphTemplate/",
     TRIGGERS_LIST:"/oms/trigger/",
     MONITOR_ITEMS_LIST:"/oms/template/",
     UPDATE_MONITOR_ITEMS:"/oms/items/",

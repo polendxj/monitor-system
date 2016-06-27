@@ -8,16 +8,18 @@ monitorItems=
                 items:[
                     /*"'vmware.hv.hw.cpu.threads[{$URL},{HOST.HOST}]'"*/
                     "'vmware.hv.cpu.usage[{$URL},{HOST.HOST}]'",
-                    /*"'calc.vmware.hv.hw.cpu.all'"*/
+                    "'calc.vmware.hv.hw.cpu.all'"
                 ],
                 graphType:1,
                 convertDataType:"memoryM",
                 seriesType:[
                     "area",
+                    ""
                 ],
                 name:[
+                    "cpu总大小",
                     "cpu使用大小",
-                    /*"cpu总大小"*/
+
                 ]
             },
             "内存使用情况":{
@@ -36,31 +38,154 @@ monitorItems=
                 ],
                 graphType:1,
                 convertDataType:"memoryM"
-            }
-
+            },
+            "虚拟机个数":{
+                items:[
+                    "'vmware.hv.vm.num[{$URL},{HOST.HOST}]'",
+                ],
+                graphType:1,
+                convertDataType:"number",
+                seriesType:[
+                    ""
+                ],
+                name:[
+                    "虚拟机个数",
+                ]
+            },
+            "网络流量":{
+                items:[
+                    "'vmware.hv.network.in[{$URL},{HOST.HOST},bps]'",
+                    "'vmware.hv.network.out[{$URL},{HOST.HOST},bps]'",
+                ],
+                graphType:1,
+                convertDataType:"memoryK",
+                seriesType:[
+                    ""
+                ],
+                name:[
+                    "接收字节",
+                    "发送字节",
+                ]
+            },
         },
         vms:{
             "cpu使用率":{
                 items:[
-                    {"vmware.vm.cpu.ready[{$URL},{HOST.HOST}]":""},
-                    {"vmware.vm.cpu.usage[{$URL},{HOST.HOST}]":"cpu使用率"}
+                    "'vmware.vm.cpu.usage[{$URL},{HOST.HOST}]'"
                 ],
-                graphType:"pieCharts"
+                graphType:1,
+                convertDataType:"memoryM",
+                seriesType:[
+                    ""
+                ],
+                name:[
+                    "cpu使用率",
+                ]
             },
-            "内存使用率":{
+            "内存使用情况":{
                 items:[
-                    {"vmware.vm.memory.size.ballooned[{$URL},{HOST.HOST}]":"膨胀内存"},
-                    {"vmware.vm.memory.size.compressed[{$URL},{HOST.HOST}]":"压缩内存"},
-                    {"vmware.vm.memory.size.private[{$URL},{HOST.HOST}]":"私有内存"},
-                    {"vmware.vm.memory.size.shared[{$URL},{HOST.HOST}]":"共享内存"},
-                    {"vmware.vm.memory.size.swapped[{$URL},{HOST.HOST}]":"交换内存"},
-                    {"vmware.vm.memory.size.usage.guest[{$URL},{HOST.HOST}]":"guest使用量"},
-                    {"vmware.vm.memory.size.usage.host[{$URL},{HOST.HOST}]":"host使用量"},
-                    {"vmware.vm.memory.size[{$URL},{HOST.HOST}]":"内存总大小"}
+                    "'vmware.vm.memory.size.private[{$URL},{HOST.HOST}]'",
+                    "'vmware.vm.memory.size.shared[{$URL},{HOST.HOST}]'",
+                    "'vmware.vm.memory.size.ballooned[{$URL},{HOST.HOST}]'",
                 ],
-                graphType:"lineCharts"
-            }
-
+                graphType:1,
+                convertDataType:"memoryM",
+                seriesType:[
+                    "",
+                    "",
+                    ""
+                ],
+                name:[
+                    "私有内存",
+                    "共享内存",
+                    "膨胀内存",
+                ]
+            },
+            "读写bps操作":{
+                items:[
+                    "'vmware.vm.vfs.dev.read[{$URL},{HOST.HOST},scsi0:0,bps]'",
+                    "'vmware.vm.vfs.dev.write[{$URL},{HOST.HOST},scsi0:0,bps]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    "",
+                    ""
+                ],
+                name:[
+                    "读bps",
+                    "写bps",
+                ]
+            },
+            "读写ops操作":{
+                items:[
+                    "'vmware.vm.vfs.dev.read[{$URL},{HOST.HOST},scsi0:0,ops]'",
+                    "'vmware.vm.vfs.dev.write[{$URL},{HOST.HOST},scsi0:0,ops]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    "",
+                    ""
+                ],
+                name:[
+                    "读ops",
+                    "写ops",
+                ]
+            },
+            "存储统计":{
+                items:[
+                    "'vmware.vm.storage.committed[{$URL},{HOST.HOST}]'",
+                    "'vmware.vm.storage.uncommitted[{$URL},{HOST.HOST}]'",
+                    "'vmware.vm.storage.unshared[{$URL},{HOST.HOST}]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    "",
+                    ""
+                ],
+                name:[
+                    "提交存储空间",
+                    "未提交存储空间",
+                    "私有存储空间",
+                ]
+            },
+            "bps流入流出统计":{
+                items:[
+                    "'vmware.vm.net.if.in[{$URL},{HOST.HOST},4000,bps]'",
+                    "'vmware.vm.net.if.out[{$URL},{HOST.HOST},4000,bps]'",
+                ],
+                graphType:1,
+                convertDataType:"memoryK",
+                seriesType:[
+                    "",
+                    "",
+                ],
+                name:[
+                    "流入字节",
+                    "流出字节",
+                ]
+            },
+            "pps流入流出统计":{
+                items:[
+                    "'vmware.vm.net.if.in[{$URL},{HOST.HOST},4000,pps]'",
+                    "'vmware.vm.net.if.out[{$URL},{HOST.HOST},4000,pps]'",
+                ],
+                graphType:1,
+                convertDataType:"memoryK",
+                seriesType:[
+                    "",
+                    "",
+                ],
+                name:[
+                    "流入字节",
+                    "流出字节",
+                ]
+            },
         },
         mysql:{
             "mysql连接数":{
@@ -79,6 +204,31 @@ monitorItems=
                     "mysql总连接数"
                 ]
             },
+            "mysql操作数":{
+                items:[
+                    "'mysql.status[Com_begin]'",
+                    "'mysql.status[Com_commit]'",
+                    "'mysql.status[Com_delete]'",
+                    "'mysql.status[Com_insert]'",
+                    "'mysql.status[Questions]'",
+                    "'mysql.status[Com_rollback]'",
+                    "'mysql.status[Com_select]'",
+                ],
+                graphType:1,
+                convertDataType:"number",
+                seriesType:[
+                    ""
+                ],
+                name:[
+                    "begin操作数",
+                    "commit操作数",
+                    "delete操作数",
+                    "insert操作数",
+                    "query操作数",
+                    "rollback操作数",
+                    "select操作数",
+                ]
+            },
             "mysql吞吐率":{
                 items:[
                     "'mysql.status[Bytes_received]'",
@@ -95,7 +245,53 @@ monitorItems=
                     "发送字节"
                 ]
             },
-
+        },
+        sqlserver:{
+            "连接数统计":{
+                items:[
+                    "'perf_counter[\"\\SQLServer:General Statistics\\User Connections\"]'",
+                ],
+                graphType:1,
+                convertDataType:"number",
+                seriesType:[
+                    "",
+                ],
+                name:[
+                    "连接到用户数",
+                ]
+            },
+            "事务统计":{
+                items:[
+                    "'perf_counter[\"\\SQLServer:Transactions\\Longest Transaction Running Time\"]'",
+                    "'perf_counter[\"\\SQLServer:Databases(_Total)\\Transactions/sec\"]'"
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    ""
+                ],
+                name:[
+                    "事务最长运行时间",
+                    "每秒处理事务总量"
+                ]
+            },
+            "存储统计":{
+                items:[
+                    "'perf_counter[\"\\SQLServer:Databases(_Total)\\Data File(s) Size (KB)\"]'",
+                    "'perf_counter[\"\\SQLServer:Buffer Manager\\Database pages\"]'"
+                ],
+                graphType:1,
+                convertDataType:"memoryK",
+                seriesType:[
+                    "",
+                    ""
+                ],
+                name:[
+                    "数据文件大小",
+                    "数据页大小"
+                ]
+            },
         },
         http:{
             "平均响应时间":{
@@ -153,10 +349,28 @@ monitorItems=
                     "发送字节"
                 ]
             },
-
+        },
+        nginx:{
+            "请求统计":{
+                items:[
+                    "'nginx[active]'",
+                    "'nginx[requests]'",
+                    "'nginx[waiting]'",
+                ],
+                graphType:1,
+                convertDataType:"number",
+                seriesType:[
+                    ""
+                ],
+                name:[
+                    "并发数",
+                    "读取请求",
+                    "等待连接",
+                ]
+            },
         },
         linux:{
-            "Home使用量":{
+            "Home磁盘使用量":{
                 items:[
                     "'vfs.fs.size[/,total]'",
                     "'vfs.fs.size[/,used]'",
@@ -172,7 +386,7 @@ monitorItems=
                     "Home已使用大小",
                 ]
             },
-            "Boot使用量":{
+            "Boot磁盘使用量":{
                 items:[
                     "'vfs.fs.size[/boot,total]'",
                     "'vfs.fs.size[/boot,used]'",
@@ -186,6 +400,174 @@ monitorItems=
                 name:[
                     "Boot总大小",
                     "Boot已使用大小",
+                ]
+            },
+            "swap使用率":{
+                items:[
+                    "'system.swap.size[,pused]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "area"
+                ],
+                name:[
+                    "swap使用率",
+                ]
+            },
+            "内存使用情况":{
+                items:[
+                    "'vm.memory.size[buffers]'",
+                    "'vm.memory.size[cached]'",
+                    "'vm.memory.size[exec]'",
+                ],
+                graphType:1,
+                convertDataType:"memeoryM",
+                seriesType:[
+                    "",
+                    "",
+                    "",
+                ],
+                name:[
+                    "缓冲区",
+                    "缓存区",
+                    "代码区",
+                ]
+            },
+            "内存使用率":{
+                items:[
+                    "'vm.memory.size[pused]'",
+                ],
+                graphType:1,
+                convertDataType:"percent",
+                seriesType:[
+                    "area"
+                ],
+                name:[
+                    "内存使用率",
+                ]
+            },
+            "CPU使用率":{
+                items:[
+                    "'system.cpu.util[,user]'",
+                    "'system.cpu.util[,system]'",
+                    "'system.cpu.util[,steal]'",
+                    "'system.cpu.util[,softirq]'",
+                    "'system.cpu.util[,nice]'",
+                    "'system.cpu.util[,iowait]'",
+                    "'system.cpu.util[,interrupt]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                ],
+                name:[
+                    "用户态",
+                    "内核态",
+                    "steal态",
+                    "软中断态",
+                    "nice态",
+                    "I/O等待",
+                    "中断态",
+                ]
+            },
+            "读写bps使用率":{
+                items:[
+                    "'vfs.dev.read[/dev/sda1,bps]'",
+                    "'vfs.dev.read[/dev/sda2,bps]'",
+                    "'vfs.dev.write[/dev/sda1,bps]'",
+                    "'vfs.dev.write[/dev/sda2,bps]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    "",
+                    "",
+                    "",
+                ],
+                name:[
+                    "sda1读bps",
+                    "sda2读bps",
+                    "sda1写bps",
+                    "sda2写bps",
+                ]
+            },
+            "读写ops使用率":{
+                items:[
+                    "'vfs.dev.read[/dev/sda1,ops]'",
+                    "'vfs.dev.read[/dev/sda2,ops]'",
+                    "'vfs.dev.write[/dev/sda1,ops]'",
+                    "'vfs.dev.write[/dev/sda2,ops]'",
+                ],
+                graphType:1,
+                convertDataType:"",
+                seriesType:[
+                    "",
+                    "",
+                    "",
+                    "",
+                ],
+                name:[
+                    "sda1读ops",
+                    "sda2读ops",
+                    "sda1写ops",
+                    "sda2写ops",
+                ]
+            },
+            "流量统计":{
+                items:[
+                    "'net.if.in[eth0]'",
+                    "'net.if.out[eth0]'",
+                ],
+                graphType:1,
+                convertDataType:"memoryM",
+                seriesType:[
+                    "",
+                    "",
+                ],
+                name:[
+                    "输入流量",
+                    "输出流量",
+                ]
+            },
+            "包速率统计":{
+                items:[
+                    "'net.if.in[eth0,packets]'",
+                    "'net.if.out[eth0,packets]'",
+                ],
+                graphType:1,
+                convertDataType:"memoryK",
+                seriesType:[
+                    "",
+                    "",
+                ],
+                name:[
+                    "流入包",
+                    "流出包",
+                ]
+            },
+            "进程统计":{
+                items:[
+                    "'proc.num[]'",
+                    "'proc.num[,,run]'",
+                ],
+                graphType:1,
+                convertDataType:"number",
+                seriesType:[
+                    "",
+                    "",
+                ],
+                name:[
+                    "进程总数",
+                    "运行进程数",
                 ]
             }
         }

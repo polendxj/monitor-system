@@ -161,10 +161,16 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                 rs = (value / 1024 / 1024).toFixed(2) * 1;
                 break;
             case "memoryK":
-                rs = value.toFixed(2) * 1;
+                rs = (value / 1024).toFixed(2) * 1;
                 break;
             case "number":
                 rs = value.toFixed(2) * 1;
+                break;
+            case "":
+                rs = value;
+                break;
+            default :
+                rs="无";
                 break;
         }
         return rs;

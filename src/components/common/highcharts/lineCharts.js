@@ -62,7 +62,17 @@ var lineChartData = {
         }]
     },
     tooltip: {},
-    series: []
+    series: [{}],
+    lang: {
+        noData: "暂无数据"
+    },
+    noData: {
+        style: {
+            fontWeight: 'bold',
+            fontSize: '18px',
+            color: '#303030'
+        }
+    }
 };
 /*Highcharts.setOptions({
  global: {
@@ -89,7 +99,7 @@ var LineCharts = React.createClass({
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHistoryDataList, this._changeHistoryListData);
-
+        VirtualMonitorStore.clearHistoryData();
     },
     /*    _startChartsRender: function () {
      var hypervisorID=VirtualMonitorStore.getHypervisorID();
@@ -227,11 +237,13 @@ var LineCharts = React.createClass({
         var chartViewData = new Array();
         lineChartData.title.text = that.props.dataTitle;
         console.log(that.props.dataTitle);
-        console.log(that.props.dataTitle);
+        console.log(that.state.historyDataList);
         if (typeof(that.state.historyDataList) != "undefined" && that.state.historyDataList.length > 0) {
-            console.log(MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase());
             lineChartData.series = new Array();
-            var convertDataType = monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].convertDataType;
+            var convertDataType="";
+            if(typeof(monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle])!="undefined"){
+                convertDataType = monitorItems[MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()][that.props.dataTitle].convertDataType;
+            }
             var unitName = "单位:";
             if (convertDataType.indexOf('M') > -1) {
                 unitName += 'M';
@@ -315,11 +327,13 @@ var LineCharts = React.createClass({
                 });
                 chartViewData[index + 1] = {
                     name: name,
-                    min: GlobalUtils.convertGraphData(convertDataType, historyData['metricData'].min),
-                    avg: GlobalUtils.convertGraphData(convertDataType, historyData['metricData'].avg),
-                    max: GlobalUtils.convertGraphData(convertDataType, historyData['metricData'].max)
+                    min: GlobalUtils.convertGraphData(historyData['metricData']?convertDataType:-1, historyData['metricData']?historyData['metricData'].min:0),
+                    avg: GlobalUtils.convertGraphData(historyData['metricData']?convertDataType:-1, historyData['metricData']?historyData['metricData'].avg:0),
+                    max: GlobalUtils.convertGraphData(historyData['metricData']?convertDataType:-1, historyData['metricData']?historyData['metricData'].max:0)
                 };
             });
+        }else{
+            lineChartData.series[0]={data: []};
         }
         return (
             <div className="col-sm-12 col-md-12 col-lg-12"

@@ -13,6 +13,9 @@ var TableBody = require('material-ui/lib/table/table-body');
 var TableRowColumn = require('material-ui/lib/table/table-row-column');
 var MenuStore = require("../../../stores/MenuStore");
 var VirtualMonitorStore = require("../../../stores/VirtualMonitorStore");
+var WebSiteStore = require("../../../stores/WebSiteStore");
+var ServerStore = require("../../../stores/ServerStore");
+var AppServiceStore = require("../../../stores/AppServiceStore");
 var DatabaseStore = require("../../../stores/DatabaseStore");
 var VirtualMonitorAction = require("../../../actions/VirtualMonitorAction");
 var GlobalUtils = require("../../../utils/GlobalUtils");
@@ -287,7 +290,8 @@ var AllCharts = React.createClass({
             graphItemList: [],
             historyDataList: [],
             hypervisorID:"",
-            selectedTime:[]
+            selectedTime:[],
+            title:""
         })
     },
     componentDidMount: function () {
@@ -302,24 +306,40 @@ var AllCharts = React.createClass({
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
     },
     _startChartsRender: function () {
-        var monitorItemID;
+        var monitorItemID="";
         var title;
         switch (this.props.viewData.type){
             case "hypervisor":
                 monitorItemID=VirtualMonitorStore.getHypervisorID().hostid;
-                title=VirtualMonitorStore.getHypervisorID().host;
+                this.setState({title:VirtualMonitorStore.getHypervisorID().host});
                 break;
             case "mysql":
                 monitorItemID=DatabaseStore.getMysqlID().hostid;
+                this.setState({title:DatabaseStore.getMysqlID().host});
+                break;
+            case "sqlserver":
+                monitorItemID=DatabaseStore.getSqlserverID().hostid;
+                this.setState({title:DatabaseStore.getSqlserverID().host});
                 break;
             case "http":
-                monitorItemID=10247;
+                monitorItemID=WebSiteStore.getHttpID().hostid;
+                this.setState({title:WebSiteStore.getHttpID().host});
                 break;
             case "apache":
-                monitorItemID = 10112;
+                monitorItemID = AppServiceStore.getApacheID().hostid;
+                this.setState({title:AppServiceStore.getApacheID().host});
+                break;
+            case "nginx":
+                monitorItemID = AppServiceStore.getNginxID().hostid;
+                this.setState({title:AppServiceStore.getNginxID().host});
                 break;
             case "linux":
-                monitorItemID = 10084;
+                monitorItemID = ServerStore.getLinuxID().hostid;
+                this.setState({title:ServerStore.getLinuxID().host});
+                break;
+            case "vms":
+                monitorItemID = VirtualMonitorStore.getVMID().hostid;
+                this.setState({title:VirtualMonitorStore.getVMID().host});
                 break;
         }
         var selectedTime=GlobalUtils.getTimes();
@@ -344,51 +364,54 @@ var AllCharts = React.createClass({
         var that = this;
         var monitorItemID="";
         var bodyArr = new Array();
+        switch (this.props.viewData.type){
+            case "hypervisor":
+                monitorItemID=VirtualMonitorStore.getHypervisorID().hostid;
+                this.setState({title:VirtualMonitorStore.getHypervisorID().host});
+                break;
+            case "mysql":
+                monitorItemID=DatabaseStore.getMysqlID().hostid;
+                this.setState({title:DatabaseStore.getMysqlID().host});
+                break;
+            case "sqlserver":
+                monitorItemID=DatabaseStore.getSqlserverID().hostid;
+                this.setState({title:DatabaseStore.getSqlserverID().host});
+                break;
+            case "http":
+                monitorItemID=WebSiteStore.getHttpID().hostid;
+                this.setState({title:WebSiteStore.getHttpID().host});
+                break;
+            case "apache":
+                monitorItemID = AppServiceStore.getApacheID().hostid;
+                this.setState({title:AppServiceStore.getApacheID().host});
+                break;
+            case "nginx":
+                monitorItemID = AppServiceStore.getNginxID().hostid;
+                this.setState({title:AppServiceStore.getNginxID().host});
+                break;
+            case "linux":
+                monitorItemID = ServerStore.getLinuxID().hostid;
+                this.setState({title:ServerStore.getLinuxID().host});
+                break;
+            case "vms":
+                monitorItemID = VirtualMonitorStore.getVMID().hostid;
+                this.setState({title:VirtualMonitorStore.getVMID().host});
+                break;
+        }
+        var selectedTime=GlobalUtils.getTimes();
+        var startTime=parseInt(selectedTime[0].key/1000);
+        var endTime=parseInt(selectedTime[1].key/1000);
         if (VirtualMonitorStore.getGraphItemListData().length > 0) {
             VirtualMonitorStore.getGraphItemListData().forEach(function (graphItem, index) {
-                switch (that.props.viewData.type) {
-                    case "hypervisor":
-                        monitorItemID = 10163;
-                        break;
-                    case "mysql":
-                        monitorItemID = 10228;
-                        break;
-                    case "http":
-                        monitorItemID = 10247;
-                        break;
-                    case "apache":
-                        monitorItemID = 10112;
-                        break;
-                    case "linux":
-                        monitorItemID = 10084;
-                        break;
-                }
                 if (graphItem.graphType == 1) {
-                    var startTime, endTime;
-                    var date = new Date();
-                    endTime = parseInt(date.getTime() / 1000);
-                    date.setHours(0);
-                    date.setMinutes(0);
-                    startTime = parseInt(date.getTime() / 1000);
                     var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                     bodyArr.push(body);
                 }
-                if (monitorItemID != "") {
-                    VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
-                }
-            });
+            }.bind(this));
+            if (monitorItemID != "") {
+                VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
+            }
         }
-        /*setTimeout(function () {
-            var bodyArr = [];
-            var id = 10163;
-            var startTime = 1466431457;
-            var endTime = 1466641498;
-            this.state.graphItemList.forEach(function (graphItem) {
-                var obj = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
-                bodyArr.push(obj);
-            });
-            VirtualMonitorAction.getHistoryDataList(id, bodyArr);
-        }.bind(this), 1000);*/
     },
     _clickAddItems: function () {
         $("#monitorItemsPanel").slideToggle();
@@ -411,38 +434,10 @@ var AllCharts = React.createClass({
         var lineChartList = new Array();
         var pieCharts = [];
         var lineChartsArray=[];
-        var bodyArr = new Array();
-        var monitorItemID="";
-        var title="";
         if (this.state.graphItemList.length > 0) {
             this.state.graphItemList.forEach(function (graphItem, index){
-                switch (that.props.viewData.type){
-                    case "hypervisor":
-                        monitorItemID=10163;
-                        break;
-                    case "mysql":
-                        monitorItemID=10228;
-                        break;
-                    case "http":
-                        monitorItemID=10247;
-                        break;
-                    case "apache":
-                        monitorItemID = 10112;
-                        break;
-                    case "linux":
-                        monitorItemID = 10084;
-                        break;
-                }
-                if(graphItem.graphType==1){
+                if(graphItem.graphType==1) {
                     lineChartsArray.push(index);
-                    var startTime,endTime;
-                    var date = new Date();
-                    endTime = parseInt(date.getTime()/1000);
-                    date.setHours(0);
-                    date.setMinutes(0);
-                    startTime = parseInt(date.getTime()/1000);
-                    var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
-                    bodyArr.push(body);
                 }
             });
             this.state.graphItemList.forEach(function (graphItem, index) {
@@ -458,9 +453,9 @@ var AllCharts = React.createClass({
                             lineChartList[index] = $.extend({},lineChartData);
                             lineChartsGraph.push(<LineCharts index={index}
                                                              key={index}
-                                                             title={"vm:127.0.0.1"}
+                                                             title={that.state.title}
                                                              dataTitle={graphItem.name } lineChartsArray={lineChartsArray}
-                                                             items={graphItem.items} id={monitorItemID} bodyArr={bodyArr}/>);
+                                                             items={graphItem.items}/>);
 
                         break;
                 }

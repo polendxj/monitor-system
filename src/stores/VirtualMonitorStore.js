@@ -325,6 +325,9 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getHistoryData: function () {
         return historyDataList;
     },
+    clearHistoryData: function () {
+        historyDataList.splice(0);
+    },
     getGraphTemplateListData: function () {
         return graphTemplateList;
     },
