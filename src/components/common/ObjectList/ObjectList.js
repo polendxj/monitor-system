@@ -322,7 +322,7 @@ var VMSList = React.createClass({
         this.setState({key});
     },
     redirectToCharts: function (hostid,host) {
-        VirtualMonitorAction.setHypervisorData(hostid,host);
+        VirtualMonitorStore.setVMSData(hostid,host);
         var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
         MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
         VirtualMonitorStore.getGraphTemplateList(graphType);
@@ -405,7 +405,7 @@ var VMSList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.name)}>实时</button>
                             </td>);
                         }
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
@@ -548,7 +548,7 @@ var MysqlList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -693,7 +693,7 @@ var SqlserverList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -837,7 +837,7 @@ var ApacheList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -981,7 +981,7 @@ var NginxList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -1125,7 +1125,7 @@ var HttpWebList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
@@ -1269,7 +1269,7 @@ var LinuxList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(val1.hostid,val1.host)}>实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.host)}>实时</button>
                                 <button type="button" className="btn btn-xs btn-danger btn-rad btn-trans"
                                         onClick={that._delete.bind(that,key1)}>删除
                                 </button>
