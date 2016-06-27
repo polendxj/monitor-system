@@ -145,6 +145,10 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         hypervisorID = {hostid: hostid, host: host};
         VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
     },
+    clearID: function () {
+        hypervisorID = "";
+        vmID = "";
+    },
     getGraphTemplateList: function (type) {
         ResourceUtils.GRAPHTEMPLATE_LIST.GET(type, function (json) {
             graphTemplateList = json;
@@ -430,7 +434,7 @@ AntiFraudDispatcher.register(function (action) {
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
             break;
         case MonitorConstants.SetHypervisorData:
-            VirtualMonitorStore.setHypervisorData(action.hostid,action.host);
+            VirtualMonitorStore.setHypervisorData(action.hostid, action.host);
             break;
         default:
             break;

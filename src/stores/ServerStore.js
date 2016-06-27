@@ -67,7 +67,7 @@ var ServerStore = assign({}, EventEmitter.prototype, {
             }
         });
     },
-    deleteLinux: function (id,ip, type, page) {
+    deleteLinux: function (id, ip, type, page) {
         ResourceUtils.SERVER_DELETE.DELETE(id, function (resp) {
 
         }, "", function (resp) {
@@ -79,6 +79,9 @@ var ServerStore = assign({}, EventEmitter.prototype, {
                 alert(resp.responseJSON.message);
             }
         })
+    },
+    clearID: function () {
+        linuxID = "";
     },
     getLinuxTipData: function () {
         return linuxTips;
@@ -105,8 +108,8 @@ var ServerStore = assign({}, EventEmitter.prototype, {
         this.removeListener(event, callback);
     },
     events: {
-        ChangeLinuxList:"ChangeLinuxList",
-        ChangeLinuxTip:"ChangeLinuxTip"
+        ChangeLinuxList: "ChangeLinuxList",
+        ChangeLinuxTip: "ChangeLinuxTip"
     }
 });
 
@@ -119,7 +122,7 @@ AntiFraudDispatcher.register(function (action) {
             ServerStore.createLinux(action.jsonObject);
             break;
         case MonitorConstants.DeleteLinux:
-            ServerStore.deleteLinux(action.id,action.ip, action.type, action.page);
+            ServerStore.deleteLinux(action.id, action.ip, action.type, action.page);
             break;
         default:
             break;
