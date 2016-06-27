@@ -30,6 +30,7 @@ var GlobalUtils = require("../../../utils/GlobalUtils");
 var NoData = require("../CommonComponent").NoData;
 var MenuStore = require('../../../stores/MenuStore');
 var MenuAction = require('../../../actions/MenuAction');
+var AppStore = require("../../../stores/AppStore");
 
 var VCenterList = React.createClass({
     getInitialState: function () {
@@ -184,6 +185,9 @@ var HypervisorList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         VirtualMonitorAction.setHypervisorData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHypervisiorList, this._changeListData);

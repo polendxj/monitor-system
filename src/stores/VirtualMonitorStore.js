@@ -143,7 +143,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     },
     setHypervisorData: function (hostid, host) {
         hypervisorID = {hostid: hostid, host: host};
-        VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
+        /*VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);*/
     },
     clearID: function () {
         hypervisorID = "";
