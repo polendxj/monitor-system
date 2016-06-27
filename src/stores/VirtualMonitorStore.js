@@ -154,10 +154,11 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getHistoryDataList: function (id, obj) {
-        historyDataList=new Array();
+        historyDataList.splice(0);
         for(var i=0;i<obj.length;i++){
+            console.log(obj.length);
             (function(arg){
-                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[i], "", function (json) {
+                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[arg], "", function (json) {
                     historyDataList[arg]=json;
                     VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
                 }, function (resp) {
