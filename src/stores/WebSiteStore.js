@@ -56,7 +56,7 @@ var WebSiteStore = assign({}, EventEmitter.prototype, {
             httpTips.splice(0);
             json.content.forEach(function (item) {
                 httpTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
-                httpIDS.push(item.hostid);
+                httpIDS.push({hostid: item.hostid, host: item.host});
             });
             WebSiteStore.emitChange(WebSiteStore.events.ChangeHttpTip);
         });

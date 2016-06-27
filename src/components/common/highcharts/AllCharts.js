@@ -387,7 +387,7 @@ var AllCharts = React.createClass({
                     bodyArr.push(body);
                 }
                 if(monitorItemID!=""){
-                    VirtualMonitorAction.getHistoryDataList(monitorItemID,bodyArr);
+                    //VirtualMonitorAction.getHistoryDataList(monitorItemID,bodyArr);
                 }
             });
             this.state.graphItemList.forEach(function (graphItem, index) {

@@ -54,9 +54,10 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
             ip: text
         }, function (json) {
             mysqlTips.splice(0);
+            console.log(item.host);
             json.content.forEach(function (item) {
                 mysqlTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
-                mysqlIDS.push(item.hostid);
+                mysqlIDS.push({hostid: item.hostid, host: item.host});
             });
             DatabasesStore.emitChange(DatabasesStore.events.ChangeMysqlTip);
         });
@@ -101,7 +102,7 @@ var DatabasesStore = assign({}, EventEmitter.prototype, {
             json.content.forEach(function (item) {
                 console.log(item.host);
                 sqlserverTips.push(item.host.substr(item.host.lastIndexOf('_') + 1));
-                sqlserverIDS.push(item.hostid);
+                sqlserverIDS.push({hostid: item.hostid, host: item.host});
             });
             DatabasesStore.emitChange(DatabasesStore.events.ChangeSqlserverTip);
         });
