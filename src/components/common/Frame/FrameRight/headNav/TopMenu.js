@@ -393,132 +393,132 @@ menus = [
                     }
                 ]*/
             },
-            {
-                id:26,
-                name: '网络设备监控',
-                icon: 'fa fa-list-alt',
-                url: '',
-                status: false,
-                secondLayer: [
-                    {
-                        id:261,
-                        name: '交换机',
-                        icon: '',
-                        count:12,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:262,
-                        name: '路由器',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:263,
-                        name: '防火墙',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:264,
-                        name: '负载均衡',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    }
-                ],
-                /*secondLayer1: [
-                    {
-                        id:265,
-                        name: '故障历史',
-                        icon: '',
-                        count:-1,
-                        status: true,
-                        'url': ''
-                    },
-                    {
-                        id:266,
-                        name: '故障修复状态',
-                        icon: '',
-                        count:8,
-                        status: false,
-                        url: ''
-                    }
-                ]*/
-            },
-            {
-                id:27,
-                name: '存储监控',
-                icon: 'fa fa-list-alt',
-                url: '',
-                status: false,
-                secondLayer: [
-                    {
-                        id:271,
-                        name: 'EMC',
-                        icon: '',
-                        count:12,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:272,
-                        name: 'IBM',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:273,
-                        name: 'HP',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:274,
-                        name: 'NetAPP',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    },
-                    {
-                        id:275,
-                        name: 'SasRaid',
-                        icon: '',
-                        count:48,
-                        status: false,
-                        url: ''
-                    }
-                ],
-                /*secondLayer1: [
-                    {
-                        id:276,
-                        name: '故障历史',
-                        icon: '',
-                        count:-1,
-                        status: true,
-                        'url': ''
-                    },
-                    {
-                        id:277,
-                        name: '故障修复状态',
-                        icon: '',
-                        count:8,
-                        status: false,
-                        url: ''
-                    }
-                ]*/
-            }
+            //{
+            //    id:26,
+            //    name: '网络设备监控',
+            //    icon: 'fa fa-list-alt',
+            //    url: '',
+            //    status: false,
+            //    secondLayer: [
+            //        {
+            //            id:261,
+            //            name: '交换机',
+            //            icon: '',
+            //            count:12,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:262,
+            //            name: '路由器',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:263,
+            //            name: '防火墙',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:264,
+            //            name: '负载均衡',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        }
+            //    ],
+            //    /*secondLayer1: [
+            //        {
+            //            id:265,
+            //            name: '故障历史',
+            //            icon: '',
+            //            count:-1,
+            //            status: true,
+            //            'url': ''
+            //        },
+            //        {
+            //            id:266,
+            //            name: '故障修复状态',
+            //            icon: '',
+            //            count:8,
+            //            status: false,
+            //            url: ''
+            //        }
+            //    ]*/
+            //},
+            //{
+            //    id:27,
+            //    name: '存储监控',
+            //    icon: 'fa fa-list-alt',
+            //    url: '',
+            //    status: false,
+            //    secondLayer: [
+            //        {
+            //            id:271,
+            //            name: 'EMC',
+            //            icon: '',
+            //            count:12,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:272,
+            //            name: 'IBM',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:273,
+            //            name: 'HP',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:274,
+            //            name: 'NetAPP',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        },
+            //        {
+            //            id:275,
+            //            name: 'SasRaid',
+            //            icon: '',
+            //            count:48,
+            //            status: false,
+            //            url: ''
+            //        }
+            //    ],
+            //    /*secondLayer1: [
+            //        {
+            //            id:276,
+            //            name: '故障历史',
+            //            icon: '',
+            //            count:-1,
+            //            status: true,
+            //            'url': ''
+            //        },
+            //        {
+            //            id:277,
+            //            name: '故障修复状态',
+            //            icon: '',
+            //            count:8,
+            //            status: false,
+            //            url: ''
+            //        }
+            //    ]*/
+            //}
         ]
     },
     {
@@ -561,14 +561,14 @@ menus = [
                         status: false,
                         url: ''
                     },
-                    {
-                        id:314,
-                        name: 'URL回调通知历史',
-                        icon: '',
-                        count:-1,
-                        status: false,
-                        url: ''
-                    }
+                    //{
+                    //    id:314,
+                    //    name: 'URL回调通知历史',
+                    //    icon: '',
+                    //    count:-1,
+                    //    status: false,
+                    //    url: ''
+                    //}
                 ]
             },
             {
@@ -607,14 +607,14 @@ menus = [
             }
         ]
     },
-    {
-        id:5,
-        name: '统计报表',
-        icon: 'fa fa-home',
-        url: '',
-        status: false,
-        firstLayer: []
-    },
+    //{
+    //    id:5,
+    //    name: '统计报表',
+    //    icon: 'fa fa-home',
+    //    url: '',
+    //    status: false,
+    //    firstLayer: []
+    //},
     {
         id:6,
         name: '系统配置',

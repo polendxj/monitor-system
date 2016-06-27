@@ -22,12 +22,12 @@ var graphItemList = [];
 var vcenterTips = [];
 
 var hypervisorTips = [];
-var hypervisorIDS=[];
-var hypervisorID="";
+var hypervisorIDS = [];
+var hypervisorID = "";
 
 var vmTips = [];
-var vmIDS=[];
-var vmID="";
+var vmIDS = [];
+var vmID = "";
 
 var vcenterFilter = "";
 var hypervisorFilter = "";
@@ -37,7 +37,7 @@ var graphTemplateList = [];
 var editVcenter = {};
 var configDatas = [];
 var historyDataList = [];
-var curConfigDataType="";
+var curConfigDataType = "";
 var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     getVCenterList: function () {
         ResourceUtils.VCENTER_LIST.GET("", function (json) {
@@ -91,7 +91,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         return hypervisorTips;
     },
     setHyperVisorID: function (idx) {
-        hypervisorID=hypervisorIDS[idx];
+        hypervisorID = hypervisorIDS[idx];
     },
     getHypervisorID: function () {
         return hypervisorID;
@@ -129,7 +129,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         return vmTips;
     },
     setVMID: function (idx) {
-        vmID=vmIDS[idx];
+        vmID = vmIDS[idx];
     },
     getVMID: function () {
         return vmID;
@@ -140,6 +140,10 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             hypervisorFilter: hypervisorFilter,
             vmsFilter: vmsFilter
         }
+    },
+    setHypervisorData: function (hostid, host) {
+        hypervisorID = {hostid: hostid, host: host};
+        VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
     },
     getGraphTemplateList: function (type) {
         ResourceUtils.GRAPHTEMPLATE_LIST.GET(type, function (json) {
@@ -155,11 +159,11 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
     },
     getHistoryDataList: function (id, obj) {
         historyDataList.splice(0);
-        for(var i=0;i<obj.length;i++){
+        for (var i = 0; i < obj.length; i++) {
             console.log(obj.length);
-            (function(arg){
+            (function (arg) {
                 ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[arg], "", function (json) {
-                    historyDataList[arg]=json;
+                    historyDataList[arg] = json;
                     VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
                 }, function (resp) {
                     console.log(resp);
@@ -247,7 +251,7 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         })
     },
     updateVCenter: function (id, obj) {
-        ResourceUtils.VCENTER_UPDATE.PUT2(id, obj,"", function (resp) {
+        ResourceUtils.VCENTER_UPDATE.PUT2(id, obj, "", function (resp) {
 
         }, function (resp) {
             if (resp.status == 200) {
@@ -270,18 +274,18 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         })
     },
     getConfigDataList: function (type) {
-        curConfigDataType=type;
-        ResourceUtils.MONITOR_ITEMS_LIST.GET2(type+"/items", "", function (resp) {
+        curConfigDataType = type;
+        ResourceUtils.MONITOR_ITEMS_LIST.GET2(type + "/items", "", function (resp) {
             configDatas[0] = resp;
-            ResourceUtils.TRIGGERS_LIST.GET2(type , "", function (resp2) {
+            ResourceUtils.TRIGGERS_LIST.GET2(type, "", function (resp2) {
                 configDatas[1] = resp2;
                 VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeConfigData);
             });
         });
 
     },
-    saveMonitorItemRefresh: function (itemid,value) {
-        ResourceUtils.UPDATE_MONITOR_ITEMS.PUT2(itemid, "", {delay:value}, function (resp) {
+    saveMonitorItemRefresh: function (itemid, value) {
+        ResourceUtils.UPDATE_MONITOR_ITEMS.PUT2(itemid, "", {delay: value}, function (resp) {
             console.log("aa");
         }, function (resp) {
             if (resp.status == 200) {
@@ -291,8 +295,8 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
             }
         })
     },
-    saveAlarmLine: function (triggerid,obj,status) {
-        ResourceUtils.TRIGGERS_LIST.PUT2(triggerid, obj, {status:status}, function (resp) {
+    saveAlarmLine: function (triggerid, obj, status) {
+        ResourceUtils.TRIGGERS_LIST.PUT2(triggerid, obj, {status: status}, function (resp) {
             console.log("aa");
         }, function (resp) {
             if (resp.status == 200) {
@@ -349,11 +353,11 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         ChangeGraphItemList: "ChangeGraphItemList",
         ChangeHistoryDataList: "ChangeHistoryDataList",
         ChangeConfigData: "ChangeConfigData",
-        ChangeHypervisorTip:"ChangeHypervisorTip",
-        StartChartsRender:"StartChartsRender",
-        ChangeMysqlList:"ChangeMysqlList",
-        ChangeVMSTip:"ChangeVMSTip",
-        StartPullHistoryData:"StatPullHistoryData"
+        ChangeHypervisorTip: "ChangeHypervisorTip",
+        StartChartsRender: "StartChartsRender",
+        ChangeMysqlList: "ChangeMysqlList",
+        ChangeVMSTip: "ChangeVMSTip",
+        StartPullHistoryData: "StatPullHistoryData"
     }
 });
 
@@ -414,13 +418,16 @@ AntiFraudDispatcher.register(function (action) {
             VirtualMonitorStore.getConfigDataList(action.type);
             break;
         case MonitorConstants.SaveMonitorItemRefresh:
-            VirtualMonitorStore.saveMonitorItemRefresh(action.itemid,action.value);
+            VirtualMonitorStore.saveMonitorItemRefresh(action.itemid, action.value);
             break;
         case MonitorConstants.AlarmLineSet:
-            VirtualMonitorStore.saveAlarmLine(action.triggerid,action.obj,action.status);
+            VirtualMonitorStore.saveAlarmLine(action.triggerid, action.obj, action.status);
             break;
         case MonitorConstants.StartChartsRender:
             VirtualMonitorStore.emitChange(VirtualMonitorStore.events.StartChartsRender);
+            break;
+        case MonitorConstants.SetHypervisorData:
+            VirtualMonitorStore.setHypervisorData(action.hostid,action.host);
             break;
         default:
             break;

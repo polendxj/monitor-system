@@ -49,7 +49,8 @@ var MonitorConstants = keyMirror({
     DeleteHttp:null,
     ChangeLinuxList:null,
     CreateLinux:null,
-    DeleteLinux:null
+    DeleteLinux:null,
+    SetHypervisorData:null
 });
 
 module.exports = MonitorConstants;

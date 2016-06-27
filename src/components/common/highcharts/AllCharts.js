@@ -287,7 +287,8 @@ var AllCharts = React.createClass({
             graphItemList: [],
             historyDataList: [],
             hypervisorID:"",
-            selectedTime:[]
+            selectedTime:[],
+            title:""
         })
     },
     componentDidMount: function () {

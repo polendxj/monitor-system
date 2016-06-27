@@ -241,7 +241,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Hypervisor列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Hypervisor列表"}/>
                             </div>;
                     }
                     break;
@@ -251,7 +251,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"VMS列表"}/>
                             </div>;
                     }
                     break;
@@ -261,7 +261,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Mysql列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Mysql列表"}/>
                             </div>;
                     }
                     break;
@@ -271,7 +271,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Sqlserver列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Sqlserver列表"}/>
                             </div>;
                     }
                     break;
@@ -281,7 +281,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Docker列表"}/>
                             </div>;
                     }
                     break;
@@ -291,7 +291,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Apache列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Apache列表"}/>
                             </div>;
                     }
                     break;
@@ -301,7 +301,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Nginx列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Nginx列表"}/>
                             </div>;
                     }
                     break;
@@ -311,20 +311,20 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Http列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Http列表"}/>
                             </div>;
                     }
                     break;
                 case 612:
                     btnGroup =<div>
-                        <ToolBar.Button label={"列表"} icon={4} tip={"用户列表"}/>
+                        <ToolBar.Button label={"返回列表"} icon={4} tip={"用户列表"}/>
                     </div>;
                     break;
                 case 212:
                     btnGroup =<div>
                         <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                         <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                        <ToolBar.Button label={"列表"} icon={4} tip={"Linux列表"}/>
+                        <ToolBar.Button label={"返回列表"} icon={4} tip={"Linux列表"}/>
                     </div>;
                     break;
             }
@@ -343,7 +343,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Hypervisor列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Hypervisor列表"}/>
                             </div>;
                     }
                     break;
@@ -353,7 +353,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"VMS列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"VMS列表"}/>
                             </div>;
                     }
                     break;
@@ -363,7 +363,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Mysql列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Mysql列表"}/>
                             </div>;
                     }
                     break;
@@ -373,7 +373,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Mysql列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Mysql列表"}/>
                             </div>;
                     }
                     break;
@@ -383,7 +383,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Docker列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Docker列表"}/>
                             </div>;
                     }
                     break;
@@ -393,7 +393,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Apache列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Apache列表"}/>
                             </div>;
                     }
                     break;
@@ -403,7 +403,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Nginx列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Nginx列表"}/>
                             </div>;
                     }
                     break;
@@ -413,7 +413,7 @@ var Operator = React.createClass({
                             btnGroup = <div>
                                 <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                                 <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                                <ToolBar.Button label={"列表"} icon={4} tip={"Http列表"}/>
+                                <ToolBar.Button label={"返回列表"} icon={4} tip={"Http列表"}/>
                             </div>;
                     }
                     break;
@@ -421,7 +421,7 @@ var Operator = React.createClass({
                     btnGroup =<div>
                         <ToolBar.Button label={"增减视图"} icon={5} tip={"增减模板视图"}/>
                         <ToolBar.Button label={"刷新"} icon={2} tip={"刷新数据"}/>
-                        <ToolBar.Button label={"列表"} icon={4} tip={"Linux列表"}/>
+                        <ToolBar.Button label={"返回列表"} icon={4} tip={"Linux列表"}/>
                     </div>;
                     break;
             }

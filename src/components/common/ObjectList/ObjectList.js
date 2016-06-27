@@ -182,6 +182,9 @@ var HypervisorList = React.createClass({
     handleSelect(key) {
         this.setState({key});
     },
+    redirectToCharts: function (hostid,host) {
+        VirtualMonitorAction.setHypervisorData(hostid,host);
+    },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHypervisiorList, this._changeListData);
         setTimeout(function () {
@@ -260,7 +263,7 @@ var HypervisorList = React.createClass({
                             </td>);
                             tds.push(<td key={tab+"tr"+key1+"td"+"-2"}
                                          style={{textAlign:"center"}}>
-                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans">实时</button>
+                                <button type="button" className="btn btn-xs btn-info btn-rad btn-trans" onClick={that.redirectToCharts.bind(that,val1.hostid,val1.name)}>实时</button>
                             </td>);
                         }
                         tr.push(<tr key={tab+"tr"+key1}>{tds}</tr>);
@@ -643,7 +646,7 @@ var SqlserverList = React.createClass({
                     var tbody = "";
                     that.state.listData.content.forEach(function (val1, key1) {
                         var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
-                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                                       style={{textAlign:"left"}}>{val1.host}</td>];
                         var tempTds = [];
                         val1.items.forEach(function (val2, key2) {
                             analysisData[tab].forEach(function (val3, key3) {

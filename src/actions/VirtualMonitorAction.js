@@ -112,7 +112,7 @@ var VirtualMonitorAction = {
             value: value
         })
     },
-    saveAlarmLine: function (triggerid,obj,status) {
+    saveAlarmLine: function (triggerid, obj, status) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.AlarmLineSet,
             triggerid: triggerid,
@@ -130,6 +130,13 @@ var VirtualMonitorAction = {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.GetVMSTip,
             text: text
+        })
+    },
+    setHypervisorData: function (hostid, host) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.SetHypervisorData,
+            hostid: hostid,
+            host: host
         })
     },
     startChartsRender: function () {
