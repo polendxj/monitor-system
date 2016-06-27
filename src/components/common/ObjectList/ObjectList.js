@@ -182,7 +182,10 @@ var HypervisorList = React.createClass({
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeHypervisiorList, this._changeListData);
-        VirtualMonitorAction.getHypervisorList(0, "", "");
+        setTimeout(function () {
+            VirtualMonitorAction.getHypervisorList(0, "", "");
+
+        }, 1);
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeHypervisiorList, this._changeListData);
@@ -311,7 +314,10 @@ var VMSList = React.createClass({
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVmList, this._changeListData);
-        VirtualMonitorAction.getVmList(0, "", "");
+        setTimeout(function () {
+            VirtualMonitorAction.getVmList(0, "", "");
+
+        }, 1);
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeVmList, this._changeListData);
@@ -439,7 +445,10 @@ var MysqlList = React.createClass({
     },
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
-        DatabasesAction.getMysqlList("mysql", 0);
+        setTimeout(function () {
+            DatabasesAction.getMysqlList("", "mysql", 0);
+
+        }, 1);
     },
     componentWillUnmount: function () {
         DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
@@ -457,7 +466,7 @@ var MysqlList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        DatabasesAction.getMysqlList("mysql", page);
+        DatabasesAction.getMysqlList(DatabaseStore.getFilter().mysqlFilter, "mysql", page);
     },
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
@@ -493,7 +502,7 @@ var MysqlList = React.createClass({
                     var tbody = "";
                     that.state.listData.content.forEach(function (val1, key1) {
                         var tds = [<td key={tab+"tr"+key1+"td"+"-1"}
-                                       style={{textAlign:"left"}}>{val1.name}</td>];
+                                       style={{textAlign:"left"}}>{val1.host}</td>];
                         var tempTds = [];
                         val1.items.forEach(function (val2, key2) {
                             analysisData[tab].forEach(function (val3, key3) {
@@ -576,7 +585,9 @@ var SqlserverList = React.createClass({
     },
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
-        DatabasesAction.getSqlserverList("sqlserver", 0);
+        setTimeout(function () {
+            DatabasesAction.getSqlserverList("","sqlserver", 0);
+        }, 1);
     },
     componentWillUnmount: function () {
         DatabaseStore.removeChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
@@ -594,7 +605,7 @@ var SqlserverList = React.createClass({
         this.setState({isLoading: false});
     },
     _changePage: function (page) {
-        DatabasesAction.getSqlserverList("sqlserver", page);
+        DatabasesAction.getSqlserverList("","sqlserver", page);
     },
     _delete: function (index) {
         var id = this.state.listData.content[index].hostid;
@@ -1388,7 +1399,10 @@ var AlarmOfMessage = React.createClass({
     },
     componentDidMount: function () {
         AlarmStore.addChangeListener(AlarmStore.events.ChangeAlarmMessageList, this.changeAlarmMessageList);
-        AlarmAction.getAlarmMessageList();
+        setTimeout(function () {
+            AlarmAction.getAlarmMessageList();
+
+        }, 1);
     },
     componentWillUnmount: function () {
         AlarmStore.removeChangeListener(AlarmStore.events.ChangeAlarmMessageList, this.changeAlarmMessageList);

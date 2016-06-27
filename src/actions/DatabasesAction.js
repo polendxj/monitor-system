@@ -3,18 +3,34 @@ var MonitorConstants = require('../constants/MonitorConstants');
 var assign = require('object-assign');
 
 var DatabasesAction = {
-    getMysqlList: function (type, page) {
+    getMysqlList: function (ip, type, page) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.ChangeMysqlList,
             type: type,
-            page: page
+            page: page,
+            ip: ip
         })
     },
-    getSqlserverList: function (type, page) {
+    getMysqlTip: function (type, text) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetMysqlTip,
+            type: type,
+            text: text
+        })
+    },
+    getSqlserverList: function (ip, type, page) {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.ChangeSqlserverList,
             type: type,
-            page: page
+            page: page,
+            ip: ip
+        })
+    },
+    getSqlserverTip: function (type, text) {
+        AntiFraudDispatcher.dispatch({
+            actionType: MonitorConstants.GetSqlserverTip,
+            type: type,
+            text: text
         })
     },
     createDatabase: function (obj) {
@@ -27,8 +43,8 @@ var DatabasesAction = {
         AntiFraudDispatcher.dispatch({
             actionType: MonitorConstants.DeleteDatabase,
             id: id,
-            type:type,
-            page:page
+            type: type,
+            page: page
         })
     }
 };
