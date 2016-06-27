@@ -298,9 +298,10 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
                         rs = rs + "参数" + count + ":大于等于0的整数  ";
                         break;
                     default:
-                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substring(p[item].indexOf("_") + "  ");
+                        rs = rs + "参数" + count + ":大于0的整数 ,范围限定在" + p[item].substr(p[item].indexOf("_")+1) + "  ";
                         break;
                 }
+                count++;
             }
         } else {
             rs = "无";

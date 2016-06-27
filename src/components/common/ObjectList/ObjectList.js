@@ -1256,7 +1256,7 @@ var LinuxList = React.createClass({
                 )
             } else {
                 return (
-                    <NoData text={"未查找到任何Http信息"}/>
+                    <NoData text={"未查找到任何Linux信息"}/>
                 )
             }
         }
@@ -1449,7 +1449,7 @@ var HypervisorConfig = React.createClass({
                                         return str;
                                     } else {
                                         return <ToolBar.TextOfNoTips value={defaultsValue[alarmSubCount]}
-                                                                     key={"alarm"+key+"sub"+key}
+                                                                     key={"alarm"+key+"sub"+((alarmSubCount))}
                                                                      idx={"alarm"+key+"sub"+(alarmSubCount++)}/>;
                                     }
                                 })}
