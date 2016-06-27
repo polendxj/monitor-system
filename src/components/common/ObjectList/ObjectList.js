@@ -323,6 +323,9 @@ var VMSList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         VirtualMonitorAction.setHypervisorData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeVmList, this._changeListData);
@@ -457,6 +460,9 @@ var MysqlList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         DatabaseStore.setMysqlData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeMysqlList, this._changeListData);
@@ -600,6 +606,9 @@ var SqlserverList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         DatabaseStore.setSqlserverData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         DatabaseStore.addChangeListener(DatabaseStore.events.ChangeSqlserverList, this._changeListData);
@@ -741,6 +750,9 @@ var ApacheList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         AppServiceStore.setApacheData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeApacheList, this._changeListData);
@@ -882,6 +894,9 @@ var NginxList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         AppServiceStore.setNginxData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         AppServiceStore.addChangeListener(AppServiceStore.events.ChangeNginxList, this._changeListData);
@@ -1023,6 +1038,9 @@ var HttpWebList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         WebSiteStore.setHttpData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         WebSiteStore.addChangeListener(WebSiteStore.events.ChangeHttpList, this._changeListData);
@@ -1164,6 +1182,9 @@ var LinuxList = React.createClass({
     },
     redirectToCharts: function (hostid,host) {
         ServerStore.setServerData(hostid,host);
+        var graphType = {type: MenuStore.getBreadcrumbData()[2].breadcrumbName.toLowerCase()};
+        MenuAction.changeBreadcrumb(4, {id:3,name:"图表"});
+        VirtualMonitorStore.getGraphTemplateList(graphType);
     },
     componentDidMount: function () {
         ServerStore.addChangeListener(ServerStore.events.ChangeLinuxList, this._changeListData);

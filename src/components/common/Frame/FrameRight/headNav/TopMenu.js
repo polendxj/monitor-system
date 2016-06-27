@@ -193,7 +193,7 @@ menus = [
                     },
                     {
                         id:233,
-                        name: 'SQL Server',
+                        name: 'SQLServer',
                         icon: '',
                         count:104,
                         status: false,
