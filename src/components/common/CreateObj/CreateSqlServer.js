@@ -84,7 +84,7 @@ var CreateSqlServer = React.createClass({
                 <Form horizontal>
                     <FormGroup>
                         <Col componentClass={ControlLabel} sm={1}>
-                            数据库名称
+                            数据库类型
                         </Col>
                         <Col sm={2}>
                             <FormControl ref="applicationName" controlId="applicationName" defaultValue="sqlserver" readOnly/>

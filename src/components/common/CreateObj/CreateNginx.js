@@ -84,7 +84,7 @@ var CreateNginx = React.createClass({
                 <Form horizontal>
                     <FormGroup>
                         <Col componentClass={ControlLabel} sm={1}>
-                            应用服务名称
+                            应用服务类型
                         </Col>
                         <Col sm={2}>
                             <FormControl ref="applicationName" controlId="applicationName" defaultValue="nginx" readOnly/>

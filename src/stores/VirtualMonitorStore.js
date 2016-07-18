@@ -166,22 +166,34 @@ var VirtualMonitorStore = assign({}, EventEmitter.prototype, {
         });
     },
     getHistoryDataList: function (id, obj) {
+        var args=[];
         historyDataList.splice(0);
-        for (var i = 0; i < obj.length; i++) {
-            console.log(obj.length);
-            (function (arg) {
-                ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[arg], "", function (json) {
-                    historyDataList[arg] = json;
-                    VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
-                }, function (resp) {
-                    console.log(resp);
-                    if (resp.status == 200) {
+        if(id){
+            for (var i = 0; i < obj.length; i++) {
+                console.log(obj.length);
+                (function (arg) {
+                    ResourceUtils.HISTORYDATA_LIST.POST2(id, obj[arg], "", function (json) {
+                        historyDataList[arg] = json;
+                        args.push(arg);
+                        console.log(obj[arg]);
+                        /*VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);*/
+                    }, function (resp) {
+                        console.log(resp);
+                        if (resp.status == 200) {
 
-                    } else if (resp.status >= 300) {
-                        alert(resp.responseJSON.message);
-                    }
-                });
-            })(i);
+                        } else if (resp.status >= 300) {
+                            alert(resp.responseJSON.message);
+                        }
+                    });
+                })(i);
+            }
+            var a=setInterval(function () {
+                console.log(args.length+"="+obj.length);
+                if(args.length==obj.length){
+                    VirtualMonitorStore.emitChange(VirtualMonitorStore.events.ChangeHistoryDataList);
+                    clearInterval(a);
+                }
+            },100)
         }
     },
     createVCenter: function (obj) {

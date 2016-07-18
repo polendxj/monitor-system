@@ -47,8 +47,8 @@ var Menus = React.createClass({
         this.setState({isLoading: false});
         console.log(this.state.listData);
         if(this.state.breadcrumbDataList.length==4&&this.state.breadcrumbDataList[3].breadcrumbID==3){
-            if(this.state.listData.length>0){
-                this._clickViewMenu(this.state.listData[0]);
+            if(VirtualMonitorStore.getGraphTemplateListData().length>0){
+                this._clickViewMenu(VirtualMonitorStore.getGraphTemplateListData()[0]);
             }else{
                 MenuAction.changeViews("");
             }

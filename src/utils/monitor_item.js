@@ -17,24 +17,23 @@ monitorItems=
                     ""
                 ],
                 name:[
-                    "cpu总大小",
                     "cpu使用大小",
-
+                    "cpu总大小",
                 ]
             },
             "内存使用情况":{
                 items:[
-                    "'vmware.hv.memory.used[{$URL},{HOST.HOST}]'",
-                    "'vmware.hv.hw.memory[{$URL},{HOST.HOST}]'"
+                    "'vmware.hv.hw.memory[{$URL},{HOST.HOST}]'",
+                    "'vmware.hv.memory.used[{$URL},{HOST.HOST}]'"
                     /*"'vmware.hv.memory.size.ballooned[{$URL},{HOST.HOST}]'",*/
                 ],
                 seriesType:[
-                    "area",
-                    ""
+                    "",
+                    "area"
                 ],
                 name:[
-                    "内存使用大小",
-                    "内存总大小"
+                    "内存总大小",
+                    "内存使用大小"
                 ],
                 graphType:1,
                 convertDataType:"memoryM"
@@ -407,7 +406,7 @@ monitorItems=
                     "'system.swap.size[,pused]'",
                 ],
                 graphType:1,
-                convertDataType:"",
+                convertDataType:"percent",
                 seriesType:[
                     "area"
                 ],
@@ -415,23 +414,23 @@ monitorItems=
                     "swap使用率",
                 ]
             },
-            "内存使用情况":{
+            "内存使用比例":{
                 items:[
                     "'vm.memory.size[buffers]'",
                     "'vm.memory.size[cached]'",
                     "'vm.memory.size[exec]'",
+                    "'vm.memory.size[available]'",
                 ],
-                graphType:1,
+                graphType:0,
                 convertDataType:"memeoryM",
                 seriesType:[
-                    "",
-                    "",
-                    "",
+                    ""
                 ],
                 name:[
-                    "缓冲区",
-                    "缓存区",
-                    "代码区",
+                    "Buffer内存",
+                    "Cache内存",
+                    "Code内存",
+                    "空闲内存"
                 ]
             },
             "内存使用率":{
@@ -447,7 +446,7 @@ monitorItems=
                     "内存使用率",
                 ]
             },
-            "CPU使用率":{
+            "CPU使用比例":{
                 items:[
                     "'system.cpu.util[,user]'",
                     "'system.cpu.util[,system]'",
@@ -456,17 +455,12 @@ monitorItems=
                     "'system.cpu.util[,nice]'",
                     "'system.cpu.util[,iowait]'",
                     "'system.cpu.util[,interrupt]'",
+                    "'system.cpu.util[,idle]'",
                 ],
-                graphType:1,
+                graphType:0,
                 convertDataType:"",
                 seriesType:[
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
+                    ""
                 ],
                 name:[
                     "用户态",
@@ -476,6 +470,7 @@ monitorItems=
                     "nice态",
                     "I/O等待",
                     "中断态",
+                    "空闲态",
                 ]
             },
             "读写bps使用率":{

@@ -59,9 +59,11 @@ var CreateVCenterModal = React.createClass({
         var vcenter={};
         var hostName=ReactDOM.findDOMNode(this.refs.hostName).value;
         var ip=ReactDOM.findDOMNode(this.refs.ip).value;
+        var username=ReactDOM.findDOMNode(this.refs.username).value;
+        var password=ReactDOM.findDOMNode(this.refs.password).value;
         vcenter['name']=hostName;
         vcenter['ip']=ip;
-        vcenter['macros']=[{"macro": "{$PASSWORD}", "value": ""}];
+        vcenter['macros']=[{"macro": "{$PASSWORD}", "value": username},{"macro": "{$PASSWORD}", "value": password}];
         console.log(vcenter);
         VirtualMonitorAction.createVCenter(vcenter);
     },
@@ -121,7 +123,7 @@ var CreateVCenterModal = React.createClass({
                 </div>
                 <Form horizontal>
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col componentClass={ControlLabel} sm={2}>
                             主机名
                         </Col>
                         <Col sm={2}>
@@ -158,7 +160,7 @@ var CreateVCenterModal = React.createClass({
                         </Col>
                     </FormGroup>*/}
                     <FormGroup>
-                        <Col componentClass={ControlLabel} sm={1}>
+                        <Col componentClass={ControlLabel} sm={2}>
                             IP地址
                         </Col>
                         <Col sm={2}>
@@ -166,7 +168,23 @@ var CreateVCenterModal = React.createClass({
                         </Col>
                     </FormGroup>
                     <FormGroup>
-                        <Col sm={1}>
+                        <Col componentClass={ControlLabel} sm={2}>
+                            用户名
+                        </Col>
+                        <Col sm={2}>
+                            <FormControl ref="username" controlId="username"/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Col componentClass={ControlLabel} sm={2}>
+                            密码
+                        </Col>
+                        <Col sm={2}>
+                            <FormControl ref="password" controlId="password"/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup>
+                        <Col sm={2}>
                         </Col>
                         <Col sm={2}>
                             <Button onClick={this._click} style={{color:"white",backgroundColor:"#54ADE9",float:"right"}}>保存</Button>

@@ -761,6 +761,7 @@ var Content = React.createClass({
         browserHistory.push("/createView");
     },
     render: function () {
+        console.log("hehe");
         var div = "";
         if (this.state.breadcrumbDataList.length == 3) {
             switch (this.state.breadcrumbDataList[2].breadcrumbID) {

@@ -84,10 +84,10 @@ var CreateLinux = React.createClass({
                 <Form horizontal>
                     <FormGroup>
                         <Col componentClass={ControlLabel} sm={1}>
-                            服务器名称
+                            服务器类型
                         </Col>
                         <Col sm={2}>
-                            <FormControl ref="applicationName" controlId="applicationName"/>
+                            <FormControl ref="applicationName" controlId="applicationName" defaultName="linux" readOnly/>
                         </Col>
                     </FormGroup>
                     <FormGroup>

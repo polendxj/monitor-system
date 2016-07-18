@@ -165,6 +165,9 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
             case "memoryK":
                 rs = (value / 1024).toFixed(2) * 1;
                 break;
+            case "percent":
+                rs = value.toFixed(2) * 1;
+                break;
             case "number":
                 rs = value.toFixed(2) * 1;
                 break;
@@ -230,6 +233,15 @@ var GlobalUtils = assign({}, EventEmitter.prototype, {
         var rs = value;
         rs = (value / 1024 / 1024 / 1024).toFixed(2);
         return rs;
+    },
+    getIndexByKey: function (key,items) {
+        var idx = -1;
+        items.forEach(function (item,index) {
+            if(item.indexOf(key)>-1){
+                idx=index;
+            }
+        });
+        return idx;
     },
     type2Style: function (type, value) {
         var rs = value;

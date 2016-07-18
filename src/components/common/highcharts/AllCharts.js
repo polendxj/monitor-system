@@ -64,11 +64,7 @@ var pieChartsData = [
         series: [{
             type: 'pie',
             name: '值',
-            data: [
-                ['空闲', 20],
-                ['已使用', 40],
-                ['交换空间', 40]
-            ]
+            data: []
         }]
     }
 ];
@@ -289,130 +285,132 @@ var AllCharts = React.createClass({
         return ({
             graphItemList: [],
             historyDataList: [],
-            hypervisorID:"",
-            selectedTime:[],
-            title:""
+            hypervisorID: "",
+            selectedTime: [],
+            title: "",
+            id: ""
         })
     },
     componentDidMount: function () {
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.addChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
-        setTimeout(function () {
-            VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");
-        }.bind(this),1)
+        /*VirtualMonitorStore.getGraphItemList(this.props.viewData.id + "/graphs");*/
     },
     componentWillUnmount: function () {
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.ChangeGraphItemList, this._changeListData);
         VirtualMonitorStore.removeChangeListener(VirtualMonitorStore.events.StartChartsRender, this._startChartsRender);
         VirtualMonitorStore.clearHistoryData();
-         VirtualMonitorStore.clearID();
-         DatabaseStore.clearID();
-         AppServiceStore.clearID();
-         ServerStore.clearID();
-         WebSiteStore.clearID();
+        VirtualMonitorStore.clearID();
+        DatabaseStore.clearID();
+        AppServiceStore.clearID();
+        ServerStore.clearID();
+        WebSiteStore.clearID();
     },
     _startChartsRender: function () {
-        var monitorItemID="";
-        var title;
-        switch (this.props.viewData.type){
+        var monitorItemID = "";
+        switch (this.props.viewData.type) {
             case "hypervisor":
-                monitorItemID=VirtualMonitorStore.getHypervisorID().hostid;
-                this.setState({title:VirtualMonitorStore.getHypervisorID().host});
+                monitorItemID = VirtualMonitorStore.getHypervisorID().hostid;
+                this.setState({
+                    title: VirtualMonitorStore.getHypervisorID().host,
+                    id: VirtualMonitorStore.getHypervisorID().hostid
+                });
                 break;
             case "mysql":
-                monitorItemID=DatabaseStore.getMysqlID().hostid;
-                this.setState({title:DatabaseStore.getMysqlID().host});
+                monitorItemID = DatabaseStore.getMysqlID().hostid;
+                this.setState({title: DatabaseStore.getMysqlID().host, id: DatabaseStore.getMysqlID().hostid});
                 break;
             case "sqlserver":
-                monitorItemID=DatabaseStore.getSqlserverID().hostid;
-                this.setState({title:DatabaseStore.getSqlserverID().host});
+                monitorItemID = DatabaseStore.getSqlserverID().hostid;
+                this.setState({title: DatabaseStore.getSqlserverID().host, id: DatabaseStore.getSqlserverID().hostid});
                 break;
             case "http":
-                monitorItemID=WebSiteStore.getHttpID().hostid;
-                this.setState({title:WebSiteStore.getHttpID().host});
+                monitorItemID = WebSiteStore.getHttpID().hostid;
+                this.setState({title: WebSiteStore.getHttpID().host, id: WebSiteStore.getHttpID().hostid});
                 break;
             case "apache":
                 monitorItemID = AppServiceStore.getApacheID().hostid;
-                this.setState({title:AppServiceStore.getApacheID().host});
+                this.setState({title: AppServiceStore.getApacheID().host, id: AppServiceStore.getApacheID().hostid});
                 break;
             case "nginx":
                 monitorItemID = AppServiceStore.getNginxID().hostid;
-                this.setState({title:AppServiceStore.getNginxID().host});
+                this.setState({title: AppServiceStore.getNginxID().host, id: AppServiceStore.getNginxID().hostid});
                 break;
             case "linux":
                 monitorItemID = ServerStore.getLinuxID().hostid;
-                this.setState({title:ServerStore.getLinuxID().host});
+                this.setState({title: ServerStore.getLinuxID().host, id: ServerStore.getLinuxID().hostid});
                 break;
             case "vms":
                 monitorItemID = VirtualMonitorStore.getVMID().hostid;
-                this.setState({title:VirtualMonitorStore.getVMID().host});
+                this.setState({title: VirtualMonitorStore.getVMID().host, id: VirtualMonitorStore.getVMID().hostid});
                 break;
         }
-        var selectedTime=GlobalUtils.getTimes();
+        var selectedTime = GlobalUtils.getTimes();
         setTimeout(function () {
-            var bodyArr=new Array();
-            if(this.state.graphItemList.length>0){
-                for(var i=0;i<this.state.graphItemList.length;i++){
-                    var graphItem=this.state.graphItemList[i];
-                    var startTime=parseInt(selectedTime[0].key/1000);
-                    var endTime=parseInt(selectedTime[1].key/1000);
+            var bodyArr = new Array();
+            if (this.state.graphItemList.length > 0) {
+                for (var i = 0; i < this.state.graphItemList.length; i++) {
+                    var graphItem = this.state.graphItemList[i];
+                    var startTime = parseInt(selectedTime[0].key / 1000);
+                    var endTime = parseInt(selectedTime[1].key / 1000);
                     var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
                     bodyArr.push(body);
                 }
                 console.log(bodyArr);
                 VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
             }
-        }.bind(this),10)
+        }.bind(this), 10)
 
     },
     _changeListData: function () {
         this.setState({graphItemList: VirtualMonitorStore.getGraphItemListData()});
         var that = this;
-        var monitorItemID="";
+        var monitorItemID = "";
         var bodyArr = new Array();
-        switch (this.props.viewData.type){
+        switch (this.props.viewData.type) {
             case "hypervisor":
-                monitorItemID=VirtualMonitorStore.getHypervisorID().hostid;
-                this.setState({title:VirtualMonitorStore.getHypervisorID().host});
+                monitorItemID = VirtualMonitorStore.getHypervisorID().hostid;
+                this.setState({
+                    title: VirtualMonitorStore.getHypervisorID().host,
+                    id: VirtualMonitorStore.getHypervisorID().hostid
+                });
                 break;
             case "mysql":
-                monitorItemID=DatabaseStore.getMysqlID().hostid;
-                this.setState({title:DatabaseStore.getMysqlID().host});
+                monitorItemID = DatabaseStore.getMysqlID().hostid;
+                this.setState({title: DatabaseStore.getMysqlID().host, id: DatabaseStore.getMysqlID().hostid});
                 break;
             case "sqlserver":
-                monitorItemID=DatabaseStore.getSqlserverID().hostid;
-                this.setState({title:DatabaseStore.getSqlserverID().host});
+                monitorItemID = DatabaseStore.getSqlserverID().hostid;
+                this.setState({title: DatabaseStore.getSqlserverID().host, id: DatabaseStore.getSqlserverID().hostid});
                 break;
             case "http":
-                monitorItemID=WebSiteStore.getHttpID().hostid;
-                this.setState({title:WebSiteStore.getHttpID().host});
+                monitorItemID = WebSiteStore.getHttpID().hostid;
+                this.setState({title: WebSiteStore.getHttpID().host, id: WebSiteStore.getHttpID().hostid});
                 break;
             case "apache":
                 monitorItemID = AppServiceStore.getApacheID().hostid;
-                this.setState({title:AppServiceStore.getApacheID().host});
+                this.setState({title: AppServiceStore.getApacheID().host, id: AppServiceStore.getApacheID().hostid});
                 break;
             case "nginx":
                 monitorItemID = AppServiceStore.getNginxID().hostid;
-                this.setState({title:AppServiceStore.getNginxID().host});
+                this.setState({title: AppServiceStore.getNginxID().host, id: AppServiceStore.getNginxID().hostid});
                 break;
             case "linux":
                 monitorItemID = ServerStore.getLinuxID().hostid;
-                this.setState({title:ServerStore.getLinuxID().host});
+                this.setState({title: ServerStore.getLinuxID().host, id: ServerStore.getLinuxID().hostid});
                 break;
             case "vms":
                 monitorItemID = VirtualMonitorStore.getVMID().hostid;
-                this.setState({title:VirtualMonitorStore.getVMID().host});
+                this.setState({title: VirtualMonitorStore.getVMID().host, id: VirtualMonitorStore.getVMID().hostid});
                 break;
         }
-        var selectedTime=GlobalUtils.getTimes();
-        var startTime=parseInt(selectedTime[0].key/1000);
-        var endTime=parseInt(selectedTime[1].key/1000);
+        var selectedTime = GlobalUtils.getTimes();
+        var startTime = parseInt(selectedTime[0].key / 1000);
+        var endTime = parseInt(selectedTime[1].key / 1000);
         if (VirtualMonitorStore.getGraphItemListData().length > 0) {
             VirtualMonitorStore.getGraphItemListData().forEach(function (graphItem, index) {
-                if (graphItem.graphType == 1) {
-                    var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
-                    bodyArr.push(body);
-                }
+                var body = {keys: JSON.parse(graphItem.items), startTime: startTime, endTime: endTime, type: 3};
+                bodyArr.push(body);
             }.bind(this));
             if (monitorItemID != "") {
                 VirtualMonitorAction.getHistoryDataList(monitorItemID, bodyArr);
@@ -437,31 +435,28 @@ var AllCharts = React.createClass({
         var that = this;
         var showChart = "";
         var lineChartsGraph = [];
-        var lineChartList = new Array();
-        var pieCharts = [];
-        var lineChartsArray=[];
+        var pieChartsGraph = [];
+        var lineChartsArray = [];
+        var pieChartsArray = [];
         if (this.state.graphItemList.length > 0) {
-            this.state.graphItemList.forEach(function (graphItem, index){
-                if(graphItem.graphType==1) {
+            this.state.graphItemList.forEach(function (graphItem, index) {
+                if (graphItem.graphType == 1) {
                     lineChartsArray.push(index);
+                } else if (graphItem.graphType == 0) {
+                    pieChartsArray.push(index);
                 }
             });
             this.state.graphItemList.forEach(function (graphItem, index) {
                 switch (graphItem.graphType) {
                     case 0://pie
-                        pieCharts.push(<PieCharts key={index} data={pieChartsData[0]}
-                                                  title={"hypervisor:184.2.10.16"}/>);
+                        pieChartsGraph.push(<PieCharts key={index} index={index} title={that.state.title}
+                                                       dataTitle={graphItem.name} pieChartsArray={pieChartsArray}
+                                                       items={graphItem.items}/>);
                         break;
                     case 1://line
-                        //var convertDataType=monitorItems[that.props.viewData.type][graphItem.name].convertDataType;
-                        //console.log(convertDataType);
-                        //var convertAndSeriesType=monitorItems[that.props.viewData.type][graphItem.name].seriesType;
-                            lineChartList[index] = $.extend({},lineChartData);
-                            lineChartsGraph.push(<LineCharts index={index}
-                                                             key={index}
-                                                             title={that.state.title}
-                                                             dataTitle={graphItem.name } lineChartsArray={lineChartsArray}
-                                                             items={graphItem.items}/>);
+                        lineChartsGraph.push(<LineCharts index={index} key={index} title={that.state.title}
+                                                         dataTitle={graphItem.name } lineChartsArray={lineChartsArray}
+                                                         items={graphItem.items} id={that.state.id}/>);
 
                         break;
                 }
@@ -478,7 +473,7 @@ var AllCharts = React.createClass({
         } else {
             showChart = <div>
                 {lineChartsGraph}
-                {pieCharts}
+                {pieChartsGraph}
             </div>;
         }
         return (
@@ -503,7 +498,7 @@ var MonitorItemsEdit = React.createClass({
             deselectOnClickaway: false,
             showCheckboxes: false,
             height: '',
-            showFlags:[]
+            showFlags: []
         })
     },
     _addItems: function (row) {
@@ -522,10 +517,10 @@ var MonitorItemsEdit = React.createClass({
         VirtualMonitorAction.deleteGraphItem(id, templateId);
     },
     _isExist: function (row) {
-        var flag=false;
+        var flag = false;
         this.props.graphItemList.forEach(function (graphItem) {
             if (row.name == graphItem.name) {
-                flag=true;
+                flag = true;
             }
         });
         return flag;
@@ -559,7 +554,7 @@ var MonitorItemsEdit = React.createClass({
                         >
                         <TableRow style={{height:"30px"}}>
                             <TableHeaderColumn colSpan="3" style={{textAlign: 'center',height:"30px"}}>
-                                {MenuStore.getBreadcrumbData()[2].breadcrumbName+" 监控项"}
+                                {MenuStore.getBreadcrumbData()[2].breadcrumbName + " 监控项"}
                             </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
